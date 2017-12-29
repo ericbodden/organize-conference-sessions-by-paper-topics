@@ -1,0 +1,96 @@
+Eric Bodden (Hrsg.): Software Engineering und Software Management 2018,
+Lecture Notes in Informatics (LNI), Gesellschaft für Informatik, Bonn 2018 11
+
+Code Defenders: Crowdsourcing Effective Tests and Subtle
+Mutants with a Mutation Testing Game
+
+José Miguel Rojas,1 Thomas D. White,2 Benjamin S. Clegg,2 Gordon Fraser3
+
+Abstract: Mutation testing aims to improve test suites by seeding artificial faults (mutants) that
+good tests should identify, and test generation tools can be used to automatically generate these
+tests. However, mutation tools tend to produce huge numbers of mutants, many of which are trivial,
+redundant, or semantically equivalent, and automated test generation tools are good at achieving
+code coverage, but are otherwise weak and have no clear purpose. We present an approach based on
+gamification and crowdsourcing to produce better tests and mutants: The Code Defenders game
+lets teams of players compete over a program, where attackers try to create subtle mutants, which
+defenders try to counter by writing tests. Our experiments suggest that writing tests as part of the game
+is more enjoyable, and that playing Code Defenders results in stronger test suites and mutants than
+those produced by automated tools.
+Keywords: Gamification; crowdsourcing; mutation testing
+
+1
+
+Extended Abstract
+
+Software needs to be thoroughly tested in order to remove bugs. To evaluate how thoroughly
+a program has been tested, the idea of mutation testing is to measure the number of seeded
+artificial bugs (mutants) a test suite can distinguish from the original program. Testers
+are guided to improve test suites by writing new tests that target previously undetected
+mutants. However, writing good tests is difficult and developers are often reluctant to do so,
+in particular since mutation tools tend to produce huge amounts of mutants, many of which
+are trivial, redundant, and sometimes even semantically equivalent to the original program.
+A commonly proposed solution is to generate tests automatically, but humans tend to write
+tests that are stronger, have a clear meaning, and are typically more readable.
+To produce better mutants and tests, we use gamification and crowdsourcing: Gamification
+converts tasks to components of entertaining gameplay, where the competitive nature of
+humans motivates them to compete and excel. Crowdsourcing encodes and assigns a difficult
+problem to an undefined group of workers (a crowd), who provide their solutions back to
+the requester; the requester then derives the final solution from the solutions collected from
+1 Department
+
+of Informatics, University of Leicester, Leicester, UK, j.rojas@leicester.ac.uk
+of Computer Science, University of Sheffield, Sheffield, UK, {tdwhite1,bsclegg1}@sheffield.ac.uk
+3 Lehrstuhl für Software Engineering II, Universität Passau, Germany, gordon.fraser@uni-passau.de
+2 Department
+
+cbe
+
+12 José Miguel Rojas, Thomas D. White, Benjamin S. Clegg, Gordon Fraser
+
+the workers. We present Code Defenders [Ro17], a multi-player game in which players
+contribute to creating good tests and mutants.
+In the Code Defenders game, players compete over a program under test: Attackers try to
+create subtle, hard to kill mutants by editing the source code of a Java class under test. They
+see all mutants in the game including their code diffs, and the code editor highlights the line
+coverage achieved so far. The highlighting reflects how often lines are covered; the more
+often a line is covered, the darker the highlighting is. Defenders try to create tests that can
+detect and counter these attacks. They see the source code of the class under test together
+with the locations of live and dead mutants. In their code editor, they are given a template to
+write a unit test for the CUT, and they also see previous tests as well as their coverage. Since
+mutants may be semantically equivalent, the gameplay integrates duels, where defenders
+can challenge attackers by requesting them to prove non-equivalence using a test. The game
+is driven by a point scoring system, where attackers score points whenever their mutants are
+covered but not detected by a test, and defenders score points whenever they succeed in
+detecting a mutant. Points are also at stake in the equivalence duels, where attackers can
+lose all points earned with a mutant if they do not succeed in showing non-equivalence.
+To evaluate the gamification aspects of Code Defenders we conducted a controlled study,
+comparing it to traditional unit testing in terms of the objective performance and subjective
+perception of 41 participants. All participants of this experiment confirmed that playing the
+game is fun, and that writing tests as part of Code Defenders is more enjoyable than
+doing so outside the game. Code coverage and mutation scores are higher compared to
+tests written outside the game. To evaluate the crowdsourcing application, we studied 20
+multi-player games played on open source classes. The tests resulting from these games are
+stronger than those generated by automated test generation tools, and the mutants resulting
+from the games are stronger than those created by state-of-the-art mutation analysis tools.
+Besides the crowdsourcing application, Code Defenders is also naturally suited for
+educational purposes [RF16, CRF17]. For this, it is available as open-source project and
+freely available to play online at http://www.code-defenders.org.
+
+References
+[CRF17] Clegg, Benjamin S; Rojas, José Miguel; Fraser, Gordon: Teaching software testing concepts
+using a mutation testing game. In: Proceedings of the 39th International Conference on
+Software Engineering: Software Engineering and Education Track. IEEE Press, pp. 33–36,
+2017.
+[RF16]
+
+Rojas, José Miguel; Fraser, Gordon: Teaching Mutation Testing using Gamification. In:
+European Conference on Software Engineering Education (ECSEE). 2016.
+
+[Ro17]
+
+Rojas, José Miguel; White, Thomas D; Clegg, Benjamin S; Fraser, Gordon: Code Defenders:
+Crowdsourcing effective tests and subtle mutants with a mutation testing game. In:
+Proceedings of the 39th International Conference on Software Engineering. IEEE Press,
+pp. 677–688, 2017.
+
+

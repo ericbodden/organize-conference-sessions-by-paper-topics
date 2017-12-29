@@ -1,0 +1,87 @@
+Matthias Tichy et al. (Hrsg.): Software Engineering 2018,
+Lecture Notes in Informatics (LNI), Gesellschaft für Informatik, Bonn 2018 11
+
+Hybrid Software and System Development in Practice:
+Waterfall, Scrum, and Beyond
+Marco Kuhrmann1, Philipp Diebold2, Jürgen Münch3, Paolo Tell4, Vahid Garousi5,
+Michael Felderer6, Kitija Trektere7, Fergal McCaffery7 , Oliver Linssen8, Eckhart Hanser9,
+Christian R. Prause10
+
+Abstract: Software and system development faces numerous challenges of rapidly changing markets. To address such challenges, companies and projects design and adopt specific development
+approaches by combining well-structured methods and flexible agile practices. Yet, the number of
+methods and practices is large and the actual process composition is often carried out in an ad-hoc
+manner. This paper reports on a survey on hybrid software development approaches. We study which
+approaches are used in practice, how different approaches are combined, and what contextual factors
+influence the use and combination of hybrid software development approaches.
+This summary refers to the paper Hybrid Software and System Development in Practice: Waterfall,
+Scrum, and Beyond [Ku17]. This paper was published as full research paper in the proceedings of
+the International Conference on Software System Process.
+Keywords: Agile Software Development, Software Process, Hybrid Development Approaches
+
+1
+
+Introduction
+
+Software development is diverse, and companies have to adopt to new technologies and
+markets quickly. Software engineers are on the quest for suitable development approaches,
+yet facing a huge variety of contextual factors influencing the definition of appropriate development processes
+Problem Statement & Objective In 2011, West et al. [We11] coined the term “WaterScrum-Fall” and hypothesized that hybrid development methods will become the standard.
+A systematic review by Theocharis et al. [Th15] revealed a gap in literature: while research
+on agile software development is rich, traditional processes are widely ignored in recent
+research. The goal of our research is to close this gap and to collect data to help determining combination patterns, i.e., which development approaches are used in practice and how
+1
+
+Clausthal University of Technology, Germany, kuhrmann@acm.org
+Fraunhofer IESE, Germany, Philipp.Diebold@iese.fraunhofer.de
+3 Reutlingen University, Böblingen, Germany, Juergen.Muench@Reutlingen-University.de
+4 IT University Copenhagen, Denmark, pate@itu.dk
+5 Wageningen University, The Netherlands, vahid.garousi@wur.nl
+6 University of Innsbruck, Austria, Michael.Felderer@uibk.ac.at
+7 Dundalk Institute of Technology, Ireland, {kitija.trektere, fergal.mccaffery}@dkit.ie
+8 FOM University of Applied Sciences, Germany, oliver.linssen@fom.de
+9 DHBW Lörrach, Germany, hanser@dhbw-loerrach.de
+10 German Aerospace Center, Germany, Christian.Prause@dlr.de
+2
+
+are these approaches combined in company- or project-specific development approaches.
+Contribution The paper at hand presents results from the HELENA study. HELENA is
+an internationally conducted survey that aims at collecting data to study the use of hybrid
+approaches. Based on the analysis of 69 responses, we present a list of development approaches as used in practice. We analyze these development approaches for patterns, and
+test our data for different context attributes. Based on cluster analyses, we identified five
+major combination patterns.
+
+2
+
+Results
+
+Our study revealed that hybrid approaches have become mainstream and are used by companies regardless of company size and industry sector. While standards, norms, and regulations challenge companies, even in regulated domains, companies adopt agile methods.
+An empirical analysis confirmed that there is no evidence to claim that the development
+and use of hybrid approaches are triggered by company size or external standards. Hybrid
+approaches used in practice today emerge from pragmatic process selection and evolve
+over time. A cluster analysis supports West’s “Water-Scrum-Fall” hypothesis by showing
+that combinations of development approaches follow a pattern in which a traditional process serves as framework refined by (multiple) fine-grained practices. We further argue
+that individual practices, rather than large methods, have become the building blocks for
+process customization.
+
+3
+
+Conclusion & Future Work
+
+Our paper [Ku17] documents findings from the first stage of the HELENA study. The
+data collection for HELENA’s stage 2 has been finished. Based on the new data collected,
+findings from [Ku17] will be confirmed and new research questions will be answered.
+
+References
+[Ku17] Kuhrmann, Marco; Diebold, Philipp; Münch, Jürgen; Tell, Paolo; Garousi, Vahid; Felderer,
+Michael; Trektere, Kitija; McCaffery, Fergal; Prause, Christian R.; Hanser, Eckhart;
+Linssen, Oliver: Hybrid Software and System Development in Practice: Waterfall, Scrum,
+and Beyond. In: Proceedings of the International Conference on Software System Process.
+ICSSP, ACM, New York, NY, USA, pp. 30–39, July 2017.
+[Th15] Theocharis, Georgios; Kuhrmann, Marco; Münch, Jürgen; Diebold, Philipp: Is WaterScrum-Fall Reality? On the Use of Agile and Traditional Development Practices. In: International Conference on Product Focused Software Development and Process Improvement.
+volume 9459 of Lecture Notes in Computer Science, Springer, Cham, pp. 149–166, Dec
+2015.
+[We11] West, Dave; Gilpin, Mike; Grant, Tom; Anderson, Alissa: Water- Scrum-Fall Is The Reality
+Of Agile For Most Organizations Today. Technical report, Forrester Research Inc., July
+2011.
+
+

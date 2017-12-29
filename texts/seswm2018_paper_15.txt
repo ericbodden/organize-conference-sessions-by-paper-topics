@@ -1,0 +1,991 @@
+Herausgeber et al. (Hrsg.): SE’18,
+Lecture Notes in Informatics (LNI), Gesellschaft für Informatik, Bonn 2017 11
+
+Traceability in Automotive Software Engineering:
+Challenges and Solutions
+
+Jan-Philipp Steghöfer, Salome Maro, and Miroslaw Staron1
+
+Abstract: This talk is based on an extended version of the paper “Challenges of Establishing
+Traceability in the Automotive Domain” which won the best paper award at the Software Quality
+Days 2017 [MSS17].
+In the automotive domain, the development of all safety-critical systems has to comply with safety
+standards such as ISO 26262. These standards require established traceability, the ability to relate
+artifacts created during development of a system, to ensure resulting systems are well-tested and
+therefore safe. This talk contrasts general traceability challenges and solutions (derived from a tertiary
+literature review) with those specific to the automotive domain (derived from a multi-vocal literature
+review), and investigates how they manifest in practice through a case study with an automotive
+supplier.
+We found 22 challenges and 16 unique solutions in the reviews. 17 challenges were identified in
+the case study; six remain unsolved. We discuss challenges and solutions from the perspectives of
+academia, tool vendors, consultants and users and identify differences between scientific and “grey”
+literature. We discuss why challenges remain unsolved and propose solutions. Our findings indicate
+that there is a significant overlap between general traceability challenges and those in the automotive
+domain but that they are experienced differently.
+Keywords: Traceability, Automotive Software Engineering, Safety, ISO 26262, Automotive SPICE
+
+References
+[MSS17] Maro, Salome; Staron, Miroslaw; Steghöfer, Jan-Philipp: Challenges of Establishing
+Traceability in the Automotive Domain. In: Software Quality. Complexity and Challenges
+of Software Engineering in Emerging Technologies - 9th International Conference, SWQD
+2017, Vienna, Austria, January 17-20, 2017, Proceedings. pp. 153–172, 2017.
+
+1 Chalmers
+
+| University of Gothenburg, Gothenburg, Sweden jan-philipp.steghofer@gu.se, salome.maro@gu.se,
+miroslaw.staron@gu.se
+
+cb e
+
+Challenges of Establishing Traceability
+in the Automotive Domain
+Salome Maro(B) , Miroslaw Staron, and Jan-Philipp Steghöfer
+Chalmers Institute of Technology and University of Gothenburg, Gothenburg, Sweden
+{salome.maro,miroslaw.staron,jan-philipp.steghofer}@cse.gu.se
+
+Abstract. Traceability, i.e., relationships between artifacts in software
+development, is prescribed by quality standards such as ISO 26262
+and therefore mandatory for automotive companies that develop safetycritical systems. However, establishing traceability is a challenge for
+many automotive companies. The objective of this study is to identify
+traceability challenges and solutions in this domain and compare these
+challenges and solutions with the ones in literature. To achieve this, we
+conducted a case study with a large automotive supplier to discover
+their traceability challenges and a tertiary literature review on existing
+traceability literature surveys to identify reported challenges and their
+solutions. We found 13 challenges from the literature study, of which
+ten were also found at the company. Three challenges are solved at the
+company with solutions that correlate with those proposed in literature,
+three are partially solved while four are still unsolved even though there
+are solutions in literature.
+Keywords: Traceability · Software processes · Distributed software
+development · Tools · Human factors · Software development organisation
+
+1
+
+Introduction
+
+More and more software is being developed and embedded in today’s modern
+cars. This software is not only increasingly complex but even used to control
+safety-critical functions such as speeding up and braking [1]. It is therefore
+important to make sure such software is well specified, designed, implemented
+and tested. Due to the complexity of software being developed and the organizational structure (e.g., OEM and supplier relationships), the amount of artifacts
+produced in this process is high, artifacts are of diverse formats, and distributed
+between various organizations [2]. To ensure that the developed systems are of
+high quality, traceability plays a major factor. Traceability is defined as “the
+degree to which a relationship can be established between two or more products
+of the development process, especially products having a predecessor-successor
+or master-subordinate relationship to one another” [3]. It directly contributes
+c Springer International Publishing AG 2017
+⃝
+D. Winkler et al. (Eds.): SWQD 2017, LNBIP 269, pp. 153–172, 2017.
+DOI: 10.1007/978-3-319-49421-0 11
+
+154
+
+S. Maro et al.
+
+to quality attributes of a system such as maintainability [4]. It also helps stakeholders to understand how diﬀerent artifacts are related, the rationale behind
+the artifacts and, most importantly, if the whole software has been verified and
+validated before delivery to the end user.
+Due to the complexity of the systems and the distributed nature of development, achieving traceability is a diﬃcult and costly activity. It requires both
+monetary investment in tools and trainings as well as time investment for creating and maintaining traceability links [5]. On the one hand, there exists a large
+body of knowledge on traceability. For example, the systematic literature review
+by Nair et. al found 70 studies on traceability published between 1993 and 2012,
+only in the Requirements Engineering conference [6]. On the other hand, the
+practicalities of traceability are still a problem in many companies. This led us
+to our main research question:
+How are the proposed solutions in traceability literature relevant for solving
+the challenges found in practice in the automotive domain?
+To answer this question, we conducted a case study at an automotive supplier
+company and reviewed 15 secondary publications on traceability. Our reason for
+investigating an automotive supplier is that these companies are required to
+establish traceability by safety standards such as ISO 26262 [7] and ASPICE [8].
+Moreover, our reason for reviewing secondary studies is based on the fact that
+recent systematic literature reviews on traceability already exist [9]. We wanted
+to leverage this previous work and validate it in an industrial context rather
+than replicating existing studies. Our study found 13 challenges from the literature study and ten of these challenges were also found at the company. Three
+challenges are solved at the company with solutions that correlate with those
+proposed in literature, three are partially solved while four are still unsolved
+even though there are proposed solutions in literature.
+The rest of the paper is structured as follows; Sect. 2 describes our research
+method and research questions in detail, Sect. 3 presents the results and provides
+a discussion of the results. This is followed by Sect. 4 which discusses previous
+similar work. Limitations of the study are discussed in Sect. 5 and Sect. 6 concludes the paper and outlines future work.
+
+2
+
+Research Method
+
+The study aims to answer the following research question:
+– RQ: How are the proposed solutions in traceability literature relevant for solving the challenges found in practice in the automotive domain?
+To answer this research question, we applied two types of research methods:
+a case study and a tertiary literature review. The case study provided data on
+which challenges exist in practice and their solutions if any and followed the
+guidelines laid out in [10]. The tertiary literature review provided data on the
+challenges and solutions in the literature. Before conducting these two studies,
+we defined the scope that is important to us and which both studies will cover.
+
+Challenges of Establishing Traceability in the Automotive Domain
+
+155
+
+In [11], the authors have a defined a traceability process model, which contains
+the important activities that are needed to establish traceability. The activities
+defined by the researchers are: planning and managing a traceability strategy,
+creating, maintaining, and using traceability.
+Based on our initial contact with the case company, we are aware that the
+major problems lie in the activities of creation and maintenance of traceability links. In our study, a traceability link is a connection between two or more
+artifacts that are in a relevant relation to each other. It is created when a relation is identified. For instance, acceptance test cases are often related to the
+requirements whose fulfillment they are supposed to test. If a new requirement
+has been elicited from the customer and the developer programs the necessary
+acceptance test, these two artifacts (the requirement and the acceptance test)
+are then related by a newly created traceability link. Often, design artifacts such
+as models are also related to requirements, code, or test cases through traceability links. Likewise, maintenance of a traceability link describes all activities that
+pertain to keeping the links up-to-date. If a design model changes, e.g., due to an
+architectural refactoring, existing traceability links might have become obsolete
+and should be updated. If the traceability links connect more than two artifacts,
+additional artifacts might have to be added or existing ones removed.
+Thus for this study, we narrowed our scope to focus on these two activities. Moreover, due to the OEM-Supplier relationship that exists in the automotive domain, traceability information also needs to be exchanged. Therefore, we
+added a third activity to the scope of our study on the exchange of traceability.
+Our resulting scope is thus divided into three categories: Creation, Maintenance
+and Exchange of Traceability. The remaining activities, namely planning and
+managing a traceability strategy and using traceability, will be studied in our
+future work as discussed in Sect. 6.
+For the Creation category we studied how traceability links are usually created, for the Maintenance category, how they are updated when the artifacts
+they connect evolve, and for the Exchange of traceability category, how traceability information is exchanged between diﬀerent teams in the same company
+and between diﬀerent companies. For all the categories we studied the challenges
+that are associated with them and their solutions if any. The details of the case
+study and tertiary literature review are described in the following subsections.
+2.1
+
+Case Study Design
+
+Case and Subject Selection. The study was conducted at a large company whose core business is to supply automotive software and equipment to
+automotive Original Equipment Suppliers (OEMs). Two departments developing embedded systems were involved. We selected these two departments because
+they already implement traceability in their projects and develop safety-critical
+systems for which traceability is a requirement. The two departments are also
+interested in improving their traceability practices, thus the topic is relevant and
+of interest to them. To be able to understand how traceability is implemented
+
+156
+
+S. Maro et al.
+
+through out the development life cycle, we conducted the study with seven participants of the following roles: two senior experts working on traceability, four
+software system architects and one functional developer.
+Data Collection Procedure. For this study we collected data through observations and semi-structured interviews. The model describing the scope of our
+study and interview questions were sent to the participants a week before the
+study took place. For each participant, we started with the participant giving
+a demonstration on how they implement traceability and using the scope as a
+guide. This was followed by a semi-structured interview. The interviewer only
+asked questions which were not answered by the demonstration part. Due to
+legal issues, the interviews were not recorded but the interviewer took notes.
+The interviews and observation for each person lasted between 90 min to four
+hours with breaks in between. The longer sessions were with senior experts who
+explained and demonstrated the traceability process in detail. The interview
+guide for these interviews are available online1 .
+Analysis Procedure. The data analysis started immediately after the observations and interviews were completed. This was to make sure that we avoid
+forgetting important information that was mentioned since the interviews were
+not recorded. The interviewer drafted a summary of the sessions and what was
+learned from the study and presented it to one of the senior experts for confirmation purposes. After this, the challenges identified from the study were mapped
+to the phases in the model describing the scope of the study.
+2.2
+
+Tertiary Literature Review
+
+Our tertiary literature review followed the guidelines for conducting a systematic
+mapping study as proposed by [12].
+Definition of Research Questions. The literature study aimed to answer the
+following sub research questions:
+1. What traceability challenges are reported in literature?
+2. What are the proposed solutions of these challenges?
+Conducting the Search. Since this is a tertiary literature review, our aim was
+to find literature reviews published on traceability in the domain of computer
+science. We searched the databases Scopus, ACM Digital Library and IEEE
+Xplore. The search string used was “Traceability AND (Literature Review OR
+Review OR Literature Survey OR Survey)” or a variant thereof to fit the search
+syntax of the database. Since a search of the meta-data yielded a large number
+of irrelevant literature, the search was limited to paper titles. This led us to an
+initial set of 21 publications, from which one could be excluded as a duplicate.
+1
+
+http://tinyurl.com/j7dlco3.
+
+Challenges of Establishing Traceability in the Automotive Domain
+
+157
+
+Screening of Papers. We went through all the papers by first reading the title
+and abstract. Here we excluded papers that were not relevant to our study using
+the following inclusion criteria.
+1.
+2.
+3.
+4.
+
+The
+The
+The
+The
+
+paper
+paper
+paper
+paper
+
+is
+is
+is
+is
+
+in English.
+published in a peer-reviewed venue.
+in the field of computer science.
+reviewing literature on traceability.
+
+Exclusion criteria are negations of the inclusion criteria. The screening
+process left us with 15 relevant papers.
+2.3
+
+Data Extraction and Classification
+
+We went through all the 15 papers and extracted the challenges and solutions
+they report and listed them in a spreadsheet. After this process, we read all the
+challenges in the list and devised a classification scheme. Initially, we intended to
+use the conceptual model used to define the scope as the classification scheme.
+However, we realized that challenges for the Creation and Maintenance categories were overlapping a lot. We therefore merged the challenges of these categories. After merging we went through the challenges in this category once again
+and discovered that some challenges were more on the technical side while some
+were due to the employees and others related to the organization setting. We
+therefore came up with three sub-categories to represent these three perspectives
+which we called Tool Support, Human Factors and Organizations and Processes
+as shown in Fig. 1.
+
+Fig. 1. Categories of traceability challenges
+
+3
+
+Results
+
+In this section, we report the results both from the literature review and the
+case study. Our results are divided into four subsections which are the diﬀerent
+
+158
+
+S. Maro et al.
+
+categories of the challenges as depicted in the classification scheme in Fig. 1. For
+each category, we first describe the challenge, then describe the solutions from
+literature and finally compare these with what was found at the company. As a
+summary, our main findings are as follows:
+Tool support. There are five challenges identified from the literature: diversity
+of artefacts and tools, manual link creation and maintenance, lack of flexible
+tools, cost, and inaccessibility of artefacts. All five of these can be found at
+the case company. The challenges of manual link creation and maintenance
+as well as of cost have not been solved yet.
+Human factors. The two challenges in this category are misuse of traceability
+data and traceability perceived as an overhead. Only the latter is found at the
+case company, but no solution exists as of now.
+Organization and Processes. The literature reports on three challenges in this
+category: ad-hoc process for establishment of traceability, distributed software
+development, and lack of understanding of traceability. The first two are found
+at the case company, where the first has only been partially solved and the
+second has been fully solved. Lack of understanding of traceability is not an
+issue for the case company.
+Exchange of traceability. A total of three challenges was identified: lack of universal standards, access to artefacts, and conflicting objectives. The first two
+challenges were also found at the case company, but only the first one was
+partially solved.
+Overall, the solutions found at the case company always matched those
+reported in the literature. Figure 2 shows the challenges, where the solved challenges have a green background, the partially solved challenges have a yellow
+background and the unsolved challenges have a red background. The challenges
+that have no background color were not identified in the case study. In the following, we detail each challenge with a description, which solutions are proposed
+in the literature, and how the case company addressed them.
+
+Fig. 2. Challenges of establishing traceability (Color figure online)
+
+Challenges of Establishing Traceability in the Automotive Domain
+
+3.1
+
+159
+
+Tool Support
+
+We found five major challenges from literature which were reported in this category. Four of these challenges were also found at the case company. On further
+analysis (as shown in Table 1) only two of these challenges have been solved, one
+has a workaround solution, while two of them still remain unsolved.
+Table 1. Challenges associated with tools
+Challenge from liter- Papers
+ature
+
+Found at Challenge solved? Solutions match?
+company
+
+Diversity of artifacts [13–19]
+Yes
+and tools
+Manual link creation [6, 9, 13–16, 19–22] Yes
+and maintenance
+
+Partially
+
+Lack of flexible tools [15]
+Yes
+Cost
+[9, 14–16, 19, 20, 26] Yes
+
+Yes
+No
+
+Yes
+
+Inaccessibility
+artifacts
+
+Yes
+
+Yes
+
+of [26]
+
+Yes
+
+Yes
+
+No
+
+Diversity of Artifacts and Tools
+Description: In the software development life cycle there are a number of
+activities such as requirements engineering, system design and so on. In many
+cases each of these activities utilizes a diﬀerent tool and produces artifacts in
+diﬀerent formats. Most traceability tools either do not support linking to artifacts
+located outside the tool or only support linking to specific tools and a specific
+format [13,14].
+Solutions in Literature: Eight of our reviewed studies report this challenge
+[13–19]. From the studies, there are two diﬀerent solutions for this challenge. The
+first option is to use one tool that supports all the development activities. The
+advantage of such a holistic tool is that since all the artifacts are stored in one
+database they can be accessed for traceability link creation. The second solution
+is to integrate all the existing tools so that it is possible to create traceability
+links between them. This is however not a trivial task and requires a considerable
+eﬀort especially if there are many tools that need to be integrated.
+Comparison to Case Company: In the case company, there are a total of
+eight tools that are used for the diﬀerent development activities. Tool integration is a technically challenging task. Therefore currently to link to artifacts in
+diﬀerent tools, the company uses implicit links which are created by copying IDs
+from one tool to another. This is not only time consuming but also error prone
+and does not allow for any analysis to be done on the links. To overcome this
+problem, the company is planning to acquire a holistic tool that will be able to
+store all of their artifacts and thus make them accessible for creating traceability
+
+160
+
+S. Maro et al.
+
+links. The main drawback of this solution is that existing tools that claim to be
+holistic tools only support some commonly known parts of the development life
+cycle. Currently, there are no tools supporting activities like simulations which
+means that even with the holistic tool in place, other tools will still be used as
+well. Therefore this challenge is partially solved as linking to tools outside the
+holistic tool requires implementation of special plugins which is costly in terms
+of time and might require rework as the involved tools evolve.
+Manual Link Creation and Maintenance
+Description: The task of creating traceability links is one that is time consuming especially when it is done manually. Moreover, traceability links immediately
+become outdated when the artifacts they connect evolve. This means that they
+also need to be updated in order to remain correct. Updating them is also time
+consuming and most of the time error prone.
+Solutions in Literature: This is one of the most reported challenges in the
+literature. In our review it has been reported by ten out of 15 papers [6,9,
+13–16,19–22]. To overcome this challenge, the literature proposes the use of
+automated techniques to generate and update the traceability links. Examples
+of these techniques are machine learning [23], information retrieval [24], event
+based techniques [14] or model-driven techniques [25].
+Comparison to Case Company: Interestingly, none of these solutions was
+viable for the company. Generally machine learning, information retrieval and
+event-based techniques have a low precision and therefore the chance that false
+traceability links are generated is high. Given that the company produces safetycritical systems and the traceability links are also used for the certification
+process, false links are not tolerable. Model-driven techniques on the other hand
+require that all the artifacts being linked to and from are represented as models which is not the case for the company, where only some of the artifacts are
+models.
+Lack of Flexible Tools
+Description: Since traceability link types can greatly diﬀer from company to
+company or even project to project, it is crucial for the tools to allow for custom
+traceability link types to be defined. Providing a tool that can only be used in
+a specific context is a limiting factor, tools need to allow for customization of
+which links can be created depending on the users’ needs.
+Solutions in Literature: This challenge was only reported by one study in our
+review [15]. The solution described is quite straightforward urging developers of
+traceability tools to take in into account how flexible the tool should be. The
+more flexible the tool, the better as companies can tailor it to fit their project
+needs.
+Comparison to Case Company: This is one of the challenges that the company has solved. For Requirements Management, they have adopted DOORS2 , a
+2
+
+http://www-03.ibm.com/software/products/en/ratidoor.
+
+Challenges of Establishing Traceability in the Automotive Domain
+
+161
+
+tool that is flexible and allows for definition of custom traceability links. Out of
+the box, the tool allows definition to diﬀerent types of links to link to and from
+requirements. Linking to other artifacts that are stored outside the tool can be
+done through OSLC3 or for artifacts that do not have OSLC representations,
+special attributes in the requirements can be defined to store IDs or names of
+artifacts that are outside the tool.
+Cost
+Description: Establishing traceability links of a high quality requires the company’s investment both in terms of money for the tools and in terms of time.
+The cost of this is significant while the benefits of it cannot be easily measured.
+Solutions in Literature: Seven out of 15 papers report that traceability establishment is an expensive process [9,14–16,19,20,26]. This is because developers
+need to spend extra time to create and maintain traceability links. Most managers think that a project that implements traceability is more expensive than
+one which does not [15]. This is because currently there are no measurements
+that can provide evidence of these direct benefits of traceability. Research proposes cost-benefit models that can be used to show how much traceability has
+contributed to activities such as maintenance and understandability [16], but
+these still need to be validated in practice. This is not a trivial task as such benefits are mostly visible at the end of the project. To minimize the eﬀort spent on
+traceability creation and maintenance, researchers have proposed Value-Based
+Traceability, which means tracing to only high priority requirements as compared
+to full traceability [15].
+Comparison to Case Company: From the case study, all of the interviewees
+including the managers confirmed that they think traceability is expensive. However, since it is a mandated task, they have to do it. Value-Based Traceability is
+also not a feasible solution for them as full traceability is a mandatory requirement in this safety-critical domain. It is also hard to maintain an exclusive list of
+high priority requirements that need traceability as priorities can rapidly change
+over time.
+Inaccessibility of Artifacts
+Description: When creating or updating a traceability link, it is crucial to have
+access to the artifacts that need to be connected by the traceability link. In a
+situation where a project contains a large number of artifacts, tool support is
+needed to assist locating the diﬀerent artifacts. It is very cumbersome if one has
+to search through hundreds or even thousands of elements manually.
+Solutions in Literature: Only one of the reviewed papers mentioned this
+challenge [26]. The solutions proposed is that the company, through tools, should
+ensure that users have all the necessary information and access to the artifacts
+needed to create traceability links. Tools should provide features such as search
+by ID or keywords, to make it easy for the users to find the artifacts they need.
+3
+
+http://open-services.net.
+
+162
+
+S. Maro et al.
+
+Comparison to Case Company: For the case company, this is not a challenge
+as the tools they use have the ability to search for and locate specific artifacts
+in an easy way. For traceability links involving artifacts stored in diﬀerent tools
+the user still needs to copy the ID from one tool to another but every tool has
+a search functionality.
+3.2
+
+Human Factors
+
+In this category we found two main challenges that have been reported in the
+studied literature. As shown in Table 2, only one of these challenges was found
+at the case company.
+Table 2. Challenges associated with human factors
+Challenge from literature
+
+Papers
+
+Found at Challenge
+company solved?
+
+Misuse of traceability data [15, 18, 19]
+No
+Perceived as an overhead [14, 18, 22, 26] Yes
+
+Solutions match?
+
+No
+
+Misuse of Traceability Data
+Description: This challenge refers to the fact that in some situations, people
+responsible for creating and maintaining the traceability links have a fear that
+this data may used against them, e.g., during performance appraisals.
+Solutions in Literature: This challenge has been reported by three of our
+reviewed literature [15,18,19]. The authors describe that employees have a fear
+that traceability data can be used against them and threaten their job security.
+This is an inappropriate use of traceability data as the data is supposed to be
+used for quality assurance of the system rather than used for judging employees’
+expertise. The studies propose that both management and employees need to be
+educated on what traceability is and what the potential benefits are.
+Comparison to Case Company: At the case company, this was not part of
+the challenges that we identified. However, they have a system that already logs
+user activities with respect to creating and modifying development artifacts. If
+there is a problem in the system it is easy to identify who was working on the
+artifact and contact them about the problem. This is an indication that the
+development environment is already very transparent and that is why employees
+do not have this fear of misuse of traceability links.
+Perceived as an Overhead
+Description: In situations where traceability links are created manually, developers usually perceive this as an extra activity that they need to do on top of
+their daily work. Since the people creating the links are also not the ones that
+end up using them, they see it as doing a job that only benefits other people.
+
+Challenges of Establishing Traceability in the Automotive Domain
+
+163
+
+This is a problem as they become demotivated and assign a low priority to this
+task, which can lead to either wrong or missing links.
+Solutions in Literature: Four of our reviewed studies report this challenge
+[14,18,22,26]. Proposed solutions for this problem are to ensure that the traceability links created provide immediate benefit to the user who is creating the
+links. This can be done with tools that enable quick navigation from one artifact to another or visualization techniques that give users an overview of the
+connection between diﬀerent artifacts.
+Comparison to Case Company: At the case company this is a challenge, due
+to the break between tools and the fact that implicit links are created between
+artifacts in diﬀerent tools. It is hard for developers to get an overview of the
+traces. Across tools they still have to find artifacts by searching for ID thus do
+not see the immediate benefits of traceability. All of the interviewees pointed
+out that being able to navigate easily using the traceability links and having
+graphical representations of how everything is connected would be a feature
+that will encourage them to create more correct and complete traceability links.
+Allowing for easy navigation across tools requires integrating the tools which is
+also not a trivial task as discussed in Sect. 3.1.
+3.3
+
+Organization and Processes
+
+In this category, we found three challenges and out of these three challenges, two
+were found at the company. At the company, only one challenge has been solved
+while the other is partially solved (see Table 3).
+Table 3. Challenges associated with organization and processes
+Challenge from
+literature
+
+Papers
+
+Ad-hoc processes for [17, 18, 22, 26]
+establishment of traceability
+
+Found at Challenge Solutions match?
+company solved?
+Yes
+
+Distributed software [19, 26]
+Yes
+development
+Lack of understanding [6, 13–15, 18, 19, 22] No
+of traceability
+
+Partially
+
+Yes
+
+Yes
+
+Yes
+
+Ad-Hoc Processes for Establishment of Traceability
+Description: In order to achieve correct and complete traceability links, a
+well defined process for how traceability links should be created and maintained
+is required. This process needs to be defined, communicated to people in the
+company, and also integrated into the existing development process. If such a
+
+164
+
+S. Maro et al.
+
+defined process does not exist, traceability links are created in an ad-hoc manner
+by the diﬀerent people working on the system which can lead to low link quality.
+Solutions in Literature: From the literature, most companies lack this kind
+of defined process and instead traceability links are created and maintained in
+an ad-hoc manner [17,18,22,26]. The solution for this challenge is to have a well
+defined process for traceability creation, maintenance as well as analysis. Such
+a process will define which links need to be created, when, and by whom. It is
+also recommended that such a process include a guideline for how the captured
+traceability links can be used in various scenarios [17].
+Comparison to Case Company: In the case company, this challenge is
+solved by putting in place requirements for which artifacts should be traced. For
+instance, testers are aware that their tests should be linked to the code being
+tested, while developers are aware that every development should be linked to a
+requirement or an issue. The decisions on which artifacts to trace to are mainly
+based on the ASPICE [8] safety standard that the company needs to follow.
+However, the challenge with such standards is that they do not define concrete
+processes but only suggest what should be linked [14]. This means that the company will have to define and refine their process as they move along based on their
+experiences. With regards to evaluation, the company does not have a proper
+solution as well. Simple metrics such as completeness of traceability between
+requirements and tests can be achieved but these are not feasible for traceability
+links across tool boundaries with their current technology. By switching to a
+holistic tool they hope to reduce this challenge since most traceability links will
+be in one tool. Some tools, such as simulation tools, will however not be part of
+the holistic solution. A bigger challenge for analysis of traceability links is checking for correctness. This has to be done manually as there is no way to be sure
+that the links are correct. Existing literature does not provide any methods for
+correctness checking that can be used to automatically check manually created
+links.
+Distributed Software Development
+Description: In large organizations, it is a common phenomenon that development activities are carried out at multiple sites. This adds complexity to traceability especially when the diﬀerent sites need to share the development artifacts.
+If the development infrastructure is not well set up, it can be very hard to create
+traceability links between artifacts that are produced in diﬀerent locations.
+Solutions in Literature: The surveyed literature proposes a centralized repository for storage of all the development artifacts [19,26]. This way the location
+of the developers will not matter as everything is centrally stored and shared.
+Such a repository also needs to be guarded by an access control system to make
+sure that the right people have access to the artifacts they need.
+Comparison to Case Company: Essentially, this is not only a traceability problem, but a distributed software development problem in general. The
+company has solved this challenge by having centralized repositories where the
+
+Challenges of Establishing Traceability in the Automotive Domain
+
+165
+
+artifacts can be stored and diﬀerent developers are given access rights accordingly. This is in line with what the literature proposes.
+Lack of Understanding of traceability
+Description: For eﬀective establishment of traceability, one first needs to
+understand what traceability is and the intentions of traceability. For a company, if this is not clear to begin with then the chances of failure are high.
+Solutions in Literature: This challenge has been reported by seven papers
+from our review [6,13–15,18,19,22]. In [22], for instance, the authors report that
+some companies especially those not working in safety-critical domain have no
+notion of the term traceability. The solution for this challenge is for organizations
+who want to establish traceability to set up their own traceability policies and
+conduct training on the concept to make people aware of these policies and their
+importance.
+Comparison to Case Company: Given that the company operates in a
+safety-critical domain, employees are already aware of the concept of traceability. They base their understanding of traceability on the requirements defined by
+the safety standard they need to comply to. They even have expert roles whose
+job is to understand what the standards require, form a strategy on what they
+need to do to comply, and communicate this to the rest of the company.
+3.4
+
+Exchange of Traceability
+
+In this category we found three challenges from the surveyed literature. Two of
+these challenges were also found at the company where one is partially solved
+and one is unsolved as shown in Table 4.
+Table 4. Challenges associated with exchange of traceability
+Challenge from literature
+
+Papers Found at Challenge solved? Solutions match?
+company
+
+Access to artifacts
+
+[27, 28] Yes
+
+Lack of Universal standards [16]
+Conflicting objectives
+[27]
+
+Yes
+No
+
+No
+Partially
+
+Yes
+
+Access to Artifacts
+Description: As mentioned before, in the automotive industry, development
+activities are distributed between the OEM and diﬀerent suppliers. This implies
+that the diﬀerent artifacts produced are also distributed. Establishing traceability links that cross the organizational boundaries is a challenging task due to
+two main reasons. The first is legal and privacy implications. Some artifacts can
+be inaccessible to the supplier because they are confidential. The second reason
+are tool boundaries as organizations may use diﬀerent tools to manipulate the
+various artifacts.
+
+166
+
+S. Maro et al.
+
+Solutions in Literature: In the reviewed literature, two of the papers [27,28]
+mention this challenge but there are no proposals for how to establish traceability
+when the artifacts are restricted due to legal reasons. In case of tool boundaries,
+the papers propose having a universal standard or policy that can be used for
+exchanging traceability links. This is further discussed below and in Sect. 3.5.
+Comparison to Case Company: The company also faces this challenge when
+some of the artifacts they want to trace to cannot be shared by the OEMs. Currently they do not have a solution for this. For the artifacts that are shared with
+them but from diﬀerent tools, they rely on import and export mechanisms. This
+is not ideal but is a workaround that works for them. For instance, requirements
+can be exported in various formats, e.g., Word, PDF, or DOORS modules from
+the OEMs and manually imported into the suppliers’ requirements management
+system. For some OEMs, the company shares an XML file which has fields that
+can only be visible to them and fields that can be visible to both the supplier
+and OEM. This is the company’s initiative towards a standard for sharing data.
+However, the traceability links are still not visible in such files.
+Lack of Universal Standards
+Description: To facilitate the sharing and transfer of traceability information
+from one company to another, there is a need for a common standard. Currently
+this does not exist and traceability information exists in various formats ranging
+from implicit links established through copying IDs from one artifact to another,
+to well defined traceability links that utilize formal notations such as models.
+Solutions in Literature: The literature proposes the need for one standard
+that can be applied by various companies in order to facilitate this sharing and
+exchange of traceability information [16].
+Comparison to Case Company: This is a challenge that the company faces.
+For instance, OEMs can send requirements which could have traceability links
+as well. But if the tools at the company cannot identify these links then that
+information is lost and has to be created from scratch.
+Conflicting Objectives
+Description: When more than one company is involved in the development of
+a system, it is important to align objectives. This is true also for traceability,
+if the objectives for traceability in one company contradict the ones in another,
+there might be a conflict.
+Solutions in Literature: Only one of our reviewed literature [27] report this
+challenge and they propose that at the beginning of the project, all the stakeholders need to align their objectives, including traceability objectives. It is
+important to define early on what each stakeholder requires and is expected to
+deliver in terms of traceability.
+Comparison to Case Company: This challenge did not come up in the study
+at the company. Since the company is a supplier, the demand for traceability
+
+Challenges of Establishing Traceability in the Automotive Domain
+
+167
+
+actually comes from their clients, the OEMs. The OEMs specifically ask them
+to be compliant to the ASPICE standard in which traceability is one of the
+requirements.
+3.5
+
+Discussion
+
+In this section, we discuss our results in relation to the research question. To
+recap, our research question is: How are the proposed solutions in traceability
+literature relevant for solving the challenges found in practice in the automotive
+domain?
+From the findings discussed in the results with respect to the proposed solutions in literature, the challenges fall into three diﬀerent categories. Solved challenges, where the proposed solutions do solve the challenges, partially solved
+challenges, where the proposed solutions only partially solve the challenges and
+unsolved challenges where the proposed solutions do not solve the challenges.
+An overview of this is given in Fig. 2 in Sect. 3. In our discussion, we focus on
+the unsolved challenges.
+In the Tools category the unsolved challenges are Manual work of establishing and maintaining the traceability links and the Cost of it. There are several
+studies (e.g., [23,29]) focusing on a solution approach based on automating the
+creation and maintenance of traceability links. However, the chance that incorrect links are generated or links are missing is still high which is a hindering
+factor for applications of such techniques in a safety-critical domain, like automotive. For this reason, automated techniques have not yet been adopted in this
+domain. Complementing automatic techniques with manual techniques for checking if the links are correct has thus been proposed. This is a good technique for
+eliminating incorrect links. However this is not guaranteed, as in [30] the authors
+show that giving a set of generated links to humans to sort out incorrect links
+actually led to a worse set of traceability links in some cases. This technique
+also does not deal with missing links that the generating algorithm missed to
+begin with. A more promising solution is to have the links created manually and
+provide tool support for maintenance. Such support can be warnings when artifacts connected by a traceability link have changed and automatic fixes such as
+deleting a traceability link when the artifacts it connects have changed. This line
+of research has been investigated by [31,32], but more case studies are needed
+to show its application in an industrial context.
+In the Human Factors category, the unsolved challenge is that traceability
+is perceived as an overhead. This challenge has two aspects: an organisational
+and a technical one. The organisational issue is that the people creating and
+maintaining the traceability links are not the ones who use them. A relation to
+the challenge of understanding of traceability thus exists and suﬃcient training
+as well as the realisation of the immediate benefits of traceability links can help
+in this regard. The technical aspect is related to the tools that are in use and that
+oﬀer little support in terms of visualisation, navigation, and analysis. If, based
+on traceability links, the tools used in the industry can oﬀer features such as
+easy navigation, visualization, customized reports or even recommendation for
+
+168
+
+S. Maro et al.
+
+artifacts that can be re-used, then the developers creating the links will see their
+benefits. It should be possible to customize the tools in a way that benefits the
+creators of the links as well [33]. Other ideas could be complimenting traceability
+tools with aspects of gamification to make the task of creating and maintaining
+the traceability links more motivating and engaging. This has been shown to
+work with other software engineering tasks such as requirements analysis and
+testing [34].
+In the Exchange of Traceability category, the unsolved challenge is that there
+is no common standard for exchanging of traceability links. To solve such a challenge, both practitioners and researchers need to work together to establish the
+standard. For requirements, there is already a Requirements Interchange Format (ReqIF)4 , which is being adopted and provided as exports from several
+requirements management tools. Extending such a standard or creating a similar standard for traceability exchange will resolve this challenge.
+
+4
+
+Related Work
+
+In this section, we discuss previous research that is similar to ours.
+Regan and colleagues [19], conducted a literature review to identify the barriers of traceability and their solutions from literature. In their work, they propose
+a framework which consists of the categories of the challenges and their solutions.
+Their framework is quite similar to the categories of challenges that we have proposed. However, their work does not investigate if these proposed solutions work
+in practice, which is something that our research does by complimenting the
+literature review with an industrial case study.
+More related studies are those by Torkar et al. [20] and Cleland et al. [22].
+In [20], the authors performed a systematic literature review, with the aim of
+identifying requirements traceability definitions, tools, practices and challenges.
+They also compliment their work with a case study in two companies. In their
+results, they give a list of challenges and how they are relevant for the two
+companies. Their study is similar to ours but their literature review only includes
+papers of up to 2007 while ours includes studies of up to 2014. Also in their
+research the companies they study are not in the automotive domain but in the
+telecommunication domain and mobile applications domain. In [22], the authors
+reviewed four recent industrial studies and interviewed eight practitioners on
+traceability practices. The authors propose seven areas for further research based
+in their study. They also conclude that there is a need for more collaboration
+with industrial practitioners in order to ensure that the solutions from research
+are actually applicable in practice. Our study is an example of the research
+proposed here.
+Another study is by Kannenberg & Saiedian [15] where the authors study
+why software requirements traceability still remains a challenge and conclude
+that manual traceability methods and existing tools are inadequate for the needs
+of the software development companies.
+4
+
+http://www.omg.org/spec/ReqIF/1.1/.
+
+Challenges of Establishing Traceability in the Automotive Domain
+
+5
+
+169
+
+Threats to Validity
+
+In this section we discuss the threats to the validity of our study and ways in
+which we minimized these threats. We use the categories described in [10] but
+do not discuss internal validity as our study was not not examining a causal
+relation.
+5.1
+
+External Validity
+
+This threat refers to how generalizable the results of the study are. In our case
+study, we applied data triangulation and interviewed seven employees of three
+diﬀerent roles, to get data from diﬀerent sources. However, since we conducted
+the study in only one company, we cannot generalize the obtained results without
+further replication of the study which is discussed as future work in Sect. 6.
+With regards to the literature review, the most recent publication was published 2014, which reviewed papers of up to 2013. There is a chance that papers
+that propose newer solutions to our identified challenges have been published
+since then.
+5.2
+
+Construct Validity
+
+To minimize this threat we had to make sure that what we wanted to study
+(Challenges of establishing traceability), was understood by our participants of
+the study. To achieve this we first had a meeting with the two experts from the
+two departments where we explained our intentions of study. In return, they
+also explained what their departments do. We also sent the interview guide and
+scope to the participants one week before the study. As mentioned in Sect. 2,
+the interviews we conducted were not recorded due to legal matters but the
+interviewer took notes. To make sure that we did not misinterpret our findings,
+we showed our initial analysis to one of the senior experts for confirmation. This
+is known as member checking [35].
+5.3
+
+Reliability
+
+To ensure that the results of a study are reliable it is important to make sure
+that the study can be repeated by other researchers and get the same results.
+While the settings of the interview cannot be replicated, the artifacts used such
+as the definition of the scope of the study and the interview guide were well
+documented and can be used for replication of the study.
+
+6
+
+Conclusions and Future Work
+
+In this paper, we have presented the challenges of establishing traceability in the
+automotive domain. We compared these challenges and their solutions to what
+
+170
+
+S. Maro et al.
+
+has been reported in literature. Our results show that there are four major challenges which are largely unsolved even though some proposals for solutions exist
+in theory. These challenges are: (1) manual creation and maintenance of traceability links is error prone and time consuming, (2) the overall cost of traceability
+is too high and the benefits are not measurable, (3) traceability is considered
+an overhead and of low priority with people who have to establish it since they
+are not the ones who use the links and (4) there is a lack of uniform standard
+for exchange of traceability links between companies. This leads us to conclude
+that for such problems that are more practical, conducting research involving
+academia only is not suﬃcient. The created solutions and tools in research need
+to be validated in an industrial context where they can be integrated with the
+existing development processes and work flows that exist in companies. This
+way, researchers will be able to determine which parts of the solutions are not
+practically viable and improve or come up with new solutions accordingly.
+As part of future work, we plan to carry out such research with companies in the automotive domain. Our first action will be to replicate the case
+study in more companies in order to check if our list of unsolved challenges is
+suﬃcient. This will also include expanding the scope to contain earlier phases
+involved before establishing traceability links, for instance planning and managing a traceability strategy, and later phases such as how is traceability used or
+measured after it has been established. Next will be to come up with new solutions and integrate these solutions in existing development processes in order to
+determine their applicability.
+
+References
+1. Broy, M.: Challenges in automotive software engineering. In: Proceedings of the
+28th International Conference on Software Engineering, pp. 33–42. ACM (2006)
+2. Pretschner, A., Broy, M., Kruger, I.H., Stauner, T.: Software engineering for automotive systems: a roadmap. In: 2007 Future of Software Engineering, pp. 55–71.
+IEEE Computer Society (2007)
+3. IEEE: Standard glossary of software engineering terminology. IEEE Std 610.121990, pp. 1–84, December 1990
+4. Salem, A.M.: Improving software quality through requirements traceability models.
+In: IEEE International Conference on Computer Systems and Applications, pp.
+1159–1162. IEEE (2006)
+5. Egyed, A., Biﬄ, S., Heindl, M., Grünbacher, P.: A value-based approach for understanding cost-benefit trade-oﬀs during automated software traceability. In: Proceedings of the 3rd International Workshop on Traceability in Emerging Forms of
+Software Engineering, pp. 2–7. ACM (2005)
+6. Nair, S., de la Vara, J.L., Sen, S.: A review of traceability research at the requirements engineering conference re@ 21. In: 2013 21st IEEE International Requirements Engineering Conference (RE), pp. 222–229. IEEE (2013)
+7. International Organization for Standardization: Road Vehicles - Functional Safety.
+ISO26262:2011, November 2011
+8. VDA QMC Working Group 13/Automotive SIG: Automotive SPICE Process
+Assessment/Reference Model. Technical report, Automotive Special Interest,
+Group (2015)
+
+Challenges of Establishing Traceability in the Automotive Domain
+
+171
+
+9. Javed, M.A., Zdun, U.: A systematic literature review of traceability approaches
+between software architecture and source code. In: Proceedings of the 18th International Conference on Evaluation and Assessment in Software Engineering, p. 16.
+ACM (2014)
+10. Runeson, P., Höst, M.: Guidelines for conducting and reporting case study research
+in software engineering. Empirical Softw. Eng. 14(2), 131–164 (2009)
+11. Gotel, O., et al.: Traceability fundamentals. In: Cleland-Huang, J., Gotel, O.,
+Zisman, A. (eds.) Software and Systems Traceability, pp. 3–22. Springer,
+Heidelberg (2012)
+12. Petersen, K., Feldt, R., Mujtaba, S., Mattsson, M.: Systematic mapping studies in
+software engineering. In: 12th International Conference on Evaluation and Assessment in Software Engineering, vol. 17, pp. 1–10 (2008)
+13. Spanoudakis, G., Zisman, A.: Software traceability: a roadmap. Handb. Softw. Eng.
+Knowl. Eng. 3, 395–428 (2005)
+14. Winkler, S., Pilgrim, J.: A survey of traceability in requirements engineering and
+model-driven development. Softw. Syst. Model. (SoSyM) 9(4), 529–565 (2010)
+15. Kannenberg, A., Saiedian, H.: Why software requirements traceability remains a
+challenge. CrossTalk J. Def. Softw. Eng. 22(5), 14–19 (2009)
+16. Gotel, O., Cleland-Huang, J., Hayes, J.H., Zisman, A., Egyed, A., Grünbacher,
+P., Antoniol, G.: The quest for ubiquity: a roadmap for software and systems
+traceability research. In: 2012 20th IEEE International Requirements Engineering
+Conference (RE), pp. 71–80. IEEE (2012)
+17. Von Knethen, A., Paech, B.: A survey on tracing approaches in practice and
+research. Frauenhofer Institut Experimentelles Software Engineering, IESE-Report
+No. 95 (2002)
+18. Ramesh, B.: Factors influencing requirements traceability practice. Commun. ACM
+41(12), 37–44 (1998)
+19. Regan, G., McCaﬀery, F., McDaid, K., Flood, D.: The barriers to traceability and
+their potential solutions: towards a reference framework. In: 2012 38th EUROMICRO Conference on Software Engineering and Advanced Applications (SEAA),
+pp. 319–322. IEEE (2012)
+20. Torkar, R., Gorschek, T., Feldt, R., Svahnberg, M., Raja, U.A., Kamran, K.:
+Requirements traceability: a systematic review and industry case study. Int. J.
+Softw. Eng. Knowl. Eng. 22(03), 385–433 (2012)
+21. De Lucia, A., Fasano, F., Oliveto, R.: Traceability management for impact analysis.
+In: Frontiers of Software Maintenance, FoSM 2008, pp. 21–30. IEEE (2008)
+22. Cleland-Huang, J., Gotel, O.C., Huﬀman Hayes, J., Mäder, P., Zisman, A.: Software traceability: trends and future directions. In: Proceedings of the on Future of
+Software Engineering, pp. 55–69. ACM (2014)
+23. Cleland-Huang, J., Czauderna, A., Gibiec, M., Emenecker, J.: A machine learning
+approach for tracing regulatory codes to product specific requirements. In: Proceedings of the 32nd ACM/IEEE International Conference on Software Engineering,
+vol. 1, pp. 155–164. ACM (2010)
+24. Borg, M., Runeson, P., Ardö, A.: Recovering from a decade: a systematic mapping
+of information retrieval approaches to software traceability. Empirical Softw. Eng.
+19(6), 1565–1616 (2014)
+25. Galvão, I., Goknil, A.: Survey of traceability approaches in model-driven engineering. In: Proceedings - IEEE International Enterprise Distributed Object Computing Workshop, pp. 313–324. EDOC (2007)
+
+172
+
+S. Maro et al.
+
+26. Gotel, O.C., Finkelstein, A.C.: An analysis of the requirements traceability problem. In: Proceedings of the First International Conference on Requirements Engineering, pp. 94-101. IEEE (1994)
+27. Rempel, P., Mäder, P., Kuschke, T., Philippow, I.: Requirements traceability across
+organizational boundaries - a survey and taxonomy. In: Doerr, J., Opdahl, A.L.
+(eds.) REFSQ 2013. LNCS, vol. 7830, pp. 125–140. Springer, Heidelberg (2013).
+doi:10.1007/978-3-642-37422-7 10
+28. Königs, S.F., Beier, G., Figge, A., Stark, R.: Traceability in systems engineeringreview of industrial practices, state-of-the-art technologies and new research solutions. Adv. Eng. Inf. 26(4), 924–940 (2012)
+29. Asuncion, H.U., Asuncion, A.U., Taylor, R.N.: Software traceability with topic
+modeling. In: Proceedings of the 32nd ACM/IEEE International Conference on
+Software Engineering, vol. 1, pp. 95–104. ACM (2010)
+30. Cuddeback, D., Dekhtyar, A., Hayes, J.H.: Automated requirements traceability:
+the study of human analysts. In: 2010 18th IEEE International Requirements Engineering Conference (RE), pp. 231–240. IEEE (2010)
+31. Mäder, P., Gotel, O., Philippow, I.: Enabling automated traceability maintenance
+through the upkeep of traceability relations. In: Paige, R.F., Hartman, A., Rensink,
+A. (eds.) ECMDA-FA 2009. LNCS, vol. 5562, pp. 174–189. Springer, Heidelberg
+(2009). doi:10.1007/978-3-642-02674-4 13
+32. Drivalos-Matragkas, N., Kolovos, D.S., Paige, R.F., Fernandes, K.J.: A state-based
+approach to traceability maintenance. In: Proceedings of the 6th ECMFA Traceability Workshop, pp. 23–30. ACM (2010)
+33. Arkley, P., Riddle, S.: Overcoming the traceability benefit problem. In: Proceedings
+of the 13th IEEE International Conference on Requirements Engineering, pp. 385–
+389. IEEE (2005)
+34. Pedreira, O., Garcı́a, F., Brisaboa, N., Piattini, M.: Gamification in software
+engineering-a systematic mapping. Inf. Softw. Technol. 57, 157–168 (2015)
+35. Seaman, C.B.: Qualitative methods in empirical studies of software engineering.
+IEEE Trans. Softw. Eng. 25(4), 557–572 (1999)
+
+

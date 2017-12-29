@@ -1,0 +1,78 @@
+Herausgeber et al. (Hrsg.): Software Engineering und Software Management 2018,
+Lecture Notes in Informatics (LNI), Gesellschaft für Informatik, Bonn 2018 1
+
+Searching for Common Ground: Existing Literature on
+Automotive Agile Software Product Lines
+
+Philipp Hohl,1 Javad Ghofrani,2 Jürgen Münch,3 Michael Stupperich,4 Kurt Schneider5
+
+This summary refers to the paper Searching for Common Ground: Existing Literature
+on Automotive Agile Software Product Lines [Ho17]. This paper was published in the
+Proceedings of the International Conference on Software and System Process (ICSSP 2017).
+Keywords: software product line; agile software development; automotive domain
+
+The need for creating digitally enhanced products, services, and experiences as well as the
+emergence of new or modified business models has a significant impact on the automotive
+domain. Innovative solutions and new topics such as Smart Mobility or Connectivity require
+current automotive development processes to undergo major changes. They need to be
+redesigned in a way that it is possible to learn and adapt continuously at a fast pace. Agile
+methods are promising approaches to address these new challenges. However, agile methods
+are not tailored to the specific characteristics of the automotive domain such as software
+product line (SPLs) development. Although, there have been efforts to apply agile methods
+in the automotive domain, widespread adoptions have not yet taken place.
+We conducted a comprehensive literature study [Ho17] that gives an overview of agile
+methods for embedded software development in the automotive domain, especially with
+respect to SPLs. We limited the scope to automotive embedded software development.
+Typical characteristics of the automotive domain that need to be considered are the deep
+integration between hardware and software, a strong focus on development processes, a
+close supplier involvement, and the importance of safety-critical functionality. Furthermore,
+specific testing conditions like tests in real cars must be considered. The general research
+question that guides the study is: What is the state-of-the-art to combine agile software
+development and software product lines in the automotive domain, according to published
+literature? This question is divided into three research sub-questions to provide different
+views on the topic (see Fig. 1).
+1 Daimler
+
+AG, Wilhelm-Runge-Straße 11, 89013 Ulm, Germany, Philipp.Hohl@daimler.com
+Universität Hannover, Welfengarten 1, 30167 Hannover, Germany, javad.ghofrani@inf.uni-hannover.de
+3 University of Reutlingen, Danziger Str. 6, 71034 Böblingen, Germany, juergen.muench@reutlingen-university.de
+4 Daimler AG, Wilhelm-Runge-Straße 11, 89013 Ulm, Germany, Michael.Stupperich@daimler.com
+5 Leibniz Universität Hannover, Welfengarten 1, 30167 Hannover, Germany, kurt.schneider@inf.uni-hannover.de
+2 Leibniz
+
+cbe
+
+2 Philipp Hohl, Javad Ghofrani, Jürgen Münch, Michael Stupperich, Kurt Schneider
+
+Fig. 1: What is the state-of-the-art to combine agile software development and software product lines
+in the automotive domain, according to published literature?
+
+The literature review revealed that there is no specific approach tailored to the automotive
+domain handling the combination of agile software development (ASD) and SPLs. A
+possible explanation is that combining agile development with existing product lines is
+challenging in the automotive domain (consider, for instance, the need for synchronization
+with mechanical and electrical engineering). Searching for existing literature about the
+introduction of agile methods in the context of automotive product line development was
+also not fruitful. The study identified areas in the automotive domain where it seems to be
+comparably easy to introduce agile development without product line development (e.g.,
+entertainment software for the car). Searching for literature that deals with introducing
+product line engineering to agile development in the automotive domain also did not reveal
+significant results. However, looking at related domains provided many insights into how
+the combination of agile methods and product line development could look alike in the
+automotive domain.
+The study identified challenges and possible solutions to combine ASD with SPL. Examples for such solutions are approaches for architecture evolution, lightweight variability
+management, new communication structures and practices, lean and incremental safetyrelated procedures, and advanced synchronization mechanisms for hardware and software
+development cycles. The insights from the study might help as starting points to modify
+automotive software development processes so that they can benefit from both, agility and
+systematic reuse through product lines.
+
+References
+[Ho17]
+
+Hohl, P.; Ghofrani, J.; Münch, J.; Stupperich, M.; Schneider, K.: Searching for
+common ground: Existing literature on automotive agile software product lines.
+In (Bendraou, R.; Raffo, D.; LiGuo, H.; Maggi, F. M., eds.): Proceedings of the
+2017 International Conference on Software and System Process - ICSSP 2017.
+ACM Press, New York, New York, USA, pp. 70–79, 2017, isbn: 9781450352703.
+
+

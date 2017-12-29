@@ -1,0 +1,125 @@
+Herausgeber et al. (Hrsg.): Name-der-Konferenz,
+Lecture Notes in Informatics (LNI), Gesellschaft für Informatik, Bonn 2017 11
+
+Automated Analysis of the Co-evolution of Software Systems
+and Business Processes
+
+Kiana Busch,1 Robert Heinrich,1 Axel Busch,1 Ralf Reussner1
+
+Abstract: Software systems are an essential part of business processes. As business processes and
+the corresponding software systems mutually affect each other, they co-evolve during their life cycle.
+Thus, to adequately predict the impact of a change, their mutual dependencies have to be considered.
+However, existing approaches to change propagation analysis consider one domain in isolation and
+neglect the mutual dependencies between the domains. In this paper, we propose the Karlsruhe
+Architectural Maintainability Prediction for Business Processes (KAMP4BP) to analyze the change
+propagation in business processes and the corresponding software systems.
+This is an extended abstract of the paper Architecture-based Change Impact Analysis in Information
+Systems and Business Processes published in ICSA’17 proceedings [Ro17].
+Keywords: Software System; Business Process; Evolution; Change Impact
+
+1
+
+Karlsruhe Architectural Maintainability Prediction for Business
+Processes (KAMP4BP)
+
+Software systems are increasingly used in organisations to support their business processes.
+The business process can be considered as a set of actor steps (i.e., performed totally by
+humans involved in the business process) and system steps (i.e., performed totally by the
+software system) [He15]. Thus, there are mutual dependencies between business processes
+and the corresponding software systems, which result in co-evolution of both domains.
+Therefore, we cannot consider only one domain in isolation when analyzing the effects of
+a change. However, the mutual dependencies between both domains are one of the main
+challenges during the change propagation analysis, as a change in one of the domains can
+propagate to the other domain.
+KAMP4BP [Ro17] calculates the change propagation in the business process or the
+corresponding software system based on an initial change request. It is a scenario-based
+approach with focus on mutual dependencies between both domains. Fig. 1 gives an overview
+of KAMP4BP: i) In the preparation phase, the architecture of the software system and the
+corresponding business process design have to be modeled. In order to model the software
+architecture, the software architect uses the Palladio Component Model (PCM) [Re16]
+1 Karlsruhe
+
+cbe
+
+Institute of Technology, {kiana.busch, robert.heinrich, axel.busch, ralf.reussner}@kit.edu
+
+12 Kiana Busch, Robert Heinrich, Axel Busch, Ralf Reussner
+
+Software
+Architecture
+
+Business Process
+
+Additional Information
+Source Code Organizational Units
+Goods
+Test Cases
+Messages
+Deployment
+…
+…
+Change Request
+
+Impact Phase
+Change Propagation
+in Business Process
+Design
+Impact on
+Software
+
+System Model
+
+Impact
+on Business
+Process
+
+Preparation Phase
+
+Change Propagation
+in Software
+Architecture
+
+Temporary Task List
+Postanalyze Phase
+Merge Tasks (> 1
+Change Request)
+Duplicate Detection
+Task List
+Recalculation
+of Task List
+
+on
+
+User Decision
+
+Fig. 1: Overview of the approach [Ro17]
+
+which is a metamodel describing the software architecture with focus on software quality
+attributes. The business process designer models the business process using the extensions
+of the usage profile of PCM metamodels which allows modelling the business process as a
+set of actor steps and system steps [He15]. Further, the model of the software architecture
+and the business process design can be annotated with additional information such as test
+cases in software systems or organizational units in business processes. Annotating further
+information allows more realistic change impact analysis, as KAMP4BP can calculate the
+change impact on these artifacts as well. Additionally, the initial change requests have
+to be marked using the corresponding metamodels. ii) In the impact phase, KAMP4BP
+automatically calculates the change propagation in business processes, software systems,
+and between business processes and software systems. To this end, the analysis is based on
+predefined change propagation rules. The output of this step is a temporary task list. Each
+task references a changing element in the model of the software architecture or the business
+process design. iii) If more than one initial change request were marked in the preparation
+phase, KAMP4BP merges the corresponding task lists of the change requests and eliminates
+the duplicates. Further, the user of KAMP4BP may need to manually exclude some tasks
+referring to model elements that cannot be affected by the change. As changing these model
+elements could lead to further changes in other model elements, KAMP4BP considers the
+users’ decisions and recalculates the task list.
+
+References
+[He15] Heinrich, Robert et al.: Integrating business process simulation and information system
+simulation for performance prediction. SoSyM Journal, pp. 1–21, 2015.
+[Re16] Reussner, Ralf et al.: Modeling and Simulating Software Architectures – The Palladio
+Approach. MIT Press, 2016.
+[Ro17] Rostami, K. et al.: Architecture-Based Change Impact Analysis in Information Systems and
+Business Processes. In: IEEE ICSA. pp. 179–188, 2017.
+
+

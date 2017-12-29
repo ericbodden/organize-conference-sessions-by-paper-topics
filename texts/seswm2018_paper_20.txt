@@ -1,0 +1,91 @@
+<Vorname Nachname [et. al.]>(Hrsg.): SE 2018,
+Lecture Notes in Informatics (LNI), Gesellschaft fı̈r Informatik, Bonn 2018 1
+
+Component and Connector Views in Practice:
+An Experience Report (extended abstract)
+Vincent Bertram1 , Shahar Maoz2 , Jan Oliver Ringert2 , Bernhard Rumpe3 , and Michael
+von Wenckstern3
+1
+2
+3
+
+Daimler AG Group Research & MBC Development, Ulm, Germany
+School of Computer Science, Tel Aviv University, Israel
+RWTH Aachen University, Aachen, Germany
+
+Abstract:
+C&C views are a means for formal yet intuitive structural specification of C&C models. In [Be17]
+we report on our experience how C&C views and their verification help to address challenges of
+traceability and evolution in automotive industry. We analyzed the development process at Daimler
+AG and evaluated our C&C views verification tool on five Simulink models with more than 7700
+subsystems in total and C&C views created for 183 textual requirements provided by Daimler AG.
+We describe our experience in detail and discuss a list of lessons learned, including, e.g., a missing
+abstraction concept in C&C models and C&C views that we have identified and added to the views
+language and tool, that engineers can create graphical C&C views quite easily, and how verification
+algorithms scale on real-size industry models. Furthermore, we report on the non-negligible technical
+effort needed to translate Simulink block diagrams to C&C models. We make all materials mentioned
+and used in our experience electronically available for inspection and further research.
+Keywords: component and connector models, Simulink, architecture, industrial case study
+
+C&C models, described using languages such as SysML, AADL, and related block diagram languages, are used extensively in software and systems engineering. Simulink/Stateflow [Ma16] are prevalent tools used in the automotive industry for model-based prototype
+implementation, simulation, and testing.
+In recent work [MRR13, MRR14] we presented C&C views, as a means to formally and
+intuitively specify constraints on the structure of C&C models. The views allow engineers
+to specify constraints on hierarchy and connectivity, using partial examples, while crosscutting the implementation-oriented system/subsystem hierarchy of the target model.
+In [Be17] we report on our experience in applying C&C views in practice, in an industrial,
+automotive setting, guided by the following questions:
+Q1 Which industrial contexts in automotive domain are relevant for C&C views and what
+challenges can the use of C&C views address?
+Q2 Can domain experts create C&C views with reasonable effort and are they missing
+any language features?
+Q3 Is C&C views verification applicable to automotive industry models and does it scale
+to deal with their size?
+Q4 Are the verification outputs of use for the engineers?
+
+Since the answer to Q1 influences the experiment setup for the other questions, we decided
+to do a two-stage study. In the preliminary study, we interviewed industrial partners to
+investigate the automotive development processes and challenges of developers. Based on
+the findings of the preliminary study, we chose Daimler AG as an automotive partner and
+collected relevant documents and models for evaluation. We then executed the main study,
+to address questions Q2 to Q4. We chose the automotive domain as representative for
+safety-critical, distributed control systems.
+In the main case study, two domain experts created 50 C&C views based on 183 industrial textual requirements and design decisions of two automotive software systems: Advanced Driver Assistance Systems (ADAS), available in four different evolution versions,
+and Adaptive Light System (ALS). We devised a translation from Simulink block diagrams to C&C models to check the created C&C views using our existing verification
+tool [MRR14]. The translation from Simulink to C&C models involved non-negligible
+technical efforts. Finally, we presented the tool’s generated witnesses, which demonstrate
+reasons for satisfaction or non-satisfaction, to the industrial partner who evaluated their
+usefulness with regard to two identified industrial challenges: traceability and evolution.
+As part of our results, the industrial partner identified a missing abstraction concept in
+C&C views that we implemented. We found that given textual requirements, domain experts can create C&C views that highlight the implementation details of requirements in a
+Simulink model of hundreds of blocks with reasonable effort. We found that C&C views
+verification scales well for sizes of industrial models and average running times were below two seconds in all our experiments. Finally, C&C views helped the domain experts to
+discover several inconsistencies between requirements and their implementation.
+We consider it an important contribution of our work that we have made all artifacts we
+used and created available from [www]. These materials include the four ADAS and
+the one ALS Simulink models (web export) by Daimler AG, their original requirements in
+German with an English translation, C&C views in textual and graphical representation,
+and all verification results. We encourage the reader to inspect these materials and use
+them for their own research.
+
+References
+[Be17]
+
+Bertram, Vincent; Maoz, Shahar; Ringert, Jan Oliver; Rumpe, Bernhard; von Wenckstern, Michael: Component and Connector Views in Practice: An Experience Report. In:
+MODELS 2017. IEEE Computer Society, pp. 167–177, 2017.
+
+[Ma16]
+
+Mathworks: Simulink User’s Guide.
+SIMULINK, 2016.
+
+Technical Report R2016b, MATLAB &
+
+[MRR13] Maoz, Shahar; Ringert, Jan Oliver; Rumpe, Bernhard: Synthesis of component and connector models from crosscutting structural views. In: ESEC/FSE’13. ACM, pp. 444–454,
+2013.
+[MRR14] Maoz, Shahar; Ringert, Jan Oliver; Rumpe, Bernhard: Verifying component and connector models against crosscutting structural views. In: ICSE ’14. ACM, pp. 95–105, 2014.
+[www]
+
+Supporting materials for our case study. Available from http://www.se-rwth.de/
+materials/cncviewscasestudy/.
+
+

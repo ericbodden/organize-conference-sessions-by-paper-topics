@@ -1,0 +1,108 @@
+Herausgeber et al. (Hrsg.): Software Engineering und Software Management 2018,
+Lecture Notes in Informatics (LNI), Gesellschaft für Informatik, Bonn 2017 1
+
+Reporting on a Survey on Approaches to Co-Evolution of
+Metamodels and Models
+
+Regina Hebig,1 Djamel Eddine Khelladi,2 Reda Bendraou3
+
+Abstract: Modeling languages, just as all software artifacts, evolve. This poses the risk that legacy
+models of a company get lost, when they become incompatible with the new language version. To
+address this risk, a multitude of approaches for metamodel-model co-evolution were proposed in the
+last 10 years. However, the high number of solutions makes it difficult for practitioners to choose an
+appropriate approach. In this paper, we present a survey on 31 approaches to support metamodel-model
+co-evolution. We introduce a taxonomy of solution techniques and classify the existing approaches. To
+support researchers, we discuss the state of the art, to better identify open issues. Furthermore, we use
+the results to provide a decision support for practitioners, who aim to adopt solutions from research.
+Keywords: Survey; software engineering; metamodels; models; design notations; documentation
+
+In the last decade, Model-Driven Engineering has proven to be effective in the development
+and maintenance of large scale and embedded systems [Hu11]. At the heart of this vision is
+the notion of Metamodel, a formal definition of the language that will be used to represent
+models of the application’s domain. Raising the level of abstraction from code to models
+combined with the promise of better productivity and a shorter product development
+life-cycle, have led to the emergence of an impressive number of DSMLs (Domain Specific
+Modeling Languages). However, DSMLs do not come alone. Their productivity is mainly
+ensured by the ecosystem that surrounds them. This includes code generators, text and
+graphical editors, e.g. Xtext [Be08], and many other artifacts that constitute the development
+chain, spanning from modeling the problem domain to the code of the future system. While
+this development chain is effective and efficient, its Achilles heel remains the metamodel.
+One can see it as the central point of a dependency graph of artifacts and tools since any
+modification in the metamodel may impact all the other artifacts i.e. editors, code generators,
+transformation rules, consistency constraints, etc. [DRIP12].
+Metamodels co-evolution has already been identified as a main issue in the literature
+[HBJ09], [GKP07], [CDRP09]. The evolution between two versions of the same metamodel
+may consist of hundreds of additions, deletions, and changes of elements. For example,
+during the evolution of UML Class Diagrams from UML version 1.5 to 2.0 a total of 238
+language elements where added, deleted, or changed [Kh15]. For the evolution from GMF
+1 Chalmers
+
+| University of Gothenburg, Computer Science and Engineering Göteborg, Västra Götaland County,
+Sweden. hebig@chalmers.se
+2 Johannes Kepler University Linz, Austria djamel_eddine.khelladi@jku.at
+3 Sorbonne Universités, UPMC Univ Paris 06, UMR 7606, LIP6, F-75005, Paris, France reda.bendrao@lip6.fr
+
+cbe
+
+2 Regina Hebig, Djamel Eddine Khelladi, Reda Bendraou
+
+version 1.0 to 2.0, 136 changes have been identified by Herrmannsdoerfer et al. [HBJ09].
+In the last decade, the literature introduced 31 approaches that focus exclusively on the
+co-evolution of models when the metamodel is evolved.
+We provide an overview about results of a recent survey paper [HKB17] summarizing
+how these 31 approaches differ in the way they solve the involved tasks which are a) the
+identification of metamodel changes and b) the co-evolution of model instances. From
+the user’s perspective these approaches may differ significantly. The trade-off between
+correctness and automation could be one way to compare them. Fully automated approaches
+make it easier to handle huge sets of models while it might not be possible to guarantee
+that the resulting models conform to the required outcome. The work that aims at helping
+companies and users in choosing and comparing this jungle of proposed approaches
+for metamodel-model co-evolution (MM-M co-evolution) according to their needs and
+constraints. It does so by providing a survey and a detailed catalog of existing co-evolution
+approaches and their technical properties. Furthermore, we want to provide researchers with
+a framework for comparing their works and enable them to identify open research needs.
+
+References
+[Be08]
+
+Behrens, Heiko; Clay, Michael; Efftinge, Sven; Eysholdt, Moritz; Friese, Peter; Köhnlein,
+Jan; Wannheden, Knut; Zarnekow, Sebastian: Xtext user guide. https://eclipse.org/
+Xtext/documentation/1_0_1/xtext.pdf, 2008.
+
+[CDRP09] Cicchetti, Antonio; Di Ruscio, Davide; Pierantonio, Alfonso: Managing dependent
+changes in coupled evolution. In: Theory and Practice of Model Transformations, pp.
+35–51. Springer, 2009.
+[DRIP12] Di Ruscio, Davide; Iovino, Ludovico; Pierantonio, Alfonso: Evolutionary togetherness:
+how to manage coupled evolution in metamodeling ecosystems. In: Graph Transformations,
+pp. 20–37. Springer, 2012.
+[GKP07]
+
+Gruschko, Boris; Kolovos, Dimitrios; Paige, Richard: Towards synchronizing models with
+evolving metamodels. In: Proceedings of the International Workshop on Model-Driven
+Software Evolution. 2007.
+
+[HBJ09]
+
+Herrmannsdoerfer, Markus; Benz, Sebastian; Juergens, Elmar: COPE-automating coupled
+evolution of metamodels and models. In: ECOOP 2009–Object-Oriented Programming,
+pp. 52–76. Springer, 2009.
+
+[HKB17]
+
+Hebig, Regina; Khelladi, Djamel Eddine; Bendraou, Reda: Approaches to co-evolution
+of metamodels and models: A survey. IEEE Transactions on Software Engineering,
+43(5):396–414, 2017.
+
+[Hu11]
+
+Hutchinson, John; Whittle, Jon; Rouncefield, Mark; Kristoffersen, Steinar: Empirical
+assessment of MDE in industry. In: Proceedings of the 33rd International Conference on
+Software Engineering. ACM, pp. 471–480, 2011.
+
+[Kh15]
+
+Khelladi, Djamel Eddine; Hebig, Regina; Bendraou, Reda; Robin, Jacques; Gervais,
+Marie-Pierre: Detecting complex changes during metamodel evolution. In: Advanced
+Information Systems Engineering. Springer, pp. 263–278, 2015.
+
+

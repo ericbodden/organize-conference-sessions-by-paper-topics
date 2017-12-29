@@ -1,0 +1,76 @@
+<Vorname Nachname [et. al.]>(Hrsg.): < Buchtitel>,
+Lecture Notes in Informatics (LNI), Gesellschaft für Informatik, Bonn <Jahr> 15
+
+Modularity and architecture of PLC-based software for
+automated production Systems: An analysis in industrial
+companies
+Birgit Vogel-Heuser 1, Juliane Fischer, Stefan Feldmann, Sebastian Ulewicz, Susanne
+Rösch, Safa Bougouffa
+
+Abstract: Adaptive and flexible production systems require modular and reusable software,
+especially considering their long-term life cycle of up to 50 years. We introduce a benchmark
+process – so-called SWMAT4aPS – to measure software maturity for industrial control software of
+automated production systems.
+Keywords: Automated Production Systems, Maturity, Modularity, Control Software
+
+1
+
+Introduction to SWMAT4aPS benchmark process
+
+Automated production systems (aPS) are long living systems that are exposed to changes
+over decades. Their complexity including automation hardware as well as system
+functionality realized by software is increasing. The ability to adapt flexibly to changing
+requirements by replacing or expanding cross-disciplinary modules, tracing of changes
+and management of software variants and versions are a prerequisite for intelligent, selforganizing Industry 4.0-compliant aPS. To evaluate whether industrial control software
+is qualified for Industry 4.0, the benchmark process SWMAT4aPS (Software Maturity
+for aPS) was developed. SWMAT4aPS consists of two elements, a self-assessment
+questionnaire and a detailed expert analysis for selected industrial companies. The core
+of the approach consists of four steps, which are performed in an experimentation and
+reporting phases. The first step is to conduct a survey with the developed questionnaire,
+which contains 45 questions grouped into three maturity categories. Maturity in design,
+maturity in test/quality assurance and maturity in start-up/operation/maintenance. In the
+second step the questionnaires’ results of 16 German world-leading companies in
+machine and plant manufacturing are analysed (cp. Fig 1). The third step is the expert
+analysis in which four selected companies’ software architecture, code structure and the
+workflow were analysed. We prove the validity of SWMAT4aPS by comparing the
+results of the questionnaire with the results of the expert analysis. The best companies
+reached overall maturity values of 0.86 %. We identified a huge variation of maturity
+levels in most of the companies, some have high values in design, others in start-up and
+operation. Refer to the full paper [VF17] for a complete discussion of results.
+1
+
+Institute of Automation and Information Systems, Technische Universität München, Boltzmannstr. 15, 85748
+Garching near Munich, Germany, email: {vogel-heuser, juliane.fischer, stefan.feldmann, sebastian.ulewicz,
+susanne.roesch,safa.bougouffa}@tum.de
+
+16 Vorname1 Nachname1 und Vorname2 Nachname2
+
+Fig. 1: Overview of maturity levels of companies 1 to 16 from first questionnaire showing the
+huge variance in the individual company regarding the three different maturity values
+
+To further elaborate the differences between the wide range of machine and plant
+manufactures, to reveal modular dependency effects and to get deeper insight into the
+use of software module a second questionnaire was conducted with more than 68
+companies. Results of design level of the industrial control software regarding factors for
+cross-disciplinary modularization are depicted (cp. Fig 2). The detailed analysis
+confirmed that the SWMAT4aPS approach delivers valid results and gives a first
+overview of the state of the art in software engineering in the respective company
+compared to others of the same branch. In a third questionnaire with more than 70
+companies we strengthened the aspects of electrical engineering and included technical
+debt aspects and their reasons and impact.
+
+Fig. 2: Maturity level design of control software of 68 companies in machine and plant
+manufacturing from second questionnaire
+
+2
+
+References
+
+[VF17]
+
+Vogel-Heuser, Birgit; Fischer, Juliane; Feldmann, Stefan; Ulewicz, Sebastian; Rösch,
+Susanne: Modularity and Architecture of PLC-based Software for Automated
+Production Systems: An analysis in industrial companies. The Journal of Systems &
+Software 2017, Elsevier, doi:10.101016/j.jss.2017.05.051.
+
+

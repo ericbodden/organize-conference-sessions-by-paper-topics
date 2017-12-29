@@ -1,0 +1,102 @@
+Herausgeber et al. (Hrsg.): Software Engineering und Software Management 2018,
+Lecture Notes in Informatics (LNI), Gesellschaft für Informatik, Bonn 2018 1
+
+LoCo CoCo: Automatically Constructing Coordination and
+Communication Networks from Model-Based Systems
+Engineering Data
+
+Mazen Mohamad,1 Grischa Liebel,2 Eric Knauss2
+Keywords: Systems Engineering; Communication; Coordination; Requirements Clarification;
+Empirical Software Engineering
+
+1
+
+Extended Abstract
+
+Communication and coordination are essential activities in software and systems engineering [KS95]. In particular, communicating requirements [He07], and sharing the
+product and contextual knowledge required to understand requirements during analysis and
+development [Li16] are challenging.
+The structure of all interacting individuals and groups in an organisation can be described
+and analysed as a social network. Social network analysis (SNA) and has successfully been
+used in software engineering to facilitate collaboration and relationships among individuals
+in software teams [Wo09].
+Existing automated approaches for SNA, such as Codebook [BKZ10], focus on software
+development artefacts on a low level of abstraction, such as source code or bug requests.
+However, in large systems engineering projects, communication between different disciplines
+is required [Li16], taking place on a domain level independent of the source code.
+We present LoCo CoCo, the Low-Cost Communication and Coordination approach, the
+result of a one-year design science research project at a large automotive original equipment
+manufacturer (OEM). LoCo CoCo automatically creates social networks from model-based
+systems engineering data by leveraging a structural meta model similar to standards like
+EAST-ADL [EA].
+We identify people and their relations by extracting ownership and trace information from
+systems engineering data. The resulting networks are used as a supporting tool for enabling
+or improving communication and coordination. We evaluated LoCo CoCo analytically,
+by constructing social networks from real-life systems engineering data at the industrial
+1 Chalmers
+
+University of Technology, Gothenburg, Sweden mazenmhd@gmail.com
+| University of Gothenburg, Department of Computer Science and Engineering, Gothenburg, Sweden.
+grischa@chalmers.se, knauss@chalmers.se
+
+2 Chalmers
+
+cbe
+
+2 Mazen Mohamad, Grischa Liebel, Eric Knauss
+
+partner. Additionally, we collected empirical data from 15 interviews and 12 surveys with
+practitioners.
+Our results indicate that LoCo CoCo helps addressing existing communication challenges by
+identifying important contacts across the organisation structure, thus facilitating communication of requirements in systems engineering. While we observed that the quality of social
+data in existing systems engineering tools, such as ownership data or information about
+who changed elements, is sometimes low, practitioners rated it as sufficient. Furthermore,
+visualising erroneous connections due to outdated social data can trigger practitioners to
+update the data. Finally, we elicited several ethical implications arising from the use of
+social data. These will have to be considered when using LoCo CoCo or similar approaches
+in industry.
+
+Acknowledgments
+We thank the case company and all participants in the original study for their great support
+and deep discussions. This work originates from a study conducted as a Master Thesis and
+was published previously at Information and Software Technology Journal [MLK17].
+
+References
+[BKZ10] Begel, Andrew; Khoo, Yit Phang; Zimmermann, Thomas: Codebook: Discovering and
+Exploiting Relationships in Software Repositories. In: Proceedings of the 32Nd ACM/IEEE
+International Conference on Software Engineering - Volume 1. pp. 125–134, 2010.
+[EA]
+
+EAST-ADL
+Association:
+,
+EAST-ADL
+V2.1.12.
+http://www.eastadl.info/Specification/V2.1.12/html/index.html. last accessed Jun. 2015.
+
+[He07]
+
+Herbsleb, J. D.: Global Software Engineering: The Future of Socio-technical Coordination.
+In: Future of Software Engineering, 2007. FOSE ’07. pp. 188–198, 2007.
+
+[KS95]
+
+Kraut, Robert E.; Streeter, Lynn A.: Coordination in Software Development. Commun.
+ACM, 38(3):69–81, 1995.
+
+[Li16]
+
+Liebel, Grischa; Tichy, Matthias; Knauss, Eric; Ljungkrantz, Oscar; Stieglbauer, Gerald:
+Organisation and communication problems in automotive requirements engineering.
+Requirements Engineering, pp. 1–23, 2016.
+
+[MLK17] Mohamad, Mazen; Liebel, Grischa; Knauss, Eric: LoCo CoCo: Automatically constructing
+coordination and communication networks from model-based systems engineering data.
+Information and Software Technology, 92(Supplement C):179–193, 2017.
+[Wo09]
+
+Wolf, T.; Schröter, A.; Damian, D.; Panjer, L.D.; Nguyen, T. H.: Mining Task-Based Social
+Networks to Explore Collaboration in Software Teams. IEEE Software, 26(1):58–66, jan
+2009.
+
+

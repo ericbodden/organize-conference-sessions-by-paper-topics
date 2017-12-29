@@ -1,0 +1,87 @@
+Matthias Tichy, Eric Bodden (Hrsg.): Software Engineering 2018,
+Lecture Notes in Informatics (LNI), Gesellschaft für Informatik, Bonn 2018 1
+
+Detecting Information Flow by Mutating Input Data
+
+Björn Mathis,1 Vitalii Avdiienko,2 Ezekiel O. Soremekun,3 Marcel Böhme,4
+Andreas Zeller5
+
+1
+
+Summary
+
+This article is an abridged version of our article “Detecting Information Flow by Mutating Input Data” which is published in the proceedings of the thirty-second IEEE/ACM
+International Conference on Automated Software Engineering [Ma17].
+When assessing the security of applications, information flows play an essential role: Which
+information sources does the application access, and to which sinks does it send these to?
+Static and dynamic analyses of information flow are easily challenged by non-available or
+obscure code.
+Static flow detection tools like the state-of-the-art FlowDroid [Ar14] are effective but
+they suffer from the principal limitations of static analysis, notably that all code must be
+available for analysis. One example is native code, a piece of code that runs directly on the
+processor and whose source is written in C or C++—in contrast to the Dalvik byte code
+derived from the Java source. FlowDroid will miss a flow through native code, since it
+cannot analyze it and needs to either under- or overapproximate.
+In contrast to static analysis, dynamic analysis allows to analyze concrete executions rather
+than abstract code. Dynamic tainting, for instance, tracks data throughout the execution.
+Finding a flow through native code, though, would require to track data through the hardware
+or a hardware interpreter, which is no simple feat. Since existing dynamic and static tools
+need to analyze the concrete path along which the information travels, they cannot detect
+deliberately hidden flows.
+In this work, we investigate a lightweight mutation-based alternative to detect information
+flows called MutaFlow. Rather than statically analyzing application code or dynamically
+tracking data flow, we use an experimental approach: We systematically mutate the
+1 Saarland
+
+University, Saarbrücken, Germany mathis@st.cs.uni-saarland.de
+University, Saarbrücken, Germany avdiienko@st.cs.uni-saarland.de
+3 Saarland University, Saarbrücken, Germany soremekun@st.cs.uni-saarland.de
+4 Monash University, Melbourne, Australia marcel.boehme@acm.org
+5 Saarland University, Saarbrücken, Germany zeller@st.cs.uni-saarland.de
+2 Saarland
+
+cbe
+
+2 Björn Mathis, Vitalii Avdiienko, Ezekiel O. Soremekun, Marcel Böhme, Andreas Zeller
+
+information sources of a program to assess whether the mutation impacts its information
+sinks. Specifically, our MutaFlow prototype a) takes an Android app as well as a set
+of test cases (given or generated), b) instruments sensitive data sources and sinks in the
+app to mutate input values at sources and track output values at sinks, c) executes tests
+on unmutated and mutated app versions, d) records the values passed to sensitive sinks,
+reporting a flow if the value changes due to a mutated sink value.
+The advantage of MutaFlow over static analysis approaches is that it hardly overapproximates: It is sound in the sense that if it detects a flow, this flow is most likely real.
+The previous problem that data flows through a native method has no consequences for
+MutaFlow; it only cares about how changes in sources affect sinks, without having to
+track the path. All changes made by MutaFlow simulate changes in the external input
+data; the actual program functionality is never altered. However, as any dynamic approach,
+it is also incomplete. In general, we can only find information flows in executed code, and
+the number of found flows depends on the test suite’s code coverage.
+In our evaluation, we assessed the effectiveness of MutaFlow using two sets of Android
+apps, namely 20 real-world applications and DroidBench (a collection of 120 small Android
+applications with several categories of information flows that are obfuscated in one way or
+another).
+Even though MutaFlow requires less than 10% of source code compared to FlowDroid,
+it has a similar accuracy. On the real-world applications MutaFlow achieves an accuracy
+of 81%, 60% more than FlowDroid and is able to detect 75 flows that FlowDroid misses.
+FlowDroid finds 17 unique flows and 2 flows are found by both tools. On Droidbench,
+MutaFlow has an accuracy of 72%, 14% higher than FlowDroid.
+Hence, MutaFlow could be seen as a complement to static analysis approaches, focusing
+on problem areas such as non-analyzable code. However, mutation-based flow analysis can
+also be seen as an alternative analysis, should static analysis not be available or possible.
+This is because the accuracy of MutaFlow in detecting flows is similar, if not superior, to
+static analysis tools such as F l ow D ro i d. This poses mutation-based flow analysis as a
+new and promising alternative in our portfolio of program analysis techniques.
+
+References
+[Ar14] Arzt, Steven; Rasthofer, Siegfried; Fritz, Christian; Bodden, Eric; Bartel, Alexandre; Klein,
+Jacques; Le Traon, Yves; Octeau, Damien; McDaniel, Patrick: FlowDroid: Precise Context,
+Flow, Field, Object-sensitive and Lifecycle-aware Taint Analysis for Android Apps. In:
+Proceedings of the 35th ACM SIGPLAN Conference on Programming Language Design
+and Implementation. PLDI ’14, pp. 259–269, 2014.
+[Ma17] Mathis, Björn; Avdiienko, Vitalii; Soremekun, Ezekiel O.; Böhme, Marcel; Zeller, Andreas:
+Detecting Information Flow by Mutating Input Data. In: Proceedings of the 32Nd IEEE/ACM
+International Conference on Automated Software Engineering. ASE 2017, IEEE Press,
+Piscataway, NJ, USA, pp. 263–273, 2017.
+
+

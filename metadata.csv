@@ -1,41 +1,1 @@
-ID,title,authors
-chowdhuryMSR2016-eProjects,eProjects,chowdhury
-pang2016ICSMEERA,pang2016ICSMEERA,pang
-hindleMSR2008-large-changes,large-changes,hindleMSR
-hindle2007ICSM-release-pattern,release-pattern,hindle
-hindle2016NIME-hacking-nimes,hacking-nimes,hindle
-hindle2008ICPC-reading-beside-the-lines,reading-beside-the-lines,hindle
-posnett2011WCRE-Got-Issues,Got-Issues,posnett
-hindle2012ICSENEIR-Green-Mining,Green-Mining,hindle
-hindle2010MSR-Challenge-Description,Challenge-Description,hindle
-hindle2011EMSE-automated-topic-naming,automated-topic-naming,hindle
-davies2012ESME-Bertillonage,Bertillonage,davies
-hindle2013NIME-SWARMED,SWARMED,hindle
-davies2011MSR-bertillonage,bertillonage,davies
-hindle2014NIME-cloudorch,cloudorch,hindle
-hindle2011ICSENIER-Multifractal,Multifractal,hindle
-burlet2015MSR-music-coders,music-coders,burlet
-hindle2016EMSE-bugdedup,bugdedup,hindle
-chowdhury2015IGSC-systemcall,systemcall,chowdhury
-romansky2014CASCON,romansky2014CASCON,romansky
-hindle2017NIME-Dijj,Dijj,hindle
-barr2012cid,barr2012cid,barr
-hindle2016CACM,hindle2016CACM,hindle
-hindle2012MSR-Green-Mining,Green-Mining,hindle
-hindleICPC2009-large-changes-classification,large-changes-classification,hindleICPC
-zhang2014IEEESoftware-user-choice,user-choice,zhang
-hindle2005MSR-SCQL,SCQL,hindle
-alipour2013MSR-bugdedup,bugdedup,alipour
-german2004SEKE-softChange,softChange,german
-hindle2008SCAM-indentation-shape,indentation-shape,hindle
-chowdhury2015MSR-IRC,IRC,chowdhury
-posnett2011MSR-readability,readability,posnett
-bazelli2013ICSMERA-Personality,Personality,bazelli
-rasmussen2014GREENS-adblock,adblock,rasmussen
-hindle2007MSR-Release-Pattern-Discovery,Release-Pattern-Discovery,hindle
-burlet2017PeerJ,burlet2017PeerJ,burlet
-aggarwal2015ICSME-greenadvisor,greenadvisor,aggarwal
-hu2012MSR-builddeps,builddeps,hu
-campbell2013MSR-Deficient,Deficient,campbell
-romansky2017ICSME-timeseries,timeseries,romansky
-hasan2016ICSE-Energy-Profiles-of-Java-Collections-Classes,Energy-Profiles-of-Java-Collections-Classes,hasan
+﻿ID,title,authorsseswm2018_paper_1,Inner Source in Platform-Based Product Engineering,Dirk Riehle, Maximilian Capraro, Detlef Kips and Lars Hornseswm2018_paper_2,Empirical Evaluation of a domain-specific language for high-performance marine ecosystem simulation,Arne Johanson and Wilhelm Hasselbringseswm2018_paper_3,Searching for Common Ground: Existing Literature on Automotive Agile Software Product Lines,Philipp Hohl, Javad Ghofrani, Juergen Muench, Michael Stupperich and Kurt Schneiderseswm2018_paper_4,A systematic approach to constructing families of incremental topology control algorithms using graph transformation,Roland Kluge, Michael Stein, Gergely Varró, Andy Schürr, Matthias Hollick and Max Mühlhäuserseswm2018_paper_5,CodeMatch: Obfuscation Won’t Conceal Your Repackaged App,Leonid Glanz, Sven Amann, Michael Eichberg, Michael Reif and Mira Meziniseswm2018_paper_6,Predictive Business Process Monitoring unter Berücksichtigung von Prognoseverlässlichkeit und Risiko,Andreas Metzger and Philipp Bohnseswm2018_paper_7,Modeling and Verification of Evolving Cyber-Physical Spaces,Christos Tsigkanos, Timo Kehrer and Carlo Ghezziseswm2018_paper_8,Hazard Relation Diagrams: a diagrammatic representation to increase validation objectivity of requirements-based hazard mitigations,Bastian Tenbergen, Thorsten Weyer and Klaus Pohlseswm2018_paper_9,Using Architecture Knowledge to Improve Automated Software Architecture Design Space Exploration,Axel Busch and Anne Koziolekseswm2018_paper_10,Automated Analysis of the Co-evolution of Software Systems and Business Processes,Kiana Busch, Robert Heinrich, Axel Busch and Ralf Reussnerseswm2018_paper_11,Optimized Cloud Deployment of Multi-tenant Software Considering Data Protection Concerns - Abridged Version,Zoltan Mann and Andreas Metzgerseswm2018_paper_13,Call Graph Construction for Java Libraries,Michael Reif, Michael Eichberg and Mira Meziniseswm2018_paper_16,Modularity and architecture of PLC-based software for automated production Systems: An analysis in industrial companies,Birgit Vogel-Heuser, Juliane Fischer, Stefan Feldmann, Sebastian Ulewicz, Susanne Rösch and Safa Bougouffaseswm2018_paper_18,Is There a Mismatch between Real-world Feature Models and Product-line Research?,Alexander Knüppel, Thomas Thüm, Stephan Mennicke, Jens Meinicke and Ina Schaeferseswm2018_paper_20,Component and Connector Views in Practice: An Experience Report,Vincent Bertram, Shahar Maoz, Jan Oliver Ringert, Bernhard Rumpe and Michael von Wencksternseswm2018_paper_22,On Continuous Detection of Design Flaws in Evolving Object-Oriented Programs using Incremental Multi-Pattern Matching,Sven Peldszus, Géza Kulcsár, Malte Lochau and Sandro Schulzeseswm2018_paper_23,Reinforcement Learning for Automatic Test Case Prioritization and Selection in Continuous Integration,Helge Spieker, Arnaud Gotlieb, Dusica Marijan and Morten Mossigeseswm2018_paper_24,Observations on Knowledge Transfer of Professional Software Developers during Pair Programming,Franz Zieris and Lutz Precheltseswm2018_paper_25,Quality Experience: A Grounded Theory of Successful Agile Projects Without Dedicated Testers,Lutz Prechelt, Holger Schmeisky and Franz Zierisseswm2018_paper_26,Code Defenders: Crowdsourcing Effective Tests and Subtle Mutants with a Mutation Testing Game,José Miguel Rojas, Thomas White, Benjamin Clegg and Gordon Fraserseswm2018_paper_29,Integrating BPMN- and UML-based Security Engineering via Model Transformation,Qusai Ramadan, Mattia Salnitri, Daniel Strüber, Jan Jürjens and Paolo Giorginiseswm2018_paper_30,Transformation of Software Product Lines: A Generalizing Framework based on Category Theory,Gabriele Taentzer, Rick Salay, Daniel Strüber and Marsha Chechikseswm2018_paper_31,Clone Detection for Rule-Based Model Transformation Languages,Daniel Strüber, Vlad Acretoaie and Jennifer Plögerseswm2018_paper_33,A framework for capturing, statistically modeling and analyzing the evolution of software models,Hamed Shariat Yazdi, Lefteris Angelis, Timo Kehrer and Udo Kelterseswm2018_paper_36,Detecting Information Flow by Mutating Input Data,Björn Mathis, Vitalii Avdiienko, Ezekiel Soremekun, Marcel Böhme and Andreas Zellerseswm2018_paper_37,Wo ist der Fehler und wie wird er behoben? Ein Experiment mit Softwareentwicklern.,Marcel Böhme, Ezekiel Soremekun, Sudipta Chattopadhyay, Emamurho Ugherughe and Andreas Zellerseswm2018_paper_39,Hybrid Software and System Development in Practice: Waterfall, Scrum, and Beyond,Marco Kuhrmann, Philipp Diebold, Juergen Muench, Paolo Tell, Vahid Garousi, Michael Felderer, Kitija Trektere, Fergal Mc Caffery, Oliver Linssen, Eckhart Hanser and Christian Prauseseswm2018_paper_40,Requirements Engineering Challenges in Large-Scale Agile System Development,Rashidah Kasauli, Grischa Liebel, Eric Knauss, Swathi Gopakumar and Benjamin Kanagwaseswm2018_paper_41,LoCo CoCo: Automatically Constructing Coordination and Communication Networks from Model-Based Systems Engineering Data,Mazen Mohamad, Grischa Liebel and Eric Knaussseswm2018_paper_43,Symbolic Execution for Realizability-Checking of Scenario-based Specifications,Joel Greenyer and Timo Gutjahrseswm2018_paper_52,Architecture-Aware Online Failure Prediction for Distributed Software Systems,Teerat Pitakrat, Dušan Okanović, André van Hoorn and Lars Grunskeseswm2018_paper_54,Neural Efficiency of Top-Down Program Comprehension,Norman Peitek, Janet Siegmund, Chris Parnin, Sven Apel, Johannes Hofmeister, Christian Kästner, Andrew Begel, Anja Bethmann and André Brechmannseswm2018_paper_57,PEoPL: Projectional Editing of Product Lines,Benjamin Behringer, Jochen Palz and Thorsten Bergerseswm2018_paper_58,Introducing Traceability and Consistency Checking for Change Impact Analysis across Engineering Tools in an Automation Solution Company,Alexander Egyed, Andreas Demuth, Roland Kretschmer, Davy Maes, Georgio Kanakis and Michael Trölsseswm2018_paper_59,Efficiency of Projectional Editing,Thorsten Berger, Markus Voelter, Hans Peter Jensen, Taweesap Dangprasert and Janet Siegmundseswm2018_paper_60,Guidelines for using empirical studies in software engineering education,Fabian Fagerholm, Marco Kuhrmann and Juergen Muenchseswm2018_paper_61,Reporting on a Survey on Approaches to Co-Evolution of Metamodels and Models,Regina Hebig, Djamel Eddine Khelladi and Reda Bendraou

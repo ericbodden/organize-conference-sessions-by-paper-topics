@@ -1,0 +1,365 @@
+<Vorname Nachname [et. al.]>(Hrsg.): < Buchtitel>,
+Lecture Notes in Informatics (LNI), Gesellschaft für Informatik, Bonn <Jahr> 15
+
+Hazard Relation Diagrams: a diagrammatic representation
+to increase validation objectivity of requirements-based
+hazard mitigations
+Bastian Tenbergen1,2, Thorsten Weyer2, Klaus Pohl2
+
+Abstract: This talk is based on a paper published in the Requirements Engineering Journal in May
+2017 [TWP17]. During the development of safety-critical systems, the development process must
+ensure that requirements, which are defined to mitigate a hazard, are adequate. Adequacy of such
+hazard-mitigating requirements (HMRs) means that the requirements may not oppose the system’s
+operational purpose and must sufficiently avoid, reduce, or control, the occurrence of the
+conditions that trigger the hazard. However, information about the occurrence of the hazard’s
+trigger conditions are a work product of hazard analyses during early stages of safety assessment,
+while HMRs are a work product of requirements engineering. Dependencies between HMRs and
+hazard analysis results are implicit and tacit. In consequence, there’s a risk that during validation,
+inadequacy of HMRs regarding their ability to mitigate a hazard remains covert. The result may be
+that the system is assumed to be safe, but in fact may still cause injury or death. We introduced
+Hazard Relation Diagrams (HRDs) as a means to integrate and graphically visualize hazard
+analysis results with HMRs. Herein, we also provide insights into their empirical evaluation and
+show that HRDs increase objectivity in rationales containing adequacy judgments.
+
+Principles and Visual Notation of Hazard Relation Diagrams
+Hazard Relation Diagrams integrate HMRs with the hazard they are intended to mitigate
+in a single diagram [TWP15]. During validation, HRDs is reviewed individually and
+sequentially, thereby allowing for alternative mitigations to be validated with regard to
+each respective hazard. HMRs are depicted using modeling elements of UML activity
+diagrams. HRDs contain exactly one hazard and several mitigation partitions to support
+different multiplicities between hazards and HMRs. The dashed mitigation partitions
+surround the HMRs and can be distributed across “geometrically” distant areas within
+the same or several activity diagrams. HRDs contain the hazard’s tree of trigger
+conditions, the conceived safety goal, and one Hazard Relation, which is an n-ary
+association relating the hazard, trigger conditions, safety goal, and mitigation partitions.
+An example is shown in Fig. 1 (activity labels are removed for legibility).
+
+Empirical Evaluation Shows Increases in Review Objectivity
+In two empirical experiments involving a total of 168 graduate and undergraduate
+students [TWP17], the hypothesis was investigated whether there is an impact on
+1
+2
+
+State University of New York at Oswego, NY, USA, bastian.tenbergen@oswego.edu
+University of Duisburg-Essen, paluno, Germany {thorsten.weyer, klaus.pohl}@paluno.uni-due.de
+
+16
+
+Bastian Tenbergen, Thorsten Weyer und Klaus Pohl
+
+objectivity when using HRDs to validate the adequacy of HMRs (treatment condition)
+versus using activity diagrams (control condition). Participants were asked to review 10
+hazard mitigations and judge if the hazard can still occur during operation and to justify
+their judgement in a written rationale. Rationales were categorized into those that
+mention “semantics” or “syntax” (i.e., diagram properties also found in activity
+diagrams, see also combined variable H1.a), or mention “mitigation,” “trigger
+condition,” or “safety goals” (i.e., properties specific to HRDs, see also combined
+variable H1.b). Fig. 2 shows the differences between treatment (black bars) and control
+(grey bars) conditions. Significant differences bear p-value, effect size, and achieved
+statistical power and show that using HRDs, judgments were more often based on
+objective information about the hazard, rather than on the diagram’s meaning or style.
+
+Trigger
+Condition
+
+&
+
+Safety Goal
+
+Trigger
+Condition
+
+||
+
+Trigger
+Condition
+
+8.00
+
+p < 0.001
+
+p < 0.001
+
+!" = 1.000
+
+!" = 1.000
+
+< 0.001 with three mitigation partitions surrounding
+p < 0.001
+d = 1.278
+d = 1.488
+Fig. 1. Example of apdHRD
+HMRs
+in two activity
+diagrams.
+= 1.536
+d = 1.288
+
+Experiment
+Experiment
+1
+1
+
+7.00
+6.00
+
+8.00
+5.00
+7.00
+4.00
+6.00
+3.00
+5.00
+2.00
+
+!" =1.000
+
+4.79
+
+2.00
+8.00
+
+Experiment
+Experiment
+2
+2
+
+8.00
+5.00
+7.00
+4.00
+6.00
+3.00
+5.00
+2.00
+4.00
+1.00
+3.00
+0.00
+2.00
+
+1.44
+
+1.10
+0.29
+
+Semantics
+1.44
+
+Semantics
+
+Syntax
+
+p < 0.001
+1.009
+!" =0.978
+
+1.52
+d=
+
+2.74
+
+Mitigation
+
+p = 0.009
+d = 0.659
+!" =0.762
+
+2.74
+
+Semantics
+1.52
+
+0.07
+Syntax
+
+p = 0.009
+0.26
+d = 0.659
+" =0.762
+!
+Mitigation
+
+4.33
+
+Safety Goal
+
+Trigger Condition
+
+Safety Goal
+
+1.73 H1.a
+
+H1.b
+
+H1.a
+
+H1.b
+
+p = 0.005
+d = 0.580
+!" =0.677
+
+p < 0.001
+d = 1.076
+!" =0.988
+
+0.44
+p = 0.005
+d = 0.580
+!" =0.677
+Trigger
+Condition
+
+p < 0.001
+d = 0.940
+!" =0.961
+
+3.74
+
+2.81
+1.96
+1.52
+
+p < 0.001
+1.076
+!" =0.988
+
+d=
+1.52
+
+2.22
+
+p < 0.001
+d = 0.940
+!" =0.961
+
+3.74
+
+2.81
+1.96
+Safety Goal
+1.52
+
+2.22
+1.52 H1.a
+
+H1.b
+
+1.04
+
+0.74
+
+1.00
+
+Trigger Condition
+1.44
+1.07
+
+1.04
+
+0.74
+0.00
+
+1.73
+1.07
+
+0.57
+
+0.39
+
+p < 0.001
+d = 1.009
+!" =0.978
+
+5.18
+
+4.33
+
+p < 0.001
+d = 1.288
+!" = 1.000
+
+2.69
+Mitigation
+
+1.10
+0.29
+
+!" = 1.000
+
+7.92
+
+0.57
+
+0.39
+Syntax
+
+p < 0.001
+d = 1.488
+!" = 1.000
+
+2.69
+
+4.79
+1.44
+
+1.00
+7.00
+0.00
+6.00
+
+5.37
+
+7.92
+
+5.18
+
+p < 0.001
+d = 1.278
+!" = 1.000
+
+p < 0.001
+d = 1.536
+!" =1.000
+
+4.00
+1.00
+3.00
+0.00
+
+5.37
+
+0.44
+
+Fig. 2. Experimental Results show signitificantly more Judgments based on Hazard Analyses using HRDs.
+0.00
+
+0.00
+
+Semantics
+
+0.07
+
+Syntax
+
+0.26
+
+Mitigation
+
+Trigger Condition
+
+Safety Goal
+
+H1.a
+
+H1.b
+
+References
+[TWP15] B. Tenbergen, T. Weyer, and K. Pohl, “Supporting the validation of adequacy in
+requirements-based hazard mitigations,” in Springer LNCS 9013, 2015, pp. 17-32.
+[TWP17] B. Tenbergen, T. Weyer, and K. Pohl, “Hazard Relation Diagrams: A Diagrammatic
+Representation to Increase Validation Objectivity of Requirements-based Hazard
+Mitigations,” in Requirements Eng J. DOI: 10.1007/s00766-017-0267-9.
+
+

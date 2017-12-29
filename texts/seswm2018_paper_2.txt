@@ -1,0 +1,105 @@
+Eric Bodden, Matthias Tichy (Hrsg.): Software Engineering und Software Management 2018,
+Lecture Notes in Informatics (LNI), Gesellschaft für Informatik, Bonn 2017 11
+
+Empirical Evaluation of a Domain-Specific Language for
+High-Performance Marine Ecosystem Simulation
+
+Arne Johanson,1 Wilhelm Hasselbring2
+
+Abstract: In this paper, we report on the empirical evaluation of domain-specific languages by
+evaluating the Sprat Ecosystem DSL for its effectiveness and efficiency.
+Keywords: Domain-specific language; Model-driven software engineering; Empirical evaluation
+
+1
+
+Introduction
+
+In science and research, we observe an increasing use of software. Often scientific experiments are conducted in virtual research environments with computer-based simulations,
+which are typically implemented by the scientists themselves. Traditionally, these research
+software engineers employ no or only few software engineering methods and techniques
+while developing large simulation software systems. Therefore, specific software support is
+required to efficiently enable such scientific work [JH18].
+Domain-specific languages (DSL) are usually employed for model-driven software engineering in specific domains such as railway systems [Go12], software performance engineering
+[BH09; Vö16] and software modernization [Ho11].
+Sprat is a DSL for specifying high-performance marine ecosystem simulation experiments
+[JH14a; JH14b; Jo16; Jo17]. We report on an online survey including controlled experiments
+to compare the correctness and the time spent of experts from the domain of ecosystem
+simulation in solving typical ecosystem simulation specification tasks with our DSL and
+with a GPL-based solution [JH17]. By measuring correctness scores and time spent on the
+assignments, we evaluate the effectiveness and efficiency of the Sprat Ecosystem DSL. The
+findings provide empirical evidence that the Sprat DSL can indeed increase the productivity
+of scientific software developers, who often have no formal software engineering training.
+Our results show that the domain experts achieve significantly higher accuracy and spend
+less time when using our DSL instead of the comparable GPL-based solution.
+Our study extends the relatively scarce body of existing evaluation research on DSL to a
+scientific domain with users often not specifically trained in programming and software
+1 XING
+2 Kiel
+
+Marketing Solutions GmbH, Hamburg arj@informatik.uni-kiel.de
+University, Software Engineering Group, Kiel hasselbring@email.uni-kiel.de
+
+cbe
+
+12 Arne Johanson, Wilhelm Hasselbring
+
+engineering techniques. While the participants of many previous experiments are students,
+our subjects are professionals from the domain.
+
+Literatur
+[BH09]
+
+Boskovic, M.; Hasselbring, W.: Model Driven Performance Measurement and
+Assessment with MoDePeMART. In: Proc. MODELS 2009. Bd. 5795. Lecture
+Notes in Computer Science, Springer-Verlag, S. 62–76, Okt. 2009.
+
+[Go12]
+
+Goerigk, W. et al.: Entwurf einer domänenspezifischen Sprache für elektronische Stellwerke. In: Software Engineering 2012. Bd. P-198. Lecture Notes in
+Informatics (LNI), GI, S. 119–130, März 2012.
+
+[Ho11]
+
+van Hoorn, A. et al.: DynaMod Project: Dynamic Analysis for Model-Driven
+Software Modernization. In: Proceedings of the 1st International Workshop on
+Model-Driven Software Migration (MDSM 2011). Bd. 708, CEUR, 2011.
+
+[JH14a]
+
+Johanson, A.; Hasselbring, W.: Hierarchical Combination of Internal and External
+Domain-Specific Languages for Scientific Computing. In: Proceedings of the
+2014 European Conference on Software Architecture Workshops. ECSAW’14,
+ACM, 17:1–17:8, 2014.
+
+[JH14b] Johanson, A.; Hasselbring, W.: Sprat: Hierarchies of Domain-Specific Languages for Marine Ecosystem Simulation Engineering. In: Proceedings TMS
+SpringSim’14. SCS, S. 187–192, 2014.
+[JH17]
+
+Johanson, A.; Hasselbring, W.: Effectiveness and efficiency of a domain-specific
+language for high-performance marine ecosystem simulation: a controlled experiment. Empirical Software Engineering 22/4, http://rdcu.be/urXK, S. 2206–2236,
+Aug. 2017, url: http://doi.org/10.1007/s10664-016-9483-z.
+
+[JH18]
+
+Johanson, A.; Hasselbring, W.: Software Engineering for Computational Science:
+Past, Present, Future. IEEE Computing in Science & Engineering/, 2018.
+
+[Jo16]
+
+Johanson, A.; Hasselbring, W.; Oschlies, A.; Worm, B.: Evaluating Hierarchical
+Domain-Specific Languages for Computational Science: Applying the Sprat
+Approach to a Marine Ecosystem Model. In: Software Engineering for Science.
+Taylor & Francis Group, CRC Press, S. 175–200, 2016.
+
+[Jo17]
+
+Johanson, A. N.; Oschlies, A.; Hasselbring, W.; Worm, B.: Sprat: A spatiallyexplicit marine ecosystem model based on population balance equations. Ecological Modelling 349/, S. 11–25, 2017, url: http://doi.org/10.1016/j.
+ecolmodel.2017.01.020.
+
+[Vö16]
+
+Vögele, C.; van Hoorn, A.; Schulz, E.; Hasselbring, W.; Krcmar, H.: WESSBAS: extraction of probabilistic workload specifications for load testing and
+performance prediction—a model-driven approach for session-based application systems. Software & Systems Modeling/, S. 1–35, 2016, url: http :
+//doi.org/10.1007/s10270-016-0566-5.
+
+

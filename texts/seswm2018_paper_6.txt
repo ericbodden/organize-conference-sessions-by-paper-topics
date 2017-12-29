@@ -1,0 +1,101 @@
+Eric Bodden (Hrsg.): Software Engineering und Software Management 2018,
+Lecture Notes in Informatics (LNI), Gesellschaft für Informatik, Bonn 2018
+
+Predictive Business Process Monitoring unter Berücksichtigung von Prognoseverlässlichkeit und Risiko
+Andreas Metzger1, Philipp Bohn2, Felix Föcker3
+
+Abstract: Wir stellen Techniken und Experimentergebnisse für die Berücksichtigung der Prognoseverlässlichkeit und des Risikos beim Predictive Business Process Monitoring vor. Die Berücksichtigung dieser Größen bietet zusätzliche Entscheidungsgrundlagen für die proaktive Prozessanpassung.
+Keywords: Prognose, Machine Learning, Business Process Management, Risiko.
+
+1
+
+Überblick
+
+Motivation. Predictive Business Process Monitoring zielt darauf ab, potenzielle Probleme
+in der Prozessausführung vorherzusagen. Predictive Business Process Monitoring ermöglicht den frühzeitigen Eingriff und somit die proaktive Anpassung laufender Prozesse
+[MLI17].
+Die bisherige Forschung betrachtete die aggregierte Genauigkeit aller Vorhersagen (z. B.
+berechnet mittels Precision oder Recall). Die Genauigkeit und somit die Verlässlichkeit
+(„Reliability“) einer einzelnen Prognose und damit auch das Risiko einer Entscheidung
+auf Basis dieser Prognose wurden nicht untersucht. Unsere Beiträge auf der 29th Int’l Conference on Advanced Information Systems Engineering (CAiSE) und der 15th Int’l Conference on Service Oriented Computing (ICSOC) adressieren diese Lücke.
+Berücksichtigung von Prognoseverlässlichkeit. In unserem CAiSE-Beitrag (siehe
+[MeF17]) konnten wir zeigen, wie Verlässlichkeitsschätzungen für einzelne Prognosen
+mittels Ensemble-Vorhersagetechniken berechnet werden können. Unsere experimentelle
+Analyse anhand eines Industriedatensatzes aus der Logistik zeigt, dass die Berücksichtigung der Verlässlichkeit bei der proaktiven Prozessanpassung Kostenersparnisse bis zu
+54% (14% im Mittel) ermöglicht.
+Berücksichtigung von Risiko. In unserem ICSOC-Beitrag (siehe [MeB17]) wurde der
+obige Ansatz dahingehend erweitert, dass das Risiko der Adaptionsentscheidung berechnet und berücksichtigt wird. Abbildung 1 gibt einen Überblick über den erweiterten Ansatz. Die Prozessüberwachungsdaten werden in ein Ensemble-Vorhersagemodell einge1
+2
+3
+
+paluno, Univ. Duisburg-Essen, 45127 Essen, andreas.metzger@paluno.uni-due.de
+paluno, Univ. Duisburg-Essen, 45127 Essen, philipp.bohn@paluno.uni-due.de
+paluno, Univ. Duisburg-Essen, 45127 Essen, felix.foecker@paluno.uni-due.de
+
+16
+
+Andreas Metzger, Philipp Bohn, Felix Föcker
+
+geben, welches die Abweichung der Prozessinstanz zur geplanten Ausführungsdauer vorhersagt (), sowie die Verlässlichkeit der Vorhersage schätzt (). Die Verlässlichkeitsschätzung quantifiziert die Wahrscheinlichkeit des Risikos. Mittels einer parametrierbaren
+Kostenfunktion, cost(), wird die Vertragsstrafe bei einer Überschreitung der erwarteten
+Prozessdauer berechnet und somit das Ausmaß des Risikos r quantifiziert.
+Numerische
+Ensemble-Vorhersage
+
+{
+
+{ {
+
+Prozessüberwachungsdaten
+
+Genauigkeit 
+
+Vorhersagemodell 1
+
+Vorhersagemodell 2
+
+Risikoberechnung
+r =  · cost()
+
+Risiko r
+
+[r > R]
+
+[r  R]
+
+Vorhersagemodell n
+
+Abweichung 
+
+Prozessadaption
+
+Keine
+Prozessadaption
+
+Abbildung 1: Überblick des Ansatzes zur risikobasierten Prozessadaption
+
+Im Vergleich zum CAiSE-Beitrag konnten zusätzliche Kostenersparnisse bis zu 31%
+(15% im Mittel) gemessen werden. Werden lediglich die Ergebnisse nicht-konstanter Kostenfunktionen berücksichtigt, ergibt sich sogar eine Kostenersparnis von 23% im Mittel.
+Ausblick. Als zukünftige Arbeiten planen wir weitergehende empirische Studien mit Prozessen und Datensätzen aus der Hafenlogistik und dem E-Commerce. Darüber hinaus wollen wir untersuchen, inwiefern der Prognosezeitpunkt bei der Adaptationsentscheidung
+berücksichtigen werden kann.
+Die Ergebnisse entstanden im Rahmen des europäischen H2020-Projekts „TransformingTransport“ (Förderkennzeichen 731932; https://transformingtransport.eu/).
+
+Literaturverzeichnis
+[MLI17]
+
+Metzger, A. et al.: Vergleich und Kombination von Techniken des Predictive Business
+Process Monitoring. In (Jürjens, J.; Schneider, K.; Hrsg.): Software Engineering 2017,
+Konferenz des GI-Fachbereichs Softwaretechnik, Hannover, LNI 267, GI, 2017.
+
+[MeF17]
+
+Metzger, A.; Föcker, F.: Predictive business process monitoring considering reliability
+estimates. In (Dubois, E.; Pohl. K.; Hrsg.): Int’l Conference on Advanced Information
+Systems Engineering (CAiSE 2017), Essen, LNCS 10253, Springer, 2017.
+
+[MeB17]
+
+Metzger, A.; Bohn, P.: Risk-based proactive process adaptation. In (Maximilian, M.;
+Vallecillo, A.; Wang, J.; Oriol, M.; Hrsg.): Int’l Conference on Service Oriented Computing (ICSOC 2017), Málaga, LNCS 10601, Springer, 2017.
+
+

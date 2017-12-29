@@ -1,0 +1,100 @@
+Matthias Tichy, Eric Bodden (Hrsg.): SE 2018,
+Lecture Notes in Informatics (LNI), Gesellschaft für Informatik, Bonn 2018 1
+
+A systematic approach to constructing families of incremental
+topology control algorithms using graph transformation
+
+Roland Kluge,1 Michael Stein,2 Gergely Varró,1 Andy Schürr,1 Matthias Hollick ,3
+Max Mühlhäuser2
+
+Abstract: In this talk, we present results on integrating support for variability modeling into a
+correct-by-construction development methodology for topology control algorithms, as appeared online
+in the Software & Systems Modeling journal in 2017 [Kl17]. A topology control algorithm reduces
+the size of the visible neighborhood of a node in a wireless communication network. At the same
+time, it must fulfill important consistency properties to ensure a high quality of service. In previous
+work, we proposed a constructive, model-driven methodology for designing individual topology
+control algorithms based on declarative graph constraints and graph transformation rules; the resulting
+algorithms are guaranteed to preserve the specified properties. Even though many topology control
+algorithms share substantial (structural) parts, few works leverage these commonalities at design time.
+In this work, we generalize our proposed construction methodology by modeling variability points
+to support the construction of families of algorithms. We show the applicability of our approach by
+reengineering six existing topology control algorithms and developing e-kTC, a novel energy-efficient
+variant of the topology control algorithm kTC. Finally, we evaluate a subset of the algorithms using a
+novel integration of a wireless network simulator and a graph transformation tool.
+Keywords: Graph transformation; Graph constraints; Static analysis; Model-driven engineering;
+Wireless networks; Network simulation
+
+1
+
+Summary
+
+In the communication systems domain, wireless sensor networks (WSNs) [Sa05] are a
+highly active research area. WSNs serve, e. g., to monitor environmental conditions using
+small, battery-powered sensor nodes that cooperatively transmit data to a sink node. To
+improve important properties (e. g., the energy consumption), a topology control (TC)
+algorithm inactivates redundant communication links of a WSN [Sa05]. Constructing a TC
+1 TU Darmstadt, Real-Time Systems Lab, Merckstr. 25, 64283 Darmstadt, Germany, {roland.kluge,andy.schuerr}@
+
+es.tu-darmstadt.de
+Darmstadt, Telecooperation Group, Hochschulstr, 10, 64289 Darmstadt, Germany, {stein,max}@tk.tudarmstadt.de
+3 TU Darmstadt, Secure Mobile Networking Lab, TU Darmstadt, Mornewegstr. 32, 64293 Darmstadt, Germany,
+matthias.hollick@seemoo.tu-darmstadt.de
+2 TU
+
+Acknowledgments: This work was supported by the DFG (German Research Foundation) as part of
+projects A1 and C1 within CRC 1053 – MAKI.
+
+cbe
+
+2 R. Kluge, M. Stein, G. Varró, A. Schürr, M. Hollick, M. Mühlhäuser
+
+algorithm is a challenging task, which is carried out by highly skilled experts usually in
+two major steps. First, the TC algorithm is specified using a mathematically framework
+(e. g., graph theory), which allows us to prove the required formal properties. Then, the TC
+algorithm is implemented, typically in a general-purpose programming language (e. g., Java
+or C) for simulation or real-life evaluation purposes.
+The traditional development process of TC algorithms suffers from (at least) two major
+shortcomings [Kl17, Sec. 1]: The first shortcoming is that a systematic mapping between
+the specification and the implementation is missing. This makes it difficult to verify that
+specification and implementation correspond to each other. To tackle this shortcoming,
+we proposed a model-driven development methodology that constructively integrates the
+required formal properties [Kl16]. We describe topologies as graph-based models, required
+properties as graph constraints, and possible operations of topology control algorithms as
+declarative graph transformation rules [HW95].
+The second shortcoming is that—even though novel TC algorithms tend to build on
+former TC algorithms—the inherent commonalities and differences of TC algorithms
+are not specified systematically. This reduces reusability among and comparability of TC
+algorithms, especially w. r. t. the proven formal properties. In the presented article [Kl17], we
+generalize the constructive, model-driven methodology for designing TC algorithms using
+graph transformation [Kl16] to support the development of families of TC algorithms. More
+precisely, (i) to model commonalities and differences of TC algorithms, we extract common
+structural constraints and specify individual part of each TC algorithm as attribute constraints,
+thereby lifting all steps described in [Kl16] to algorithm families; (ii) to demonstrate that
+our approach is applicable, we specify six existing TC algorithms and e-kTC, a novel
+energy-aware TC algorithm; (iii) to support dynamic TC, we extend the constructive
+approach with a step that systematically derives context event handlers, which anticipate
+imminent constraint violations; (iv) we present a rapid evaluation environment, consisting
+of the graph transformation tool eMoflon and the network simulator Simonstrator.
+
+References
+[HW95] Heckel, R.; Wagner, A.: Ensuring Consistency of Conditional Graph Rewriting – A
+Constructive Approach. In: Proc. of the Joint COMPUGRAPH/SEMAGRAPH Workshop.
+volume 2 of ENTCS. Elsevier, pp. 118–126, 1995.
+[Kl16]
+
+Kluge, R.; Stein, M.; Varró, G.; Schürr, A.; Hollick, M.; Mühlhäuser, M.: A systematic
+approach to constructing incremental topology control algorithms using graph transformation.
+Journal of Visual Languages & Computing (JVLC), 38:47–83, 2016.
+
+[Kl17]
+
+Kluge, R.; Stein, M.; Varró, G.; Schürr, A.; Hollick, M.; Mühlhäuser, M.: A Systematic
+Approach to Constructing Families of Incremental Topology Control Algorithms Using
+Graph Transformation. Software & Systems Modeling (SoSyM), pp. 1–41, 2017.
+
+[Sa05]
+
+Santi, P.: Topology Control in Wireless Ad Hoc and Sensor Networks. ACM Computing
+Surveys (CSUR), 37(2):164–194, 2005.
+
+

@@ -1,0 +1,3419 @@
+Which is the best algorithm for virtual machine placement
+optimization?
+Zoltán Ádám Mann1, Máté Szabó2
+paluno – The Ruhr Institute for Software Technology
+Universität Duisburg-Essen, Gerlingstraße 16, 45127 Essen
+1
+
+2
+
+Budapest University of Technology and Economics, Budapest, Hungary
+
+Abstract
+This work was published in Concurrency and Computation: Practice and Experience,
+2017.
+Cloud applications are usually deployed as virtual machines in cloud data centers. They
+have to be placed on physical servers in such a way that the used server resources are well
+utilized, without degrading application performance by resource overloads. Moreover,
+since the workload varies over time, the placement of virtual machines has to be continually re-optimized in an adaptive fashion.
+For this problem, several algorithms have been suggested in the literature. So far, no objective comparison of the proposed algorithms has been performed; therefore, it is not
+known which one works best or what factors influence the performance of the algorithms.
+In this paper, we develop a test environment and a methodology for such comparisons. In
+particular, we address the problem of obtaining and incorporating meaningful test data.
+We also compare 7 different algorithms using the proposed environment and methodology. Our results showcase differences of up to 66% between the effectiveness of different
+algorithms on the same real-world workload traces, thus underlining the importance of
+objectively comparing the performance of competing algorithms.
+
+Original article
+Zoltán Ádám Mann and Máté Szabó: Which is the best algorithm for virtual machine
+placement optimization? Concurrency and Computation: Practice and Experience, volume
+29, issue 10, article e4083, DOI: 10.1002/cpe.4083, 2017
+
+1
+
+Received: 13 April 2016
+
+Revised: 17 December 2016
+
+Accepted: 22 December 2016
+
+DOI: 10.1002/cpe.4083
+
+RESEARCH ARTICLE
+
+Which is the best algorithm for virtual machine placement
+optimization?
+Zoltán Ádám Mann1
+
+Máté Szabó2
+
+1 University of Duisburg-Essen, Essen, Germany
+2 Budapest University of Technology and
+
+Economics, Budapest, Hungary
+Correspondence
+Zoltan Adam Mann, University of
+Duisburg-Essen, Gerlingstrasse 16, 45127
+Essen, Germany.
+Email: zoltan.mann@gmail.com
+Funding Information
+Hungarian Scientific Research Fund,
+Grant/Award Number: OTKA 108947;
+European Community’s 7th Framework
+Programme, Grant/Award Number:
+FP7/2007-2013, 610802; CloudWave
+
+Summary
+One of the key problems for Infrastructure-as-a-Service providers is finding the optimal allocation of virtual machines on the physical machines available in the provider’s data center. Since the
+allocation has significant impact on operational costs as well as on the performance of the accommodated applications, several algorithms have been proposed for the virtual machine placement
+problem. So far, no objective comparison of the proposed algorithms has been provided; therefore,
+it is not known which one works best or what factors influence the performance of the algorithms.
+In this paper, we present an environment and methodology for such comparisons and compare 7
+different algorithms using the proposed environment and methodology. Our results showcase differences of up to 66% between the effectiveness of different algorithms on the same real-world
+workload traces, thus underlining the importance of objectively comparing the performance of
+competing algorithms.
+KEYWORDS
+
+cloud computing, data center, Infrastructure-as-a-Service, virtual machines, VM consolidation,
+VM placement
+
+1
+
+INTRODUCTION
+
+migrations to get to the newly determined placement. This way, the
+provider can adapt resource usage to the workload’s resource needs: In
+
+Data center operators rely increasingly on virtualization technology
+
+times of low demand, the workload will be consolidated to a low num-
+
+to enable the safe coexistence of multiple applications or application
+
+ber of PMs, thereby saving a considerable amount of energy; in times
+
+components on the same physical machine (PM) in the form of virtual
+
+of high demand, the VMs will be spread across many more PMs so that
+
+machines (VMs). The ability to allocate several VMs on the same PM
+
+their resource requirements—and ultimately, service level objectives
+
+makes it possible to achieve a healthy utilization of the available phys-
+
+(SLOs)—are satisfied.7
+
+ical resources, thus amortizing the capital investments of purchasing
+them.1, 2
+
+The algorithm used by the operator for re-optimizing the placement
+of VMs has large impact on multiple vital metrics8 :
+
+The load of a VM is typically not constant, especially the CPU load
+is known to exhibit large variance over time.3, 4 Therefore, the optimal
+
+• Energy consumption. A good VM placement optimization algorithm
+
+allocation of VMs to PMs also changes dynamically. The importance
+
+achieves low overall DC energy consumption, mainly by consolidat-
+
+of dynamic VM placement is intensified by the high power consump-
+
+ing the VMs to as few PMs as possible (without violating perfor-
+
+tion of data centers (DCs). According to a recent study, DC electricity
+
+mance objectives, see below). Beside the number of active PMs,
+
+consumption in the USA alone will increase to 140 billion kWh per
+
+there are also some other levers for saving energy. In a typical
+
+year by 2020, costing US businesses 13 billion USD annually in elec-
+
+DC, the PMs are not homogeneous, eg, there can be older and
+
+tricity bills and causing the emission of nearly 100 million tons of CO2
+
+newer machines or machines of different type. As a result, PMs
+
+per year.5 Power consumption can be significantly reduced by consol-
+
+may have different power efficiency, ie, the energy consumption per
+
+idating the workload to the minimum number of necessary PMs and
+
+instruction can be different. A good VM placement optimization
+
+switching unneeded PMs into a low-power mode (eg, sleep or hiber-
+
+algorithm can take advantage of this by favoring PMs with better
+
+nate). Using live migration technology, VMs can be moved between
+
+power efficiency. Moreover, a PM’s power consumption is not con-
+
+PMs without noticeable downtime.6 Therefore, DC operators regularly
+
+stant but depends on the PM’s load.9 This fact, together with the
+
+re-optimize the mapping of VMs to PMs, and perform the necessary
+
+heterogeneity of PMs makes matters more complicated: Different
+
+Concurrency Computat: Pract Exper. 2017;29:e4083.
+https://doi.org/10.1002/cpe.4083
+
+wileyonlinelibrary.com/journal/cpe
+
+Copyright © 2017 John Wiley & Sons, Ltd.
+
+1 of 18
+
+2 of 18
+
+PMs may have different load-power characteristics; and hence, the
+question whether a given VM leads to more energy consumption on
+PM A or PM B may also depend on the 2 PMs’ load and thus indirectly
+also on the placement of the other VMs. A good VM placement optimization algorithm should take this into account and strive to reach
+the placement with overall minimal energy consumption.10
+• Application performance. Too aggressive consolidation may lead to
+congestion or overload of a PM’s resources. In that case, the accom-
+
+MANN AND SZABÓ
+
+• only different versions of the authors’ algorithm are compared
+against each other;
+• comparison is done only on very small or very special problem
+instances.
+It has to be noted though that in many cases, it is not at all easy to
+make a meaningful comparison with competing algorithms. The main
+obstacles are as follows:
+
+modated VMs cannot obtain the amount of resources they would
+
+• The VM placement problem has many different flavors with subtle
+
+need, resulting in performance degradation of the applications run-
+
+but important differences between them.17 Thus, different algo-
+
+ning in those VMs, which in turn likely leads to violation of SLOs.
+
+rithms may actually solve slightly different problems. It is not always
+
+Depending on the contractual terms between the provider and its
+
+obvious which algorithms solve exactly the same problem and can
+
+customers, SLO violation may also lead to a financial penalty for the
+
+thus be used for comparison.
+
+provider, but in any case, it adversely impacts customer satisfaction.
+
+• Only few of the proposed algorithms have either publicly available
+
+Therefore, a good VM placement optimization algorithm minimizes
+
+source code or are described in the respective papers in sufficient
+
+the frequency and duration of resource overload events.11
+
+detail to allow reproduction.
+
+It should be noted that, being on the level of Infrastructure-
+
+• It is generally not feasible to test VM placement algorithms on
+
+as-a-Service, application-level SLOs are not known to the VM place-
+
+large-scale real-world testbeds: Most authors do not have access to
+
+ment algorithms. Rather, they assume that, as long as VMs obtain the
+
+real DCs and even if they have, applying a placement algorithm that
+
+resources they request, SLOs will be satisfied.
+
+is still in an experimental state to a real DC would be dangerous.
+
+• Migration overhead. Although live migration minimizes the period in
+
+• In lieu of real-world test environments, workload traces of such
+
+which the VM is unresponsive to the sub-second range, the migra-
+
+could be used. However, there are very few publicly available traces.
+
+tion takes actually significantly longer and incurs non-negligible
+overhead during this time in terms of both network traffic and additional PM load,6, 12–14 also resulting in extra energy consumption.15
+Therefore, a good VM placement optimization algorithm has to minimize the number of migrations, ie, the number of VMs whose placement must be changed.
+As can be seen from the above, VM placement is an important optimization problem with far-reaching impact. Unfortunately, it is also
+a computationally very challenging problem: A sufficiently general
+formulation of the VM placement problem includes the well-known
+bin-packing problem as a special case; and hence, it is strongly
+NP-hard* , so that the existence of an efficient exact algorithm is very
+
+The few that are available are quite different from each other both
+in format and content, making it tedious to experiment with multiple
+traces.
+• There is no set of widely accepted benchmarks nor benchmarking
+methodology for the VM placement problem like in some of the more
+mature fields of computing.
+As a result, literally hundreds of algorithms have already been proposed for (different versions of) the VM placement problem, but currently, we have no way to tell how they compare to each other in
+solution quality.
+In this paper, we make a first step towards remedying this situation.
+Our contributions are as follows:
+
+unlikely.16 On the other hand, VM placement algorithms must be able to
+
+• We present a test environment for assessing the effectiveness of
+
+solve problem instances with thousands of PMs and VMs in reasonable
+
+VM placement algorithms. This test environment builds on an exist-
+
+time (in seconds or at most a few minutes) to be practical. As a con-
+
+ing cloud simulator but extends it with several further components
+
+sequence, most of the algorithms that have been proposed so far are
+
+that are needed for reproducible experiments, like converters for
+
+heuristics.
+
+publicly available workload traces and a workload generator.
+
+Since there is no theoretical guarantee on the effectiveness of most
+
+• Using this environment, we undertake a detailed empirical compar-
+
+of the proposed heuristics, empirical assessment and comparison of the
+
+ison of 7 algorithms that address the same version of the problem.
+
+algorithms should play an important role. Unfortunately, very few of
+
+Beyond the results of the comparison itself, it also exemplifies the
+
+the published works include a thorough empirical evaluation of their
+
+methodology that we propose for this purpose, thus it can be seen
+
+contribution, let alone an unbiased comparison of several competing
+
+as a methodological template.
+
+algorithms. The empirical evaluation in many papers is very limited, eg,
+
+Our measurement results reveal not only how the assessed algo-
+
+• completely lacks comparison to previously published algorithms;
+
+rithms compare to each other but also the factors that have the largest
+
+• comparison is made only with trivially noncompetitive algorithms
+
+influence on their performance. In some cases, we found differences
+
+(eg, random or round-robin placement or greedy algorithms that do
+
+of roughly 66% between the effectiveness of competing algorithms on
+
+not take into account some vital aspect of the problem);
+
+the same real-world workload trace, which again underlines the importance of such comparisons.
+In the remainder of the paper, we first review related work in
+
+* Strongly NP-hard means that the problem remains NP-hard even if the numbers appearing in
+
+Section 2. Section 3 presents our test environment, followed by the pre-
+
+it are constrained between polynomial bounds. Under the P ≠ NP assumption, this precludes
+even the existence of a pseudo-polynomial algorithm, ie, an algorithm the runtime of which is
+polynomial if restricted to problem instances with polynomially bounded numbers.
+
+sentation of our measurements in Section 4, while Section 5 concludes
+the paper.
+
+3 of 18
+
+MANN AND SZABÓ
+
+2
+
+RELATED WORK
+
+placement optimization problem is closely related to bin packing,
+for which some simple packing heuristics like first-fit (FF), best-fit
+
+In the last couple of years, there has been tremendous interest in
+
+(BF), and first-fit-decreasing (FFD) are known to deliver good results.
+
+resource optimization for cloud-computing systems. As described in
+
+Accordingly, several researchers have suggested to adapt such
+
+our recent survey,18 the problem formulations used in these works
+
+packing heuristics to the—more complex—VM placement optimiza-
+
+differ in several aspects. We mention here the most important ones:
+
+tion problem.11, 20, 21, 23, 25, 26, 28, 29, 67, 68 Metaheuristics have also
+
+• Resource types. Most works focus on the CPU as the most critical
+resource and characterize PMs in terms of their CPU capacity and
+VMs in terms of their CPU load.1, 19–30 On the other hand, some
+
+been suggested, eg, simulated annealing,69, 70 genetic algorithms,71
+particle swarm optimization,72 ant colony optimization,33 and
+biogeography-based optimization.73, 74 Some authors proposed pro-
+
+works make the problem multidimensional by also considering some
+
+prietary heuristics. Some of them are simple greedy algorithms42, 52
+
+other resource types like memory and I/O11, 31–38 or by differentiat-
+
+or straight-forward selection policies,19, 20, 43 others are rather
+
+ing between the CPU cores.39
+
+complex.26, 36
+
+• Considered VM set. Most works consider the placement of all VMs
+
+There have already been some attempts to compare the effective-
+
+in the DC at once.2, 20, 25, 26, 31, 36, 40–44 However, some also consider
+
+ness of multiple heuristics empirically; however, these were very lim-
+
+the placement of a single VM11, 45 or a set of VMs belonging to the
+
+ited in the coverage of algorithms, the used test data, or simply had
+
+same application.24, 46, 47
+
+different focus from our work. Shi et al compared 3 different versions
+
+• New placement vs re-optimization. For the given VM set (whether it
+
+of FFD-type packing and 3 versions of another greedy algorithm, using
+
+is the set of all VMs of the DC, a single VM, or the VMs of an applica-
+
+a randomly generated workload.43 Chowdhury et al compared 5 dif-
+
+tion), there are 2 different problem variants: Either the initial place-
+
+ferent packing heuristics, using a real-world workload trace.50 Villegas
+
+ment of the VMs needs to be
+
+determined11, 19, 31, 41, 46, 48
+
+or their
+
+existing placement is to be re-optimized to adapt it to the changed
+
+et al compared 8 simple policies for VM allocation but from a customer
+perspective.75
+
+resource requirements of the workload.2, 23, 25, 26, 29, 40, 42–44 The 2
+
+The efficacy of VM allocation algorithms is usually evaluated with
+
+problems are similar; the main difference is that re-optimization has
+
+the help of cloud simulators.76 The most widely used simulator is
+
+to take into account the cost of migrating a VM from its old host to a
+
+CloudSim,77 which models most of the aspects of a cloud system that
+
+new one, whereas this is no concern in the case of initial placement.
+
+are relevant for VM allocation. Beside being used as is, CloudSim
+
+• Objective(s). Minimizing energy consumption is a central objective
+
+also serves as the basis for some specialized simulation environments,
+
+in most works. However, there are differences in the level of detail
+
+like CloudReports,78 ContainerCloudSim,79 or a simulation of scaling
+
+that energy consumption is modeled with. Several works consider
+
+policies.80 A similarly well-established simulator is SimGrid81 : As a
+
+the number of active PMs as an indication of energy consumption.23, 24, 29, 34, 37, 41 Some also take into account the loaddependent dynamic power consumption of PMs.7, 21, 25, 26, 28, 33, 49–51
+Beyond energy consumption, a further objective in some works is
+to minimize the number of overloaded PMs because of the performance degradation that results from overloads.11, 21, 23, 24, 29, 52
+Some
+
+works
+
+also
+
+considered
+
+the
+
+cost
+
+of
+
+migration
+
+of
+
+VMs,7, 21, 24, 28, 34, 53 or reliability.54
+
+simulation framework for distributed systems, it has existed for many
+years, but it has only recently been extended with the means necessary to model VM placement.82 DISSECT-CF is another alternative that
+has appeared recently and promises improved simulation speed83 but
+is still in an earlier phase of its development. There are also simulators
+with special emphasis on the networking part of cloud computing, like
+GreenCloud.84
+
+• Service level agreement (SLA) handling. Many works assume that
+the SLO is to provide to each VM the amount of resources that it
+requires; therefore, they pack VMs into PMs so that the total
+resource demand of the VMs is not more than the capacity of
+the PM.44, 52, 55–58 Some relax this and allow overload of the PM
+resources but try to minimize the time when this happens20, 21, 29
+or the probability of such overload.59–62 There were also
+some attempts to handle SLOs beyond resource overload, like
+availability,63 execution time,9, 22 or response time,25, 26 and more
+generally, the connection between high-level user requirements and
+system-level SLOs.64
+
+3
+
+TEST ENVIRONMENT
+
+It is important to carefully arrange a well-defined environment for
+conducting the empirical assessment of algorithms, so that the experiments are reproducible and the results are conclusive. By “environment,” we mean not only the physical environment in which the tests
+are conducted but also all the tools, data, and settings that are necessary for the empirical assessment.
+Unfortunately, it is not feasible (at least not with reasonable costs)
+to test the effectiveness of VM allocation optimization algorithms in
+
+In terms of the proposed algorithmic techniques, some works sug-
+
+a large-scale real-world environment. Therefore, a cloud simulator
+
+gested exact methods but the majority applied heuristics. The pro-
+
+is used as the basis for our test environment. For this purpose, we
+
+posed exact methods rely almost always on some form of mathe-
+
+chose CloudSim,77 the most widely used cloud simulator. CloudSim is
+
+matic programming (eg, integer linear programming) and appropriate
+
+a mature and established simulation framework that simulates all enti-
+
+solvers.19, 25, 41, 65, 66 Unfortunately, these approaches do not scale to
+
+ties that we need—like PMs and VMs—mostly in sufficient detail and
+
+practical problem sizes.
+
+is open-source, so that it can be extended as necessary. As a bonus,
+
+Many different heuristics have been proposed from simple greedy
+algorithms to evolutionary methods. As already mentioned, the VM
+
+some algorithms already have an available CloudSim implementation
+that can be used directly in our experiments.
+
+4 of 18
+
+MANN AND SZABÓ
+
+replacing it with another simulator that is more appropriate for the
+given purpose.
+
+3.2
+
+Input file format
+
+Another limitation of CloudSim, which is more problematic with
+respect to our purposes, is how it handles input data of the simulation: Some parameters have to be hard-coded in the program, for some
+others, a simplistic file interface is provided. To conduct a large number of simulations with different input parameters in a reproducible
+manner, a structured way for specifying the inputs outside the code is
+indispensable.
+Overview of the proposed test environment. It uses
+CloudSim as central simulation engine and extends it with facilities to
+import data files of special format, to convert existing workload traces
+to the given format, and to generate test data in the given format.
+Different virtual machine placement algorithms can be compared on
+the input data by means of defined evaluation metrics
+FIGURE 1
+
+Figure 1 shows an overview of the test environment. The individual components are described in the next subsections according to the
+order of the numbering in the figure.
+
+For the sake of simplicity and easy portability, we decided to use a
+set of files for storing all input data, including PM and VM data, just like
+simulation parameters. Because of the central role of these files, special care must be taken when designing the file formats. In particular, we
+considered the following requirements towards the file format:
+• Easy experimentation with parameters. The most important
+requirement is that the file format should make it easy to run simulations with changed settings, eg, same set of VMs with different
+set of PMs or same set of VMs and PMs but with different workload
+patterns.
+
+3.1
+
+CloudSim
+
+• Reproducibility of experiments. The input files should contain every
+
+CloudSim was developed by researchers at the Cloud Computing and
+
+detail that is necessary to reproduce an experiment.
+
+on
+
+• Human readability. Although for the simulations themselves, the
+
+the basis of their previous grid simulator called GridSim.85 CloudSim
+
+files must be only machine-processable, but it is often useful if the
+
+is written in Java and its source code and additional resources are
+
+experimenter can check or change some parameters directly in the
+
+Distributed Systems Laboratory of the University of
+
+Melbourne77
+
+publicly available under the Lesser General Public License from the
+†
+
+project homepage. CloudSim is probably the most widely used cloud
+simulator.
+CloudSim comes with a built-in VM placement algorithm,
+implemented in the method PowerVmAllocationPolicyMigrationAb-
+
+files, without needing some special tools.
+• File sizes. Workload traces can easily become very large (many gigabytes), which can make storing and manipulating them rather cumbersome. Therefore, one must be careful not to add much overhead
+in terms of file size.
+
+stract.optimizeAllocation and the methods that it calls for host
+
+• Extensibility. As mentioned before, the VM placement problem has
+
+overload detection and similar subtasks. This algorithm was developed
+
+many different versions, which need partly different input data (eg,
+
+by Beloglazov et al.20, 21 To change CloudSim’s VM placement behavior,
+
+some require a communication matrix describing the intensity of
+
+this method (or some of the other methods that it calls) needs to be
+
+data transfer between pairs of VMs, whereas others do not). Also,
+
+overridden.
+
+the available workload traces have somewhat different scope (see
+
+Also, some other VM placement algorithms that have been proposed
+
+Section 3.4), eg, some include only CPU load values, others also
+
+in the literature have a publicly available CloudSim implementation. But
+
+include load values for other resources like memory or disk. There-
+
+unfortunately, they are not necessarily implemented using the same
+CloudSim version, eg, the algorithm of Lago et al is implemented in
+CloudSim 2.0,27 whereas the algorithm of Beloglazov et al is implemented in version 3.0.20 For our experiments, we used CloudSim 3.0.3,
+and ported algorithm implementations from earlier versions where
+required.
+
+fore, the file formats must be chosen in such a way that—beyond a
+small set of mandatory data—further data may be present optionally. It should also be easy to add further fields in the future, without
+invalidating past experiments and their input files.
+Unfortunately, existing formats like the Standard Workload Format
+
+CloudSim also has some limitations. Most notably, networking
+
+(SWF)‡ or the Grid Workload Format (GWF)§ were created for some-
+
+aspects are modeled only rudimentarily: Bandwidth is considered to
+
+what different purposes and hence do not fulfill our requirements. For
+
+be a characteristic of PMs, and there is no way to model the band-
+
+example, SWF and GWF files do not contain dynamic VM information
+
+width of individual network elements like switches or links. For this rea-
+
+(temporal evolution of resource load).
+
+son, there are extensions to CloudSim that add networking support.86
+
+After having analyzed the above requirements, the data available in
+
+For our current purpose, these limitations are not problematic, but if
+
+the form of workload traces (see also Section 3.4), and the data require-
+
+algorithms for more sophisticated problem variants are to be com-
+
+ments of the algorithms to be tested (see Section 3.6), we came to
+
+pared, this may require substantial modifications to CloudSim or even
+‡ http://www.cs.huji.ac.il/labs/parallel/workload/swf.html
+† http://www.cloudbus.org/cloudsim/
+
+§ http://gwa.ewi.tudelft.nl/grid-workload-format/
+
+5 of 18
+
+MANN AND SZABÓ
+
+Excerpt from a YAML file describing PM data. Each element
+specifies a PM type with its capabilities (number of CPU cores,
+capacity of the CPU cores, memory size, and disk capacity) and gives
+the list of available PMs of the given type
+FIGURE 2
+
+the conclusion that different types of input should be in separate files
+and need different formats. Specifically, we differentiate among the
+following types of input data:
+
+FIGURE 3 Excerpt from a YAML file describing static VM data. Each
+element specifies a VM type with its resource requirements (requested
+number of CPU cores, requested capacity of the CPU cores, requested
+memory size, and requested disk capacity) and timing attributes (start
+and end times) and gives the list of VMs of the given type
+
+• PM characteristics. In a typical DC, there are many PMs of the same
+type, that have the same characteristics. Therefore, our input file
+
+requesting the VM. The actually used capacities are stored in the
+
+consists of the description of PM types. For each PM type, the list
+
+dynamic part, see below.
+
+of PMs of the given type is given (individual PMs are identified by a
+
+• VMs’
+
+dynamic
+
+characteristics.
+
+This
+
+part
+
+consists
+
+of
+
+the
+
+unique ID). Moreover, the characteristics of the PM type are given;
+
+time-dependent resource usage values of the VMs. In most cloud
+
+currently, these are
+
+systems, such values are sampled at regular time intervals, eg, every
+5 minutes. If the number of VMs is high and the trace is collected
+
+a. number of cores;
+
+over a long period of time, the resulting amount of data can be volu-
+
+b. CPU capacity per core, in MIPS (million instructions per second);
+
+minous; therefore, we chose to use a low-overhead binary format in
+
+c. RAM capacity, in MB;
+
+this case. The data are stored in blocks, where each block consists
+
+d. disk capacity, in MB.
+
+of a header and a body. The header contains the following pieces of
+
+To ensure both machine processability and human readability, we
+
+information:
+
+use the YAML format¶ to store these data. An example can be seen
+
+a. ID of the VM
+
+in Figure 2. The use of YAML also gives us the necessary flexibility: If
+
+b. sample period in ms
+
+some elements are missing or if some elements are added later, the
+
+c. number of samples in the block
+
+files remain syntactically correct.
+• VMs’ static characteristics. Similarly as for PMs, a file describes the
+static attributes of the VMs in YAML format. Again, it is possible to
+have several instances of the same type, so the file actually specifies
+VM types, and gives the list of IDs of specific VMs belonging to each
+type. The attributes stored for each VM type are
+
+The body of the block contains for each sample 1 byte that stores
+the usage value at the given point of time, as percentage of the
+requested capacity. An example is shown in Figure 4. The same format can be used for any resource type, with the restriction that a
+single file contains only data for 1 resource type (eg, 1 file for CPU
+and another 1 for memory). As a convention, the resource type is
+
+a. start time of the VM, from the starting point of the simulation,
+in ms;
+b. end time of the VM, from the starting point of the simulation,
+in ms;
+
+given in the filename; more importantly, the mapping of resource
+types to files is specified in the configuration file (see below under
+“parameters of the test”).
+• Optionally: PM and VM topologies. For some versions of the VM
+
+c. number of cores;
+
+placement problem, the topology of the PMs (and potentially also
+
+d. requested CPU capacity per core, in MIPS;
+
+other elements of the DC network, eg, switches) and/or the commu-
+
+e. requested RAM capacity, in MB;
+
+nication relationships among VMs may be of interest. For this pur-
+
+f. requested disk capacity, in MB.
+
+pose, appropriate formats already exist, so that there is no need to
+define a new format. Specifically, the BRITE format‖ that CloudSim
+
+An example is given in Figure 3. Note that this file stores only
+the requested capacities, as specified by the user at the time of
+
+¶ http://www.yaml.org/spec/1.2/spec.html
+
+already uses for specifying network topologies is adequate for our
+purposes.
+
+‖ http://www.cs.bu.edu/brite/user_manual/node29.html
+
+6 of 18
+
+MANN AND SZABÓ
+
+FIGURE 4 Example for a block of dynamic VM data, consisting of the ID of the VM, the sample period, the number of samples in the block, and the
+list of actual usage values (samples)
+
+FIGURE 5
+
+Example configuration file, specifying the location of the PM data, static VM data, and dynamic VM data files
+TABLE 1
+
+Summary of the used real-world workload traces
+
+Origin
+
+Virtualized
+
+Size
+
+Duration
+
+PM data
+
+Static VM data
+
+Dynamic VM data
+CPU Memory Disk
+
+PlanetLab
+
+yes
+
+1000 VMs
+
+10 d
+
+no
+
+no
+
+yes
+
+no
+
+no
+
+Google
+
+no
+
+12000 PMs
+
+29 d
+
+yes
+
+yes
+
+yes
+
+yes
+
+yes
+
+Bitbrains
+
+yes
+
+1750 VMs
+
+4 mo
+
+no
+
+no
+
+yes
+
+yes
+
+no
+
+• Parameters of the test. One more file is used which contains the
+
+We are aware of only 3 sets of workload traces that are publicly
+
+parameters that drive the given test case. This configuration file
+
+available and relevant for VM placement algorithms. In the following,
+
+must be easily readable and editable, so once again we settled
+
+we describe these and their integration into our test environment. A
+
+for using YAML. In our current implementation, the configuration
+
+comparison of the 3 datasets is shown in Table 1.
+
+file only contains the names of the files that contain the PM data,
+the static VM data, and the dynamic VM data for each considered
+resource type; see Figure 5 for an example. If necessary, further
+
+3.4.1
+
+PlanetLab–CoMon
+
+parameters can also be configured here, eg, the algorithms to run
+
+PlanetLab is a global initiative for fostering research in distributed com-
+
+and their parameters.
+
+puting. It consists of more than 1300 physical nodes worldwide that
+run several colocated but isolated user tasks (so-called slices) using
+
+3.3
+
+Importer
+
+After having defined the formats of the input files, the next step is to
+enable CloudSim to import files of these formats. For this purpose, we
+
+virtualization.87
+CoMon was a monitoring system developed to gather and process
+data from PlanetLab nodes.88 The server of the CoMon project col-
+
+had to extend it with a new importer module. To read and process YAML
+
+lected a lot of useful information—including the temporal change of
+
+files, we used the SnakeYAML Java library.** For the files describing
+
+resource needs—from about 600 nodes for several years. Unfortu-
+
+dynamic VM data, we had to implement our own reader, but this was
+
+nately, the server broke down, also effecting the end of the CoMon
+
+easy as the file format is very simple.
+
+project. As far as we know, the archive of the CoMon project is not
+available anywhere anymore, except for the CPU usage data from
+
+3.4
+
+Workload traces and converters
+
+To obtain practically relevant results, it is important to use realistic test
+
+10 days and about 1000 VMs, which were used by Beloglazov et al
+for their experiments21 and were conserved in the folder examples/workload/planetlab of CloudSim.
+
+data. This is especially true for the dynamic VM data, because real VM
+
+Beloglazov et al were focusing on CPU load and hence, conserved
+
+resource consumption is known to be oscillating in highly non-trivial
+
+only these data. These are stored in simple text files: 1 file per VM, in
+
+ways.3 Understanding how different VM placement algorithms react to
+
+which each line contains a single number, the CPU load in the given sam-
+
+typical workload change patterns is therefore of key importance.
+
+ple, as a percentage of the requested capacity. It was straight-forward
+
+Unfortunately, few relevant workload traces are publicly available,
+
+to create a converter that transfers these data into our format for
+
+because of privacy concerns and business competition. Although some
+
+dynamic VM data. Note however that PM data or static VM data are
+
+grid workload traces were made publicly available in the past (eg, in
+
+not available in this trace, so that these must be replaced by artificially
+
+the Parallel Workloads Archive, the Grid Workloads Archive, or the
+
+generated data (just as Beloglazov et al did in their experiments).
+
+Grid Observatory), but these are unfortunately mostly not usable for
+our purposes because they do not stem from a virtualized environment
+and/or lack data that would be vital for the purposes of VM allocation.
+
+3.4.2
+
+Google cluster data
+
+In 2011, Google made a dataset publicly available, which contains
+** http://bitbucket.org/asomov/snakeyaml
+
+resource and workload data from a cluster of roughly 12 000 PMs
+
+7 of 18
+
+MANN AND SZABÓ
+
+in a period of 29 days.3 For data protection reasons, the published
+
+dynamic VM data from the dataset and fills only a small part of static
+
+dataset contains only relative numbers and all strings are obfuscated.
+
+VM data (VM IDs and starting times).
+
+Fortunately, this does not hinder the usage of the dataset for our
+purposes.
+In contrast to the other available traces, the Google dataset
+also contains some information about the PMs. For each PM,
+its—normalized—CPU and memory capacity are given.
+The workload is comprised of jobs; each job consists of 1 or more
+tasks. Tasks are independently running software units and also the
+dynamic data are given for the tasks; therefore, the notion of tasks may
+correspond to VMs in our terminology. However, there is no evidence
+that the tasks in the Google dataset are actually VMs. In fact, given that
+most of the tasks have tiny resource consumption in the trace, it is likely
+that they are not VMs on their own. Nevertheless, the temporal development of the tasks’ resource needs may give important insight that
+can also be useful in the context of VM placement. But to have useful
+input for VM placement, too small tasks may have to be filtered out or
+aggregated to some bigger units.
+For each task, the requested CPU, memory, and disk capacity are
+given. More importantly, the actual CPU, memory, and disk size of the
+tasks was regularly measured with some sample period. (In most cases,
+the sample period is 5 minutes, but there are some deviations.) Within
+the sample period, resource load was measured every second, but the
+trace contains only the maximum and average values for each sample
+period, plus, for the CPU load, also 1 randomly selected measurement
+result for each sample period.
+
+3.5
+
+Workload generator
+
+Given the sparse availability of real-world test data, a useful option is
+to generate test data by means of an appropriate generator. This has 2
+major advantages: (1) we can generate as much test data as needed and
+(2) by appropriate parametrization of the generator, we can create test
+data tailored for specific experiments.
+More specifically, we are targeting 2 distinct aims, leading to 2 distinct testing scenarios with differing test data requirements. In the
+first scenario, we would like to test the VM placement algorithms on
+realistic workloads. For this purpose, we need to be able to generate workload traces that are similar to the real-world ones. In the
+second scenario, we would like to test how the algorithms react to
+situations that rarely occur in practice, hence may not appear in the
+specific real-world traces that are readily available but might still happen so that it is important to understand how the different algorithms
+behave in such cases. For this purpose, we need to be able to generate workloads with given patterns, eg, periodic load changes with
+configurable frequency, slowly or quickly increasing/decreasing load
+etc. In accordance with these 2 scenarios, we implemented 2 different mechanisms: a realistic workload generator and an artificial
+pattern generator.
+
+The conversion from Google’s data into the format described in
+Section 3.2 involves, beside the obvious syntactic changes, also some
+further transformation:
+
+3.5.1
+
+Realistic workload generator
+
+Finding out what characterizes realistic workload traces is an interest• converting the relative numbers in the trace into absolute numbers
+by assuming some given maximum values
+• removing tasks the resource usage of which is below a given threshold
+
+ing problem on its own. Yin et al identify burstiness and self-similarity
+as the key characteristics of realistic workloads.89 Minh et al found
+5 such characteristics: long-range dependence, periodicity, temporal
+burstiness, bag-of-tasks behavior, and correlation between runtime
+
+• filtering dynamic VM data to focus on a shorter time frame (eg,
+1 day), with the aim of reducing data size
+
+and parallelism.90
+To generate workloads with such characteristics, a good possibility
+is to use Markov-modulated Poisson processes.89, 91 In this approach,
+requests are generated by Poisson processes with different intensity.
+
+3.4.3
+
+Each intensity corresponds to a state of a Markov chain, with given tran-
+
+Bitbrains
+
+A Dutch service provider specialized in managed hosting for enterprise customers, Bitbrains released a dataset containing workload
+data for altogether 1750 VMs from its hosting center, representing
+business-critical enterprise applications.4
+
+In contrast to the 2 datasets
+
+sition probabilities. In the simplest case, the Markov chain consists of
+only 2 states: a low-intensity and a high-intensity state. This is useful
+to model a normal load level versus sudden peaks in demand (the flash
+crowd effect).
+
+described previously, the Bitbrains trace contains absolute resource
+consumption values.
+The trace is available from the Grid Workloads Archive (but unlike
+
+3.5.2
+
+Artificial pattern generator
+
+the other traces in the Archive, it is in a proprietary format, not in the
+
+To test the effect of specific workload patterns, we also implemented a
+
+GWF). It is comprised of 1 file per VM, describing mainly the VM’s
+
+customizable pattern generator. It can generate functions of the vari-
+
+dynamic data, sampled every 5 minutes. These data include the used
+
+able T (time), consisting of the following building blocks:
+
+CPU and memory of the VM at the given point of time, as well as disk
+
+• basic arithmetic operations
+
+and network I/O throughput values.
+
+• random numbers sampled uniformly from [0,1]
+
+Physical machine data are completely missing. Static VM data are
+
+• trigonometric functions
+
+not provided explicitly, but the starting time and the number of CPU
+
+• periodic repetition of a function on a given interval (see Figure 6A)
+
+cores can be extracted from the available data. However, the requested
+
+• periodic merging of 2 functions on given intervals (see Figure 6B)
+
+capacities are not available. Accordingly, our converter mostly creates
+
+• concatenation of 2 functions on given intervals (see Figure 6C)
+
+8 of 18
+
+FIGURE 6
+
+MANN AND SZABÓ
+
+Example patterns that can be generated with the proposed artificial pattern generator
+
+FIGURE 7 Syntax for specifying workload patterns to be generated by the proposed artificial pattern generator. The meaning of the “p,” “m,” and
+“c” operators is exemplified in Figure 6
+
+To facilitate experimentation, we defined a simple language for
+describing workload patterns and implemented a parser to interpret such descriptions. The syntax of this language is defined using
+Backus-Naur form in Figure 7.
+
+rithms is in the same order of magnitude, it makes sense to compare the
+quality of the results they deliver.
+The general flow of the investigated algorithms is depicted in
+Algorithm 1. The algorithms differ mainly in the order in which the VMs
+are considered (the PopNextVm() method in Line 3 of the pseudo-code)
+
+3.6
+
+and the order in which the PMs are considered for a given VM (the Pop-
+
+Algorithms
+
+The VM placement algorithms to be tested must be implemented
+in CloudSim, overriding its default placement algorithm implemented
+
+in
+
+the
+
+method
+
+NextPm() method in Line 7 of the pseudo-code). The resulting overview
+of the considered algorithms can be seen in Table 2. More details are
+provided in the following paragraphs.
+
+PowerVmAllocationPolicyMigrationAb-
+
+stract.optimizeAllocation and the methods that it calls. The algorithms
+must take as input the current placement of VMs and return a new,
+optimized placement. There is no other restriction whatsoever on the
+algorithms that can be tested.
+However, in our experiments, we decided to focus on 1 family of
+VM placement algorithms that can be meaningfully compared with
+each other. First, we had to make sure that each of the tested algorithms solves the same version of the VM placement problem. As discussed in Section 2, this is not so easy since many different versions of
+the problem have been considered. Therefore, we settled for a basic
+version of the problem that can be seen as the “lowest common denominator” of the versions typically addressed by VM placement algorithms. Using the taxonomy of Mann (2015),17 we chose the Single-DC |
+1D(CPU) | Reopt(full) | Min(TotStatDynPow) variant, meaning that all PMs
+are in a single DC, the CPU is considered as the only resource type, the
+placement of all VMs of the DC must be reoptimized, and the primary
+objective is to reduce overall energy consumption.
+
+3.6.1
+
+Beloglazov
+
+As explained in Section 2, also many different types of algorithms
+
+CloudSim’s default VM placement behavior is Beloglazov’s algorithm.21
+
+have been suggested for VM placement. The most popular has been the
+
+Beside the placement algorithm (called modified best-fit-decreasing)
+
+family of packing heuristics inspired by algorithms for bin packing or
+
+itself, Beloglazov et al also experimented with different ways of deter-
+
+other related problems (where some of these heuristics are also proven
+
+mining the set of VMs to migrate (see Line 1 in Algorithm 1). The basic
+
+to deliver near-optimal results16 ). Since the running time of these algo-
+
+idea is to remove all VMs from underloaded PMs so that they can be
+
+9 of 18
+
+MANN AND SZABÓ
+
+Overview of the investigated algorithms (Name is based on the name of the first author)
+
+TABLE 2
+
+Name
+
+Paper
+
+Selecting the next VM
+
+Selecting the next PM
+
+Beloglazov
+
+21
+
+Highest CPU load
+
+Smallest increase in energy consumption
+
+Lago
+
+27
+
+Highest CPU load
+
+Highest energy efficiency (plus further rules for tie-breaking)
+
+Guazzone
+
+25
+
+Highest CPU load
+
+Highest free CPU capacity (plus further rules)
+
+Chowdhury
+
+50
+
+Highest CPU load
+
+Highest increase in energy consumption
+
+Shi – PU
+
+43
+
+Highest CPU load on the PM with lowest utilization ratio
+
+Highest utilization ratio
+
+Shi – AC
+
+43
+
+Highest CPU load on the PM with lowest absolute capacity
+
+Highest absolute capacity
+
+Calcavecchia
+
+92
+
+VMs of the most loaded PM
+
+All other PMs
+
+Abbreviations: AC, AbsoluteCapacity algorithm; PU, PercentageUtil algorithm.
+
+switched off and remove some of the VMs from the overloaded PMs
+
+Beloglazov et al: It prefers the PM with the highest increase in energy
+
+so that they will not be overloaded. This requires determining when
+
+consumption. While this may seem counter-intuitive, the authors argue
+
+to consider a PM to be overloaded and which VMs to remove from an
+
+that also in case of bin packing, the worst-fit heuristic has its merits
+
+overloaded PM. Beloglazov et al evaluated several possible approaches.
+
+over the more intuitive best-fit heuristic because worst-fit decisions
+
+They found that the best results are achieved if overload detection is
+
+may lead to better situations in the future.
+
+performed using local regression (see Section 4.2.6 for more details)
+and for overload mitigation, the VMs with smallest estimated migration
+
+3.6.5
+
+time are selected until the PM is not overloaded anymore.
+
+Similar to Chowdhury et al, also Shi et al implemented and evaluated
+
+Shi
+
+multiple packing algorithms.43 Also here, the comparison was rather
+
+3.6.2
+
+Lago
+
+limited, and there was no clear winner. We selected 2 algorithms that
+
+The Lago Allocator specifies a sophisticated set of rules for selecting
+
+performed quite well, the PercentageUtil (Shi – PU) and the Abso-
+
+the next PM for the current VM:
+
+luteCapacity (Shi – AC) algorithms. In both cases, the PMs are sorted
+
+• The principal criterion is to choose the PM with the highest energy
+efficiency, where energy efficiency is the ratio of CPU capacity to
+peak power consumption.
+• In case of a tie, the PM with the lowest energy consumption is
+selected.
+• If there is still a tie, the PM with highest CPU utilization is chosen.
+• If there is still a tie, the PM with highest CPU capacity is chosen.
+
+according to the given metric (utilization and capacity, respectively),
+and then the algorithm iteratively attempts to free the smallest PM by
+trying to migrate its VMs to the biggest PMs.
+
+3.6.6
+
+Calcavecchia
+
+The algorithm of Calcavecchia et al, named Backward Speculative
+Placement, is slightly different from the scheme of Algorithm 1,
+because it tentatively checks the migration of all VMs of the most
+
+For selecting the next VM, the Lago Allocator does not specify any
+
+loaded PM to all other PMs, as opposed to greedily selecting the
+
+rule, hence the default behavior of CloudSim applies, which means that
+
+first appropriate PM.92 From the possible migrations, it selects the
+
+the VMs are considered in decreasing order of CPU load.
+
+one which, based on historic workload data, leads to the smallest risk of demand dissatisfaction, using a scoring mechanism called
+
+3.6.3
+
+Guazzone
+
+“demand risk.”
+
+In the first place, Guazzone et al approached the VM placement
+problem with mixed-integer nonlinear programming methods but
+
+3.7
+
+then resorted to a best-fit-decreasing heuristic because of scalability
+
+The last step in the envisioned experimentation process is to collect the
+
+issues.25 Physical machines are sorted according to 3 criteria:
+
+appropriate metrics from the simulation runs and evaluate the algo-
+
+• Powered-on PMs precede powered-off PMs.
+• Within the 2 groups based on power state, PMs are sorted in
+decreasing order of free CPU capacity.
+• In case of a tie, PMs are selected in increasing order of idle power
+consumption.
+
+Evaluation
+
+rithms based on these metrics.
+CloudSim does a good job in logging all important events of a simulation and in calculating several aggregated performance metrics for each
+simulation run. These metrics include
+• total energy consumption;
+• SLA violation time per active host (SLATAH), showing the average
+percentage of time in which host utilization was 100%. The intuition
+
+3.6.4
+
+Chowdhury
+
+Chowdhury et al implemented and compared multiple VM placement
+algorithms, although the comparison was very limited, using only a
+
+behind this metric is that the saturation of resources indicates that
+VMs do not receive the required amount of resources, leading to SLA
+violations;
+
+single workload and DC configuration.50 From those algorithms, we
+
+• performance degradation due to migrations, showing the average
+
+take one that performed well in their comparison (there was no clear
+
+performance degradation, relative to host capacity, caused by migra-
+
+winner), named modified worst-fit-decreasing VM placement.
+
+tions. For this calculation, CloudSim assumes that the performance
+
+Regarding PM selection, it does the opposite from the algorithm of
+
+of a VM degrades by 10% of its CPU utilization during migration.21
+
+10 of 18
+
+MANN AND SZABÓ
+
+TABLE 3
+
+Baseline configuration, defined by Beloglazov et al21
+
+VMs’ requested CPU sizes, MIPS:
+
+2500, 2000, 1000, 500
+
+PM CPU capacities, MIPS:
+
+1860, 2660
+
+PM power models:
+
+HP ProLiant ML110 G4, HP ProLiant ML110 G5
+
+Workload:
+
+PlanetLab trace
+
+Overload detection:
+
+Local regression
+
+TABLE 4
+
+Overview of the performed experiments
+
+Aspect
+
+Test cases
+
+Workload
+
+PlanetLab
+Bitbrains
+Google cluster
+Periodic (all VMs’ load changes with the same periodicity)
+Markov-modulated Poisson
+
+CPU load of VMs
+
+Constant 10% of requested capacity
+Constant 50% of requested capacity
+Constant 100% of requested capacity
+
+VM size
+
+Smaller than in the baseline configuration
+According to the baseline configuration
+Bigger than in the baseline configuration
+
+PM capacity
+
+All PMs have the same capacity
+2 different PM types with differing capacity
+5 different PM types with differing capacity
+
+PM power characteristics
+
+All PMs have the same power characteristics
+Multiple different power characteristics
+Power characteristics with small slope
+Power characteristics with large slope
+
+Host overload detection
+
+Static threshold
+Local regression
+
+We extended CloudSim to write these metrics into a structured file
+
+aspect can be investigated in isolation. This approach also allowed us to
+
+(in tab-separated-values format), which we can then post-process and
+
+keep the number of experiments manageable: Had we decided to test
+
+analyze using a standard spreadsheet program. In our analysis, we use
+
+all possible combinations of these aspects, this would have lead to an
+
+the above 3 metrics to characterize the performance of the algorithms.
+
+explosion of test results, making it harder to extract the effect of the
+
+This allows us to obtain a clear picture about the strengths and weak-
+
+individual aspects.
+
+nesses of each algorithm (eg, one algorithm may provide low energy
+consumption, but at the cost of many overloads, while for another
+algorithm it can be vice versa). In general, we can assume that different
+
+4.2
+
+Test results
+
+algorithms realize different trade-offs among these metrics.
+In the following, we present the results of all experiments in tabular
+form. For each test case (ie, for each row in the following tables), the
+
+4
+
+COMPARISON
+
+best result is marked bold, as well as any other results within 5% of the
+best one. In each case, smaller numbers are better.
+
+In our experiments, we compared the 7 algorithms presented in
+Section 3.6, using the tools and methodology outlined above.
+
+Algorithm runtimes are not reported because all investigated algorithms were very fast: All runtimes were well below 1 second on a PC
+with Intel Core I3-3110M processor running at 2.4 GHz.
+
+4.1
+
+Test configurations
+4.2.1
+
+As a baseline configuration, we reused the configuration defined by
+Beloglazov et al.21 Details of this configuration are shown in Table 3.
+In each experiment, we aimed at investigating the effect of a dif-
+
+Different workload traces
+
+The effect of different workload traces on the 3 investigated metrics
+are shown in Tables 5–7. The data reveal some interesting facts:
+
+ferent aspect on the effectiveness of the algorithms. Table 4 shows an
+
+• Concerning energy consumption, the algorithm of Guazzone and
+
+overview of the tested aspects and the set of test cases for each tested
+
+the 2 algorithms of Shi deliver quite consistently the best results.
+
+aspect; each of these tests is explained in more detail in the correspond-
+
+Also consistently, the algorithms of Beloglazov and Lago deliver the
+
+ing subsections of Section 4.2. In each experiment, only the given aspect
+
+highest costs, whereas the algorithms of Chowdhury and Calcavec-
+
+is changed from the baseline configuration, so that the effects of each
+
+chia are somewhere in the middle. Interestingly, these clusters and
+
+11 of 18
+
+MANN AND SZABÓ
+
+Effect of different workload traces on energy consumption [kWh]
+
+TABLE 5
+
+Workload
+
+Beloglazov
+
+Lago
+
+Chowdhury
+
+Guazzone
+
+PlanetLab
+
+151.37
+
+Bitbrains
+
+152.37
+
+Shi – PU
+
+Shi – AC
+
+Calcavecchia
+
+154.87
+
+134.38
+
+115.29
+
+117.85
+
+115.72
+
+126.80
+
+150.06
+
+132.04
+
+130.20
+
+130.21
+
+130.29
+
+136.46
+
+70.40
+
+69.60
+
+65.24
+
+59.82
+
+66.71
+
+59.88
+
+63.37
+
+Periodic
+
+710.67
+
+679.90
+
+673.37
+
+533.55
+
+556.49
+
+533.35
+
+598.75
+
+Markov
+
+201.77
+
+205.21
+
+162.85
+
+142.06
+
+146.28
+
+142.42
+
+156.74
+
+Google cluster
+
+TABLE 6
+
+Effect of different workload traces on SLATAH (SLA violation time per active host)
+
+Workload
+
+Beloglazov
+
+Lago
+
+Chowdhury
+
+Guazzone
+
+Shi – PU
+
+Shi – AC
+
+Calcavecchia
+
+PlanetLab
+
+7.07%
+
+7.00%
+
+5.10%
+
+4.05%
+
+5.00%
+
+3.86%
+
+4.11%
+
+4.30%
+
+3.54%
+
+1.58%
+
+1.80%
+
+2.18%
+
+1.77%
+
+2.22%
+
+12.18%
+
+11.56%
+
+11.04%
+
+11.76%
+
+10.36%
+
+11.91%
+
+10.82%
+
+Periodic
+
+4.24%
+
+3.72%
+
+13.95%
+
+4.16%
+
+5.69%
+
+4.16%
+
+11.83%
+
+Markov
+
+10.13%
+
+8.98%
+
+9.84%
+
+8.67%
+
+9.72%
+
+8.55%
+
+9.55%
+
+Bitbrains
+Google cluster
+
+TABLE 7
+
+Effect of different workload traces on PDM (performance degradation due to migrations)
+
+Workload
+
+Beloglazov
+
+Lago
+
+Chowdhury
+
+Guazzone
+
+Shi – PU
+
+Shi – AC
+
+Calcavecchia
+
+PlanetLab
+
+0.10%
+
+Bitbrains
+
+0.08%
+
+0.13%
+
+0.05%
+
+0.04%
+
+0.04%
+
+0.04%
+
+0.06%
+
+0.07%
+
+0.03%
+
+0.02%
+
+0.03%
+
+0.03%
+
+Google cluster
+
+0.04%
+
+0.00%
+
+0.00%
+
+0.00%
+
+0.00%
+
+0.00%
+
+0.00%
+
+0.00%
+
+Periodic
+
+0.09%
+
+0.09%
+
+0.10%
+
+0.07%
+
+0.07%
+
+0.07%
+
+0.11%
+
+Markov
+
+0.13%
+
+0.17%
+
+0.10%
+
+0.08%
+
+0.08%
+
+0.08%
+
+0.12%
+
+their order remain stable across the different workloads. The only
+
+Specifically, we tested 10%, 50%, and 100% of the requested capacity.
+
+variability that can be observed relates to the algorithms of
+
+To save space, we present only the energy consumption and SLA viola-
+
+Chowdhury and Calcavecchia: Their performance both relative to
+
+tion tables for this and the following experiments. (But the full set of
+
+each other and to the other clusters shows some oscillation. But the
+
+result data is available from the repository mentioned in Section 4.3.)
+
+overall impact of the workload on the order of the algorithms’ results
+is smaller than expected.
+• There is a difference of up to 44% in total energy consumption
+between the best and the worst performing algorithm.
+
+The results of this experiment are shown in Tables 8 (energy
+consumption) and 9 (SLA violations). Compared with the previous
+experiment, the differences between the performance of the algorithms are now much lower, and 5 of the 7 investigated algorithms
+
+• Concerning SLATAH, the results are rather inconclusive. Interest-
+
+return near-minimal results. This is no surprise since in these test
+
+ingly, the algorithms that perform well relating to energy con-
+
+cases, the VMs’ load is constant (ie, not changing with time), which
+
+sumption, often have also good SLATAH values (eg, Guazzone and
+
+significantly limits the optimization possibilities for the placement algo-
+
+Shi – AC) and algorithms with high energy consumption also have
+
+rithms. This also explains why the SLATAH values are much lower here
+
+high SLATAH (especially Beloglazov—the algorithm of Lago delivers
+
+than in the previous experiment.
+
+good SLATAH on the artificial workloads but worse results on the
+real-world traces).
+
+It is important to note the changes in the order of the algorithms’
+results. For example, Lago now performs significantly better than
+
+• Concerning PDM (performance degradation due to migrations),
+
+Beloglazov, unlike in the previous experiment where they per-
+
+again the algorithm of Guazzone and the 2 algorithms of Shi deliver
+
+formed very similarly. Since the previous experiment used realistic
+
+consistently the best results. The worst result is up to 4 times as high
+
+workload traces, whereas this one uses constant—and hence
+
+as the best one.
+
+unrealistic—workload, this finding shows how dangerous it is to
+
+Contrary to our expectation, it is not true that an algorithm that performs well on one metric would necessarily perform poorly on the other
+metrics. Rather, we have a cluster of 3 algorithms that perform clearly
+better than the other algorithms on 2 metrics, without a noticeable
+
+extrapolate algorithm effectiveness from an experiment with unrealistic workload to realistic ones. (That is, based on this experiment one
+would be tempted to consider Lago clearly better than Beloglazov, but
+as we have already seen, this is not true for realistic workloads.)
+
+disadvantage on the third metric.
+
+4.2.3
+
+VM size
+
+In this experiment, we slightly changed the requested VM sizes com-
+
+4.2.2
+
+CPU load of VMs
+
+pared with the baseline configuration. Recall that in the baseline con-
+
+In this test, we used a time-independent workload for each VM, which
+
+figuration, the requested VMs have sizes of 2500, 2000, 1000, and 500
+
+was specified as a given percentage of the VM’s requested capacity.
+
+MIPS. In the “Small” test case, we changed this to 2200, 1800, 800, and
+
+12 of 18
+
+MANN AND SZABÓ
+
+TABLE 8
+
+Effect of the virtual machines’ CPU load on energy consumption [kWh]
+
+CPU load
+
+Beloglazov
+
+Lago
+
+Chowdhury
+
+Guazzone
+
+Shi – PU
+
+Shi – AC
+
+Calcavecchia
+
+10%
+
+126.10
+
+126.30
+
+119.07
+
+116.25
+
+116.25
+
+116.25
+
+121.06
+
+50%
+
+632.01
+
+595.61
+
+594.63
+
+576.16
+
+604.93
+
+576.16
+
+635.39
+
+100%
+
+1471.44
+
+1207.51
+
+1464.35
+
+1202.62
+
+1509.92
+
+1202.62
+
+1506.87
+
+TABLE 9
+
+Effect of the virtual machines’ CPU load on SLATAH (SLA violation time per active host)
+
+CPU load
+
+Beloglazov
+
+Lago
+
+Chowdhury
+
+Guazzone
+
+10%
+
+1.46%
+
+50%
+
+0.12%
+
+100%
+
+0.02%
+
+Shi – PU
+
+Shi – AC
+
+Calcavecchia
+
+1.14%
+
+0.05%
+
+0.03%
+
+0.03%
+
+0.03%
+
+0.04%
+
+0.07%
+
+0.03%
+
+0.03%
+
+0.03%
+
+0.03%
+
+0.03%
+
+0.00%
+
+0.00%
+
+0.01%
+
+0.00%
+
+0.01%
+
+0.00%
+
+400 MIPS; in the “Big” test case, we changed it to 2500, 2100, 1500,
+
+83%). For some algorithms (eg, Beloglazov), increasing capacity hetero-
+
+and 800 MIPS. Since the workload is given as percentage with respect
+
+geneity leads to an increasing number of SLA violations, whereas for
+
+to the requested size, these changes directly translate into smaller and
+
+others (eg, Shi – AC), exactly the opposite is true. Remarkably, the algo-
+
+bigger actual VM sizes, respectively.
+
+rithms Guazzone and Shi – AC perform very well for the highly hetero-
+
+The results on energy consumption are shown in Table 10. As
+expected, the energy consumption grows with increasing VM size for
+
+geneous case in terms of both energy consumption and SLA violations
+at the same time.
+
+each algorithm. The effect is similar on each algorithm, so that their
+
+PM size heterogeneity is a feature that a VM placement algorithm
+
+order is hardly affected. The algorithm Shi – PU performs slightly worse
+
+can take advantage of by preferring PMs with higher capacity. From the
+
+than Shi – AC (actually, the same applies to most of the previous tests
+
+results, it is evident that some algorithms do this better than others.
+
+as well, although the difference is typically marginal), which pushes
+
+For example, the algorithm of Lago performs relatively poorly for homo-
+
+its result a little bit above the 5% limit for both the “Small” and the
+
+geneous PM sizes, but with growing PM size heterogeneity, its results
+
+“Big” test cases. However, the clustered structure of the algorithms’
+
+are becoming better relative to the others. This is consistent with the
+
+performance can still be observed.
+
+findings of Lago et al.27
+
+As shown in Table 11, the effect of the VMs’ size on SLA violations is
+rather small and lacks an easily recognizable pattern. There are some
+slight changes in the order of the algorithms, but the clustered structure of the algorithms’ performance remains also here.
+Altogether, this experiment did not provide much new insight. The
+consequence for future similar studies is that it is safe to use a fixed set
+of requested VM sizes: The results gained this way will probably also
+hold for other requested VM sizes.
+
+4.2.5
+
+PM power characteristics
+
+In this experiment, we vary the power consumption characteristics of
+the PMs, ie, how their power consumption depends on their CPU load.
+In the baseline configuration, 2 kinds of PMs are used with different
+power characteristics, shown as Baseline1 and Baseline2 in Figure 8.
+Now, we introduce 3 further configurations.†† In the configurations
+termed Flat and Steep, all PMs share the same power characteristic,
+which is flatter or steeper than in the baseline, respectively, as shown in
+
+4.2.4
+
+PM capacity
+
+Figure 8. Finally, the Mix configuration uses 3 different power charac-
+
+In this experiment, we test the effects of the heterogeneity of the PMs’
+
+teristics, namely Baseline1, Flat, and Steep (with one third of the PMs
+
+sizes (capacities). In each test case, 800 PMs are available. In the first
+
+having each characteristic).
+
+test case, each PM has capacity 2700. In the second test case, which
+
+The corresponding results on energy consumption are shown in
+
+is the baseline configuration, half of the PMs has capacity 1860, the
+
+Table 14. As can be seen, the Flat and Steep configurations lead to sim-
+
+other half has capacity 2660. In the last test case, 5 PM types are used
+
+ilar relative results as the baseline configuration. We attribute this to
+
+with capacities 1500, 1860, 2000, 2660, and 3000, and there are equal
+
+the homogeneity of the power characteristics of all PMs in the Flat and
+
+number of PMs of each type.
+
+Steep configurations, allowing no extra optimization. In the Baseline
+
+The results on energy consumption are shown in Table 12. As can be
+
+configuration, there are 2 different power characteristics, introduc-
+
+seen, the difference between the algorithms’ results is smallest in the
+
+ing some power consumption heterogeneity, but their slopes are very
+
+homogeneous case: Several algorithms achieve results very near to the
+
+similar, so that the difference in power efficiency is rather small.
+
+best one, and the worst result is only 27% worse than the best. With
+increasing heterogeneity of the PMs’ capacity, the differences between
+the performance of the algorithms grow: with 5 different PM types, the
+algorithms of Guazzone and “Shi – AC” emerge as clear winners, with
+the worst results being over 66% higher than theirs.
+
+However, the Mix configuration introduces a new level of power
+consumption heterogeneity because it contains PMs with significantly
+differing power efficiencies. As a result, the order of the algorithms’
+performance changes considerably. The algorithm Shi – AC continues to
+deliver excellent results, but the other high performer so far, Guazzone,
+
+The results on SLA violations, shown in Table 13, are similar (although
+more noisy) to the energy consumption results. Also here, the difference between the worst and best result is significantly larger for the
+most heterogeneous case (146%) than in the 2 other cases (90% and
+
+†† The 2 baseline power characteristics model real-world servers. The newly introduced power
+characteristics are fictive: They were chosen so as to be able to study the effect of different
+power efficiencies, while at the same time having on average approximately the same power
+consumption as the baseline to foster comparability.
+
+13 of 18
+
+MANN AND SZABÓ
+
+TABLE 10
+
+CPU size
+
+Beloglazov
+
+Lago
+
+Chowdhury
+
+Small
+
+134.52
+
+137.13
+
+120.60
+
+Baseline
+
+151.37
+
+154.87
+
+134.38
+
+Big
+
+168.40
+
+175.56
+
+153.79
+
+134.00
+
+TABLE 11
+
+CPU load
+
+FIGURE 8
+
+Effect of the virtual machines’ size on energy consumption [kWh]
+Guazzone
+
+Shi – PU
+
+Shi – AC
+
+Calcavecchia
+
+99.75
+
+108.18
+
+100.18
+
+110.13
+
+115.29
+
+117.85
+
+115.72
+
+126.80
+
+141.14
+
+134.55
+
+147.94
+
+Effect of the virtual machines’ size on SLATAH (SLA violation time per active host)
+Beloglazov
+
+Lago
+
+Chowdhury
+
+Guazzone
+
+Shi – PU
+
+Small
+
+6.95%
+
+6.93%
+
+Baseline
+
+7.07%
+
+7.00%
+
+Big
+
+6.87%
+
+6.77%
+
+Shi – AC
+
+Calcavecchia
+
+3.65%
+
+3.75%
+
+5.10%
+
+4.05%
+
+4.31%
+
+3.68%
+
+3.26%
+
+5.00%
+
+3.86%
+
+4.54%
+
+4.05%
+
+4.11%
+
+4.58%
+
+3.96%
+
+3.64%
+
+Different power consumption characteristics of PMs used in the “PM power characteristics” experiment
+
+fails to exploit the opportunities inherent in heterogeneous power effi-
+
+if its load is higher than a predefined threshold. The adaptive method
+
+ciency and returns results with almost 13% higher costs than the mini-
+
+considers beside the current load level also the temporal develop-
+
+mum. In contrast, Beloglazov’s algorithm shows excellent performance
+
+ment of the load: Based on the last couple of measurements, it can
+
+on this test case, unlike in most test cases so far. On one hand, this is
+
+make a prediction about the anticipated load and decide on this basis
+whether the PM should be considered overloaded. In the terminology
+
+not surprising since this algorithm explicitly considers power efficiency
+when selecting the next PM; on the other hand, it is interesting to note
+that this excellent performance was not at all visible in the baseline
+configuration—which was also defined by Beloglazov et al—where
+power efficiencies hardly differed. It can also be seen that Chowdhury’s
+algorithm, the PM selection of which is the opposite from Beloglazov’s,
+performs poorly on this test case, with costs 41% higher than the
+minimum.
+
+of Mann(2015),18 the second approach integrates load prediction into
+VM placement.
+Beloglazov et al experimented with several adaptive overload detection methods and reported that, for their algorithm, local regression
+leads to the best results—and, in particular, better results than the
+static approach.21 Local regression works by interpolating a polynomial function on the last couple of measured values and then using this
+
+It is important to observe that this test case—heterogeneous PM
+
+polynomial for predicting the next value. In this case, the last 10 measurements of the CPU load are used to interpolate a linear function, this
+
+power characteristics—is the only one that completely disrupts the
+
+linear function is used to predict the CPU load for the next period, which
+
+algorithm clusters and their order which seemed to be quite consistent
+
+in turn is used to determine whether the PM should be considered
+
+in the previous experiments.
+
+overloaded.
+
+Concerning SLA violations, shown in Table 15, the impact of the
+
+In Table 16, it can be seen that, in terms of energy consumption, actu-
+
+power consumption characteristics is clearly much smaller. Most algo-
+
+ally all algorithms benefit from load prediction. However, it is interest-
+
+rithms do not show any sensitivity in this respect.
+
+ing to note that the relative improvement of the algorithms can be quite
+different: In particular, the results of the best-performing algorithms
+improve only marginally (eg, 3% in the case of Guazzone), whereas
+
+4.2.6
+
+Host overload detection
+
+the improvement is much larger for the less successful algorithms (eg,
+
+In this experiment, a static and an adaptive overload detection method
+
+18% in the case of Beloglazov). A possible explanation is that the best
+
+are compared. The static method simply considers a PM overloaded
+
+algorithms per se react quickly to the important changes in the work-
+
+14 of 18
+
+MANN AND SZABÓ
+
+Effect of the physical machine (PM) sizes’ heterogeneity on energy consumption [kWh]
+
+TABLE 12
+
+PM sizes
+
+Beloglazov
+
+Lago
+
+Chowdhury
+
+Guazzone
+
+Shi – PU
+
+Shi – AC
+
+Calcavecchia
+
+1
+
+112.74
+
+125.16
+
+98.86
+
+98.33
+
+98.54
+
+98.85
+
+99.55
+
+2
+
+151.37
+
+154.87
+
+134.38
+
+115.29
+
+117.85
+
+115.72
+
+126.80
+
+5
+
+170.61
+
+136.19
+
+148.95
+
+102.46
+
+118.32
+
+102.61
+
+129.25
+
+Effect of the physical machine (PM) sizes’ heterogeneity on SLATAH (SLA violation
+time per active host)
+
+TABLE 13
+
+PM sizes
+
+Beloglazov
+
+Lago
+
+Chowdhury
+
+Guazzone
+
+Shi – PU
+
+1
+
+5.18%
+
+5.77%
+
+2
+
+7.07%
+
+7.00%
+
+5
+
+8.86%
+
+6.88%
+
+Shi – AC
+
+Calcavecchia
+
+3.06%
+
+4.04%
+
+5.10%
+
+4.05%
+
+3.94%
+
+4.06%
+
+3.04%
+
+5.00%
+
+3.86%
+
+4.11%
+
+3.72%
+
+3.80%
+
+4.51%
+
+3.60%
+
+4.87%
+
+Effect of physical machine power characteristics on energy consumption [kWh]
+
+TABLE 14
+
+Power models
+
+Beloglazov
+
+Lago
+
+Chowdhury
+
+Guazzone
+
+Shi – PU
+
+Shi – AC
+
+Calcavecchia
+
+Baseline
+
+151.37
+
+Flat
+
+104.91
+
+154.87
+
+134.38
+
+115.29
+
+117.85
+
+115.72
+
+126.80
+
+117.64
+
+112.31
+
+91.14
+
+94.71
+
+91.57
+
+Steep
+
+106.97
+
+125.90
+
+133.39
+
+142.50
+
+115.41
+
+119.65
+
+115.78
+
+Mix
+
+134.43
+
+104.21
+
+115.26
+
+144.15
+
+115.15
+
+107.68
+
+102.09
+
+120.06
+
+Effect of physical machine power characteristics on SLATAH (SLA violation time per active
+
+TABLE 15
+
+host)
+Power model
+Baseline
+
+Beloglazov
+
+Lago
+
+Chowdhury
+
+Guazzone
+
+Shi – PU
+
+Shi – AC
+
+Calcavecchia
+
+7.07%
+
+7.00%
+
+5.10%
+
+4.05%
+
+5.00%
+
+3.86%
+
+4.11%
+4.11%
+
+Flat
+
+5.49%
+
+6.17%
+
+4.21%
+
+4.05%
+
+5.00%
+
+3.86%
+
+Steep
+
+5.51%
+
+6.13%
+
+4.15%
+
+4.05%
+
+5.00%
+
+3.86%
+
+4.11%
+
+Mix
+
+5.58%
+
+6.17%
+
+4.19%
+
+4.00%
+
+5.00%
+
+3.86%
+
+4.11%
+
+TABLE 16
+
+Effect of the host overload detection technique on energy consumption [kWh]
+
+Overload detection
+
+Beloglazov
+
+Lago
+
+Chowdhury
+
+Guazzone
+
+Static threshold
+
+183.61
+
+176.42
+
+139.49
+
+118.97
+
+Local regression
+
+151.37
+
+154.87
+
+134.38
+
+115.29
+
+TABLE 17
+
+Shi – PU
+
+Shi – AC
+
+Calcavecchia
+
+122.83
+
+119.05
+
+131.05
+
+117.85
+
+115.72
+
+126.80
+
+Effect of the host overload detection technique on SLATAH (SLA violation time per active host)
+
+Power model
+
+Beloglazov
+
+Lago
+
+Chowdhury
+
+Guazzone
+
+Shi – PU
+
+Shi – AC
+
+Calcavecchia
+
+Static threshold
+
+6.84%
+
+6.84%
+
+5.14%
+
+4.45%
+
+4.80%
+
+4.46%
+
+4.90%
+
+Local regression
+
+7.07%
+
+7.00%
+
+5.10%
+
+4.05%
+
+5.00%
+
+3.86%
+
+4.11%
+
+load, whereas other algorithms react more slowly and hence benefit
+
+suffer a slight degradation. Interestingly, the effect of load predic-
+
+from load prediction. Interestingly, the 3 best algorithms yield signifi-
+
+tion on SLA violations seems to be inverse to its effect on energy
+
+cantly better results even without load prediction than the remaining 4
+
+consumption: It tends to further improve the algorithms that per-
+
+algorithms with load prediction.
+
+form well even without load prediction, while slightly deteriorating
+
+Another interesting consequence of the above phenomenon is that
+
+the less effective algorithms. Thus, load prediction actually increases
+
+the use of local regression decreases the variability in the algorithms’
+
+the difference between the best and worst result in terms of SLATAH
+
+results: While the difference between the best and worst result is 54%
+
+from 54% to 83%. Nevertheless, the order of the algorithms is hardly
+
+with the static threshold, the use of local regression decreases it to
+
+affected.
+
+34%. However, the clusters of algorithms and their order does not
+change.
+In terms of SLA violations, the effect of load prediction is less
+
+4.3
+
+Availability
+
+pronounced. As shown in Table 17, some algorithms (eg, Calcavec-
+
+All our source code, configuration files, and results are publicly avail-
+
+chia) benefit from load prediction, whereas others (eg, Beloglazov)
+
+able from https://github.com/zoltanmann/vm-alloc-comparison.
+
+15 of 18
+
+MANN AND SZABÓ
+
+5
+
+CONCLUSIONS
+
+• Which algorithm is the most suitable for a given data center depends
+on both the available hardware capabilities and the characteristics
+
+5.1
+
+Summary of results
+
+In this paper, we presented an environment for experimentally evaluating and comparing the performance of VM placement algorithms.
+The environment, which is publicly available, builds on the popular
+open-source CloudSim toolkit and extends it with a standardized input
+data format, converters for publicly available workload traces, and
+workload generation facilities.
+
+of the requested VMs. In particular, our findings show that the capabilities of the PMs in the data center play a key role—they seem to
+be even more important than the VMs’ typical load patterns. Existing research (both algorithm design and evaluation) mostly focused
+on workload characteristics, but our results reveal that PM characteristics are at least as important, so that more research effort will
+be needed here.
+
+Using this evaluation environment, we performed a thorough comparison of 7 algorithms that solve the same version of the VM placement problem. The main findings of this evaluation are:
+
+5.3
+
+Barriers to practical adoption
+
+• Contrary to our expectation, it is not true that an algorithm that
+
+The investigated algorithms constitute academic work, and while work-
+
+performs well on one metric would perform poorly on the other met-
+
+ing with them, we identified several aspects that need to be addressed
+
+rics. Rather, we have a cluster of 3 algorithms that perform clearly
+
+before these algorithms can be applied in practical settings:
+
+better than the other algorithms on 2 metrics, without a noticeable
+disadvantage on the third metric.
+• The energy consumption of the worst result can be as much as 66%
+higher than the minimum. The differences with respect to the other
+metrics can be even much higher.
+• With growing heterogeneity of the PMs—with respect to both
+capacity and power efficiency—the differences between the algorithms’ performance in terms of energy consumption also increase.
+In terms of SLA violations, capacity heterogeneity also leads to a
+wider gap between the best and worst performing algorithm (but the
+heterogeneity of PM power consumption characteristics does not
+show a similar effect on SLA violations).
+• The heterogeneity of the PMs also significantly influences the performance of the algorithms relative to each other. In contrast,
+
+• SLA handling is limited to minimizing the time during which PMs
+are overloaded. In reality, SLAs can be much more sophisticated (eg,
+penalties may depend on the length of continuous SLO violations or
+on user-level metrics like response time).
+• Most algorithms do not support VM properties like priorities,
+anti-colocation constraints, or the need for PMs with special hardware or software.
+• Most algorithms assume that there are enough PMs to host all VMs.
+In practice, this may not always be the case, and hence VM placement
+algorithms need policies to handle over-subscription situations, for
+example, by temporarily pausing some VMs.
+• Nontrivial interactions between VMs (eg, the noisy neighbor phenomenon) or on the PM level (eg, overheating) are not considered.
+
+different workload patterns had less influence on the relative performance of the algorithms.
+• Load prediction improves the performance of all algorithms, but it
+primarily does so for the weaker algorithms. The best algorithms
+yield significantly better results even without load prediction than
+the remaining algorithms with load prediction.
+• Although there is no clear winner, but generally the algorithms
+Guazzone and Shi – AC gave the best results.
+
+5.4
+
+Future work
+
+Concerning our own work, also several further research directions are
+promising. These include the investigation of other types of algorithms
+(eg, population-based meta-heuristics) and other problem variants (eg,
+considering multiple resource types or data transfer among VMs).
+ACKNOWLEDGMENTS
+
+5.2
+
+Consequences
+
+This work was partially supported by the Hungarian Scientific Research
+
+Based on these findings, several conclusions arise for VM placement
+
+Fund (grant OTKA 108947) and by the European Community’s 7th
+
+researchers and practitioners:
+
+Framework Programme (FP7/2007-2013) under grant 610802 (Cloud-
+
+• The big differences between the algorithms’ performance highlight
+
+Wave).
+
+the importance of thorough empirical studies. Instead of comparing a new algorithm against trivial heuristics, as has been often done
+in the literature, a comparison with real competitors is much more
+meaningful. An open competition for VM placement algorithms
+would further foster the development of high-quality algorithms.
+• Simplifying assumptions made by algorithm designers, such as
+homogeneity of PMs or ignorance of PMs’ power consumption characteristics degrade algorithm performance in realistic settings. In
+particular, the heterogeneity of PMs in terms of capacity and power
+efficiency needs to be taken into account when designing a VM
+placement algorithm.
+
+REFERENCES
+1. Beloglazov A, Buyya R. Managing overloaded hosts for dynamic consolidation of virtual machines in cloud data centers under quality of
+service constraints. IEEE T Parall Distr. 2013;24(7):1366–1379.
+2. He S, Guo L, Ghanem M, Guo Y. Improving resource utilisation in the
+cloud environment using multivariate probabilistic models. IEEE 5th
+International Conference on Cloud Computing, Honolulu, Hawaii, USA;
+2012:574–581.
+3. Reiss C, Tumanov A, Ganger GR, Katz RH, Kozuch MA. Heterogeneity
+and dynamicity of clouds at scale: Google trace analysis. Proceedings
+of the 3rd ACM Symposium on Cloud Computing, San Jose, California;
+2012:Article 7.
+
+16 of 18
+
+MANN AND SZABÓ
+
+4. Shen S, van Beek V, Iosup A. Statistical characterization of
+business-critical workloads hosted in cloud datacenters. 15th
+IEEE/ACM International Symposium on Cluster, Cloud and Grid Computing,
+Shenzhen, China; 2015:465–474.
+
+25. Guazzone M, Anglano C, Canonico M. Exploiting VM migration for
+the automated power and performance management of green cloud
+computing systems. 1st International Workshop on Energy Efficient Data
+Centers, Madrid, Spain; 2012:81–92.
+
+5. Natural Resources Defense Council. Scaling up energy efficiency across the data center industry: Evaluating key
+drivers
+and
+barriers.
+http://www.nrdc.org/energy/files/
+data-center-efficiency-assessment-IP.pdf; 2014. Accessed on 17
+December 2016.
+
+26. Jung G, Hiltunen MA, Joshi KR, Schlichting RD, Pu C. Mistral:
+Dynamically managing power, performance, and adaptation cost in
+cloud infrastructures. IEEE 30th International Conference on Distributed
+Computing Systems, Genova, Italy; 2010:62–73.
+
+6. Strunk A. Costs of virtual machine live migration: A survey. 8th IEEE
+World Congress on Services, Honolulu, Hawaii, USA; 2012:323–329.
+7. Svärd P, Li W, Wadbro E, Tordsson J, Elmroth E. Continuous datacenter consolidation. IEEE 7th International Conference on Cloud Computing
+Technology and Science, Vancouver, Canada; 2015:387–396.
+8. Pires FL, Baran B. A virtual machine placement taxonomy. Proceedings
+of the 15th IEEE/ACM International Symposium on Cluster, Cloud and Grid
+Computing, Shenzhen, China; 2015:159–168.
+9. Rodero I, Viswanathan H, Lee EK, Gamell M, Pompili D, Parashar
+M. Energy-efficient thermal-aware autonomic management of
+virtualized HPC cloud infrastructure. J Grid Comput. 2012;10(3):
+447–473.
+10. Bartók D, Mann ZÁ. A branch-and-bound approach to virtual machine
+placement. Proceedings of the 3rd HPI Cloud Symposium “Operating the
+Cloud,” Potsdam, Germany; 2015:49–63.
+11. Tomás L, Tordsson J. An autonomic approach to risk-aware data center
+overbooking. IEEE Trans Cloud Comput. 2014;2(3):292–305.
+12. Verma A, Kumar G, Koller R, Sen A. CosMig: Modeling the impact
+of reconfiguration in a cloud. 19th International Symposium on Modeling, Analysis and Simulation of Computer and Telecommunication Systems,
+Singapore; 2011:3–11.
+13. Galloway M, Loewen G, Vrbsky S. Performance metrics of virtual
+machine live migration. Proceedings of the 8th IEEE International Conference on Cloud Computing, New York, USA; 2015:637–644.
+14. Elsaid ME, Meinel C. Multiple virtual machines live migration performance modelling – VMware vMotion based study. Proceedings of the
+IEEE International Conference on Cloud Engineering, Berlin, Germany;
+2016:212–213.
+15. Maio VD, Kecskemeti G, Prodan R. An improved model for live migration in data centre simulators. Proceedings of the 16th IEEE/ACM International Symposium on Cluster, Cloud and Grid Computing, Cartagena,
+Colombia; 2016:527–530.
+16. Mann ZÁ. Approximability of virtual machine allocation: much harder
+than bin packing. Proceedings of the 9th Hungarian-Japanese Symposium on Discrete Mathematics and Its Applications, Fukuoka, Japan;
+2015:21–30.
+17. Mann ZÁ. A taxonomy for the virtual machine allocation problem. International Journal of Mathematical Models and Methods in Applied Sciences.
+2015;9:269–276.
+18. Mann ZÁ. Allocation of virtual machines in cloud data centers – a survey of problem models and optimization algorithms. ACM Comput Surv.
+2015;48(1):Article 11.
+19. Batista DM, da Fonseca NLS, Miyazawa FK. A set of schedulers for grid
+networks. Proceedings of the 2007 ACM Symposium on Applied Computing, Seoul, Korea; 2007:209–213.
+
+27. Lago DGd, Madeira ERM, Bittencourt LF. Power-aware virtual machine
+scheduling on clouds using active cooling control and DVFS. Proceedings of the 9th International Workshop on Middleware for Grids, Clouds and
+e-science, Lisbon, Portugal; 2011:Article 2.
+28. Verma A, Ahuja P, Neogi A. pMapper: power and migration cost
+aware application placement in virtualized systems. Middleware
+2008 – Proceedings of the ACM/IFIP/USENIX 9th International Middleware
+Conference, Leuven, Belgium; 2008:243–264.
+29. Verma A, Dasgupta G, Nayak TK, De P, Kothari R. Server workload
+analysis for power minimization using consolidation. Proceedings of
+the 2009 USENIX Annual Technical Conference, San Diego, California;
+2009:355–368.
+30. Hieu NT, Francesco MD, Ylä-Jääski A. Virtual machine consolidation
+with usage prediction for energy-efficient cloud data centers. Proceedings of the 8th IEEE International Conference on Cloud Computing,
+New York, USA; 2015:750–757.
+31. Biran O, Corradi A, Fanelli M, Foschini L, Nus A, Raz D, et al. A stable network-aware VM placement for cloud systems. Proceedings of
+the 12th IEEE/ACM International Symposium on Cluster, Cloud and Grid
+Computing, Ottawa, Canada; 2012:498–506.
+32. Bossche Rvd, Vanmechelen K, Broeckhove J. Cost-optimal scheduling in hybrid IaaS clouds for deadline constrained workloads. IEEE
+3rd International Conference on Cloud Computing, Miami, Florida, USA;
+2010:228–235.
+33. Gao Y, Guan H, Qi Z, Hou Y, Liu L. A multi-objective ant colony system
+algorithm for virtual machine placement in cloud computing. J Comput
+Syst Sci. 2013;79:1230–1242.
+34. Gmach D, Rolia J, Cherkasova L, Kemper A. Resource pool management: Reactive versus proactive or let’s be friends. Comput Netw.
+2009;53(17):2905–2922.
+35. Korupolu M, Singh A, Bamba B. Coupled placement in modern data centers. IEEE International Symposium on Parallel and Distributed Processing,
+Rome, Italy; 2009:1–12.
+36. Mishra M, Sahoo A. On theory of VM placement: Anomalies in
+existing methodologies and their mitigation using a novel vector
+based approach. IEEE International Conference on Cloud Computing,
+Washington, DC, USA; 2011:275–282.
+37. Zhu X, Young D, Watson BJ, et al. 1000 islands: an integrated approach
+to resource management for virtualized data centers. Cluster Comput.
+2009;12(1):45–57.
+38. Mishra M, Bellur U. De-fragmenting the cloud. Proceedings of the 16th
+IEEE/ACM International Symposium on Cluster, Cloud and Grid Computing,
+Cartagena, Colombia; 2016:511–520.
+39. Mann ZÁ. Multicore-aware virtual machine placement in cloud data
+centers. IEEE Trans Comput. 2016;65(11):3357–3369.
+
+20. Beloglazov A, Abawajy J, Buyya R. Energy-aware resource allocation
+heuristics for efficient management of data centers for cloud computing. Future Gener Comp Syst. 2012;28:755–768.
+
+40. Das R, Kephart JO, Lefurgy C, Tesauro G, Levine DW, Chan H.
+Autonomic multi-agent management of power and performance in
+data centers. Proceedings of the 7th International Joint Conference on
+Autonomous Agents and Multiagent Systems: Industrial Track, Estoril,
+Portugal; 2008:107–114.
+
+21. Beloglazov A, Buyya R. Optimal online deterministic algorithms and
+adaptive heuristics for energy and performance efficient dynamic
+consolidation of virtual machines in cloud data centers. Concurrency
+Computat: Pract Exper. 2012;24(13):1397–1420.
+
+41. Ribas BC, Suguimoto RM, Montano RANR, Silva F, de Bona L,
+Castilho MA. On modelling virtual machine consolidation to
+pseudo-Boolean constraints. 13th Ibero-American Conference on AI,
+Cartagena de Indias, Colombia; 2012:361–370.
+
+22. Bittencourt LF, Madeira ERM, da Fonseca NLS. Scheduling in hybrid
+clouds. IEEE Commun Mag. 2012;50(9):42–47.
+
+42. Salehi MA, Krishna PR, Deepak KS, Buyya R. Preemption-aware energy
+management in virtualized data centers. 5th International Conference on
+Cloud Computing, Honolulu, Hawaii, USA; 2012:844–851.
+
+23. Bobroff N, Kochut A, Beaty K. Dynamic placement of virtual machines
+for managing SLA violations. 10th IFIP/IEEE International Symposium on
+Integrated Network Management, Munich, Germany; 2007:119–128.
+24. Breitgand D, Epstein A. SLA-aware placement of multi-virtual
+machine elastic services in compute clouds. 12th IFIP/IEEE International Symposium on Integrated Network Management, Dublin, Ireland;
+2011:161–168.
+
+43. Shi L, Furlong J, Wang R. Empirical evaluation of vector bin packing algorithms for energy efficient data centers. IEEE Symposium on
+Computers and Communications, Split, Croatia; 2013:9–15.
+44. Xiao Z, Song W, Chen Q. Dynamic resource allocation using virtual
+machines for cloud computing environment. IEEE Trans Parallel Distrib
+Syst. 2013;24(6):1107–1117.
+
+MANN AND SZABÓ
+
+17 of 18
+
+45. Srikantaiah S, Kansal A, Zhao F. Energy aware consolidation for cloud
+computing. Proceedings of the 2008 Conference on Power Aware Computing and Systems, San Diego, California; 2008:Article 10.
+
+65. Guenter B, Jain N, Williams C. Managing cost, performance, and reliability tradeoffs for energy-aware server provisioning. Proceedings of
+IEEE INFOCOM, Shanghai, P.R. China; 2011:1332–1340.
+
+46. Jayasinghe D, Pu C, Eilam T, Steinder M, Whalley I, Snible E. Improving performance and availability of services hosted on IaaS clouds
+with structural constraint-aware virtual machine placement. IEEE
+International Conference on Services Computing, Washington, DC, USA;
+2011:72–79.
+
+66. Zhang Z, Hsu C-C, Chang M. CoolCloud: A practical dynamic virtual
+machine placement framework for energy aware data centers. Proceedings of the 8th IEEE International Conference on Cloud Computing, New
+York, USA; 2015:758–765.
+
+47. Teng F, Yu L, Li T, Deng D, Magoules F. Energy efficiency of
+VM consolidation in IaaS clouds. J Supercomput. 2016: doi:
+10.1007/s11227–016–1797–5.
+
+67. Li W, Tordsson J, Elmroth E. Virtual machine placement for predictable
+and time-constrained peak loads. Proceedings of the 8th International
+Conference on Economics of Grids, Clouds, Systems, and Services, Paphos,
+Cyprus; 2011:120–134.
+
+48. Ahvar E, Ahvar S, Mann ZÁ, Crespi N, Garcia-Alfaro J, Glitho R.
+CACEV: a cost and carbon emission-efficient virtual machine placement method for green distributed clouds. Proceedings of the 13th
+IEEE International Conference on Services Computing, San Francisco, USA;
+2016:275–282.
+
+68. Rampersaud S, Grosu D. Sharing-aware online algorithms for virtual machine packing in cloud environments. Proceedings of the 8th
+IEEE International Conference on Cloud Computing, New York, USA;
+2015:718–725.
+
+49. Khosravi A, Garg SK, Buyya R. Energy and carbon-efficient placement
+of virtual machines in distributed cloud data centers. European Conference on Parallel Processing, Aachen, Germany; 2013:317–328.
+50. Chowdhury MR, Mahmud MR, Rahman RM. Study and performance analysis of various VM placement strategies. 16th
+IEEE/ACIS International Conference on Software Engineering, Artificial
+Intelligence, Networking and Parallel/Distributed Computing, Takamatsu,
+Japan; 2015: doi: 10.1109/SNPD.2015.7176234
+51. Mann ZÁ. Interplay of virtual machine selection and virtual
+machine placement. Proceedings of the 5th European Conference on
+Service-Oriented and Cloud Computing, Vienna, Austria; 2016:137–151.
+52. Wood T, Shenoy P, Venkataramani A, Yousif M. Sandpiper: Black-box
+and gray-box resource management for virtual machines. Comput Netw.
+2009;53(17):2923–2938.
+
+69. Hyser C, McKee B, Gardner R, Watson BJ. Autonomic virtual machine
+placement in the data center. Technical Report, HP Laboratories; 2008.
+70. Marotta A, Avallone S. A simulated annealing based approach for
+power efficient virtual machines consolidation. Proceedings of the 8th
+IEEE International Conference on Cloud Computing, New York, USA;
+2015:445–452.
+71. Gmach D, Rolia J, Cherkasova L, Belrose G, Turicchi T, Kemper A. An
+integrated approach to resource pool management: Policies, efficiency
+and quality metrics. IEEE International Conference on Dependable Systems and Networks, Anchorage, Alaska; 2008:326–335.
+72. Li H, Zhu G, Cui C, Tang H, Dou Y, He C. Energy-efficient migration and
+consolidation algorithm of virtual machines in data centers for cloud
+computing. Computing. 2016;98(3):303–317.
+
+53. Radhakrishnan A, Kavitha V. Energy conservation in cloud data centers by minimizing virtual machines migration through artificial neural
+network. Computing. 2016: doi: 10.1007/s00607–016–0499–4
+
+73. Zheng Q, Li R, Li X, Wu J. A multi-objective biogeography-based
+optimization for virtual machine placement. Proceedings of the 15th
+IEEE/ACM International Symposium on Cluster, Cloud and Grid Computing,
+Shenzhen, China; 2015:687–696.
+
+54. Sedaghat M, Wadbro E, Wilkes J, Luna SD, Seleznjev O, Elmroth E.
+DieHard: reliable scheduling to survive correlated failures in cloud
+data centers. Proceedings of the 16th IEEE/ACM International Symposium
+on Cluster, Cloud and Grid Computing, Cartagena de Indias, Colombia;
+2016:52–59.
+
+74. Li R, Zheng Q, Li X, Wu J. A novel multi-objective optimization scheme
+for rebalancing virtual machine placement. IEEE 9th International
+Conference on Cloud Computing, San Francisco, USA; 2016: https://
+cis.temple.edu/~jiewu/research/publications/Publication_files/
+Cloud2016_Li.pdf
+
+55. Song W, Xiao Z, Chen Q, Luo H. Adaptive resource provisioning for the cloud using online bin packing. IEEE Trans Comput.
+2014;63(11):2647–2660.
+
+75. Villegas D, Antoniou A, Sadjadi SM, Iosup A. An analysis of provisioning and allocation policies for infrastructure-as-a-service clouds. 12th
+IEEE/ACM International Symposium on Cluster, Cloud and Grid Computing,
+Ottawa, Canada; 2012:612–619.
+
+56. Xiao Z, Chen Q, Luo H. Automatic scaling of internet applications for
+cloud computing services. IEEE Trans Comput. 2014;63(5):1111–1123.
+57. Divakaran DM, Le TN, Gurusamy M. An online integrated resource allocator for guaranteed performance in data centers. IEEE Trans Parallel
+Distrib Syst. 2014;25(6):1382–1392.
+58. Ni J, Huang Y, Luan Z, Zhang J, Qian D. Virtual machine mapping
+policy based on load balancing in private cloud environment. International Conference on Cloud and Service Computing, Hong Kong, China;
+2011:292–295.
+
+76. Tian W, Xu M, Chen A, Li G, Wang X, Chen Y. Open-source simulators
+for cloud computing: Comparative study and challenging issues. Simul
+Model Pract Th. 2015;58:239–254.
+77. Calheiros RN, Ranjan R, Beloglazov A, De Rose CAF, Buyya R.
+CloudSim: a toolkit for modeling and simulation of cloud computing environments and evaluation of resource provisioning algorithms.
+Softw Pract Exper. 2011;41(1):23–50.
+
+59. Breitgand D, Epstein A. Improving consolidation of virtual machines
+with risk-aware bandwidth oversubscription in compute clouds. Proceedings of IEEE Infocom, Orlando, Florida, USA; 2012:2861–2865.
+
+78. Sá TT, Calheiros RN, Gomes DG. CloudReports: An extensible
+simulation tool for energy-aware cloud computing environments.
+In: Mahmood Z, ed. Cloud Computing. Switzerland: Springer
+International Publishing; 2014:127–142.
+
+60. Ghosh R, Naik VK. Biting off safely more than you can chew: Predictive
+analytics for resource over-commit in IaaS cloud. IEEE 5th International
+Conference on Cloud Computing, Honolulu, Hawaii, USA; 2012:25–32.
+
+79. Piraghaj SF, Dastjerdi AV, Calheiros RN, Buyya R. ContainerCloudSim:
+An environment for modeling and simulation of containers in cloud
+data centers. Softw Pract Exper. 2016: doi: 10.1002/spe.2422.
+
+61. Ganesan R, Sarkar S, Narayan A. Analysis of SaaS business platform
+workloads for sizing and collocation. IEEE 5th International Conference
+on Cloud Computing, Honolulu, Hawaii, USA ; 2012:868–875.
+
+80. Antonescu A-F, Braun T. SLA-driven simulation of multi-tenant scalable cloud-distributed enterprise information systems. In: Pop F,
+Potop-Butucaru M, eds. Adaptive Resource Management and Scheduling for Cloud Computing. Switzerland: Springer International Publishing;
+2014:91–102.
+
+62. Chen M, Zhang H, Su Y-Y, Wang X, Jiang G, Yoshihira K. Effective VM
+sizing in virtualized data centers. IFIP/IEEE International Symposium on
+Integrated Network Management, Dublin, Ireland; 2011:594–601.
+63. Casalicchio E, Menascé DA, Aldhalaan A. Autonomic resource provisioning in cloud systems with availability goals. Proceedings of the 2013
+ACM Cloud and Autonomic Computing Conference, Miami, Florida, USA;
+2013: Article 1.
+64. Pelaez A, Parashar M, Quiroz A. Dynamic adaptation of policies using
+machine learning. Proceedings of the 16th IEEE/ACM International Symposium on Cluster, Cloud and Grid Computing, Cartagena de Indias,
+Colombia; 2016:501–510.
+
+81. Casanova H, Giersch A, Legrand A, Quinson M, Suter F. Versatile,
+scalable, and accurate simulation of distributed applications and platforms. J Parallel Distr Com. 2014;74(10):2899–2917.
+82. Hirofuchi T, Lebre A, Pouilloux L. SimGrid VM: Virtual machine support
+for a simulation framework of distributed systems. IEEE Trans Cloud
+Comput. 2016: doi: 10.1109/TCC.2015.2481422
+83. Kecskemeti G. DISSECT-CF: A simulator to foster energy-aware
+scheduling in infrastructure clouds. Simul Model Pract Th. 2015;
+58:188–218.
+
+18 of 18
+
+84. Boru D, Kliazovich D, Granelli F, Bouvry P, Zomaya AY. Energy-efficient
+data replication in cloud computing datacenters. Cluster Comput.
+2015;18(1):385–402.
+85. Buyya R, Murshed M. GridSim: A toolkit for the modeling and
+simulation of distributed resource management and scheduling for grid computing. Concurrency Computat: Pract Exper.
+2002;14(13-15):1175–1220.
+86. Garg SK, Buyya R. NetworkCloudSim: Modelling parallel applications
+in cloud simulations. Proceedings of the 4th IEEE/ACM International Conference on Utility and Cloud Computing, Melbourne, Victoria, Australia;
+2011:105–113.
+87. Peterson L, Bavier A, Fiuczynski ME, Muir S. Experiences building PlanetLab. Proceedings of the 7th Symposium on Operating Systems Design and
+Implementation, Seattle, Washington; 2006:351–366.
+88. Park K, Pai VS. CoMon: a mostly-scalable monitoring system for PlanetLab. ACM SIGOPS Oper Syst Rev. 2006;40(1):65–74.
+89. Yin J, Lu X, Zhao X, Chen H, Liu X. BURSE: A bursty and self-similar
+workload generator for cloud computing. IEEE Trans Parallel Distrib Syst.
+2015;26(3):668–680.
+
+MANN AND SZABÓ
+
+90. Minh TN, Nam T, Epema DHJ. Parallel workload modeling with realistic
+characteristics. IEEE Trans Parallel Distrib Syst. 2014;25(8):2138–2148.
+91. Bruneo D. A stochastic model to investigate data center performance
+and QoS in IaaS cloud computing systems. IEEE Trans Parallel Distrib Syst.
+2014;25(3):560–569.
+92. Calcavecchia NM, Biran O, Hadad E, Moatti Y. VM placement strategies
+for cloud scenarios. IEEE 5th International Conference on Cloud Computing; 2012:852–859.
+
+How to cite this article:
+
+Mann ZÁ, Szabó M. Which
+
+is the best algorithm for virtual machine placement
+optimization? Concurrency Computat: Pract Exper. 2017;29:
+e4083. https://doi.org/10.1002/cpe.4083
+
+

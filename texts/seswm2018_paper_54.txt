@@ -1,0 +1,95 @@
+Herausgeber et al. (Hrsg.): SE/SWM 2018,
+Lecture Notes in Informatics (LNI), Gesellschaft für Informatik, Bonn 2018 1
+
+Neural Efficiency of Top-Down Program Comprehension
+
+Norman Peitek,1 Janet Siegmund,2 Chris Parnin,3 Sven Apel,2 Johannes C. Hofmeister,2
+Christian Kästner,4 Andrew Begel,5 Anja Bethmann,1 André Brechmann1
+
+Abstract: We observed program comprehension with functional magnetic resonance imaging (fMRI)
+and found a difference in neural efficiency between top-down and bottom-up comprehension, but
+failed to find a significant effect from beacons. Furthermore, we were able to replicate the results of a
+previous fMRI study, thereby strengthening the role of fMRI as measurement technique to observe
+program comprehension and other related cognitive processes.
+Keywords: functional magnetic resonance imaging; program comprehension; neural efficiency
+
+Program comprehension is an important cognitive process, because programmers spend
+most of their time understanding code [LVD06]. An efficient way to understand source
+code is top-down comprehension, where beacons and plans guide programmers to the
+relevant information [Br83]. When code lacks beacons and plans, or when programmers
+lack the experience to recognize them, a slow and tedious statement-by-statement process is
+necessary, which is called bottom-up comprehension [Pe87].
+Understanding how programmers comprehend code is inherently difficult, because we
+cannot directly observe internal cognitive processes. In cognitive neuroscience, functional
+magnetic resonance imaging (fMRI) is being used to better understand such elusive cognitive
+processes. In our line of work, we use fMRI to infer neural processes involved in program
+comprehension based on observed brain activation of programmers in order to evaluate the
+often decades old models of program comprehension.
+In our previous fMRI study on bottom-up comprehension, we found activation in brain
+areas related to working memory, divided attention, problem solving, and language processing [Si14]. In this follow-up study, we adapted the previously used material to isolate
+specific neural processes related to top-down comprehension [Si17].6
+First, we could replicate the results of our first study on bottom-up comprehension. In
+the original study, we found activation in Brodmann areas (BAs) 6, 21, 40, 44, and 47
+1 Leibniz
+
+Institute for Neurobiology, Magdeburg, Germany
+of Passau, Passau, Germany
+3 NC State University, Raleigh, North Carolina, USA
+4 Carnegie Mellon University, Pittsburgh, Pennsylvania, USA
+5 Microsoft Research, Redmond, Washington, USA
+6 More information and material is available on the project’s Web site https://github.com/brains-oncode/paper-esec-fse-2017/.
+2 University
+
+cbe
+
+2 Peitek et al.
+
+within the brain’s left hemisphere, i.e. the speech hemisphere. We found part of these areas
+again (i.e., BAs 21, 40, 44), indicating the suitability of fMRI for measuring program
+comprehension. However, not all areas were significantly activated, which could be due to
+individual anatomical differences between the participant groups or the reduced statistical
+power of the current experiment.
+Second, we found that top-down comprehension did not result in stronger activation than
+bottom-up comprehension, which at first sight is in contrast to program-comprehension
+models. However, we found a difference in the activation strength, such that the activation is
+significantly lower for top-down comprehension than for bottom-up comprehension. Thus,
+top-down comprehension has a higher neural efficiency than bottom-up comprehension.
+Third, we could not find an effect of beacons on top-down comprehension, such that it
+did not matter whether beacons were in the source code or not. Based on the participants’
+comments and the data, we believe this effect is too small to be captured with the applied
+study framework.
+In a nutshell, our results indicate that fMRI is a useful approach to better understand the
+cognitive processes of program comprehension. However, with this replication, we also
+found potential weaknesses of the experimental design, which we are currently addressing.
+Specifically, we are combining eye tracking with fMRI to help us map what participants are
+seeing to what the brain is doing.
+
+References
+[Br83]
+
+Brooks, Ruven: Towards a Theory of the Comprehension of Computer Programs. Int. J.
+Man-Machine Studies, 18(6):543–554, 1983.
+
+[LVD06] LaToza, Thomas D.; Venolia, Gina; DeLine, Robert: Maintaining Mental Models: A Study
+of Developer Work Habits. In: Proc. Int. Conf. Software Engineering (ICSE). ACM, New
+York, NY, USA, pp. 492–501, 2006.
+[Pe87]
+
+Pennington, Nancy: Stimulus Structures and Mental Representations in Expert Comprehension of Computer Programs. Cognitive Psychologys, 19(3):295–341, 1987.
+
+[Si14]
+
+Siegmund, Janet; Kästner, Christian; Apel, Sven; Parnin, Chris; Bethmann, Anja; Leich,
+Thomas; Saake, Gunter; Brechmann, André: Understanding Understanding Source Code
+with Functional Magnetic Resonance Imaging. In: Proc. Int. Conf. Software Engineering
+(ICSE). IEEE, pp. 378–389, 2014.
+
+[Si17]
+
+Siegmund, Janet; Peitek, Norman; Parnin, Chris; Apel, Sven; Hofmeister, Johannes;
+Kästner, Christian; Begel, Andrew; Bethmann, Anja; Brechmann, André: Measuring Neural
+Efficiency of Program Comprehension. In: Proceedings of the 2017 11th Joint Meeting on
+Foundations of Software Engineering. ESEC/FSE 2017, ACM, New York, NY, USA, pp.
+140–150, 2017.
+
+

@@ -1,0 +1,150 @@
+Herausgeber et al. (Hrsg.): Software Engineering und Software Management 2018,
+Lecture Notes in Informatics (LNI), Gesellschaft für Informatik, Bonn 2018 1
+
+Requirements Engineering Challenges in Large-Scale Agile
+System Development
+
+Rashidah Kasauli,1 Grischa Liebel, Eric Knauss, Swathi Gopakumar, Benjamin Kanagwa2
+Keywords: requirements engineering; large-scale agile; system engineering
+
+Despite wide critic, agile approaches have significantly contributed to the way software is
+developed [Me14]and success stories have led to their application at large scale [DPL16]
+and in system development [BE15, PMG12], an environment characterized by long lead
+times [BE15] and stable, sequential engineering practices [PMG12]. In this environment,
+new challenges arise, especially with respect to managing requirements [SKV10].
+Requirements engineering
+- Define tests
+- Inform developers
+- Document for maintenance
+
+V
+
+Time for invention
+and planning
+
+Impact on
+infrastructure
+Agile Islands
+in Waterfall
+
+Component vs.
+System Thinking
+
+Scope of agile development
+
+Safety critical
+& agile
+
+Role of RE
+- Reqts: Order, Goal, or Dialogue?
+- Embrace Change of Reqts?
+- Reqts as Technical Doc.?
+
+To be supported by:
+Shared Understanding of Value
+a) Customer Value to Team
+b) Meaningful User Stories
+c) Feedback and Clarification
+Communication and Knowledge
+Management
+Build and Maintain System
+Understanding
+a) Inform and Synchronize
+b) Create and Maintain Traces
+c) Bridge Plan-Driven and Agile
+d) Complement Tests & Stories
+e) Agile Tool Chain
+
+Fig. 1: Map of challenges with respect to scope of agile work in system development
+
+We address the lack of empirical studies and report RE related challenges of large-scale agile
+system development. Through a multiple case study of four large-scale system development
+cases, based on 5 focus groups, 2 cross-company workshops and 20 semi-structured
+interviews, we present a catalogue of real-world RE challenges related to applying agile
+development in large-scale systems (Fig. 1). These challenges are effectively hindering a
+faster and more sustainable development of software. In order to yield their full benefits,
+agile practices and a holistic system requirements model must be better aligned (Tab. 1). Key
+challenges occur when there is an interaction, or a lack thereof, between system engineering
+domains and we believe that industry would benefit from new impulses from research in the
+area of Requirements Engineering for Large-Scale Agile System Development.
+Acknowledgements: This work was supported by Software Center (www.software-center.se)
+and the SIDA BRIGHT project and was published previously [Ka17].
+1 Rashidah,
+
+Grischa, Eric and Swathi are with Chalmers | University of Gothenburg, Department of Computer
+Science and Engineering, Sweden. rashida@chalmers.se, grischa@chalmers.se, knauss@chalmers.se
+2 Rashidah and Benjamin are with Makerere University, Kampala, Uganda. bkanagwa@cis.mak.ac.ug
+
+c be
+
+2 Rashidah Kasauli, Grischa Liebel, Eric Knauss, Swathi Gopakumar, Benjamin Kanagwa
+Tab. 1: Conclusions of our research
+1) Communication and
+knowledge management.
+
+2) Two areas of
+requirements knowledge:
+User Value and System
+Understanding.
+3) The interplay of
+stakeholders from three
+domains: customer,
+development, and
+integration & testing.
+
+While related work implies that communication challenges are less prominent
+in agile RE [In15, BWR11], our challenges relate to communication and
+knowledge management. Both aspects are at the core of Agile and RE,
+indicating a need for research in these areas specifically for system development.
+This is in line with traditional practices of user and system requirements, but not
+present in agile literature. Companies differ between doing RE in an agile way
+and doing RE to support agility. Our findings suggest that such support cannot
+be offered sufficiently by traditional, upfront RE, as indicated [Me14, He17].
+Development embraces agility and dislikes traditional requirements and bulk
+updates, which requires better synchronization between teams and establishing
+of an agile tool-chain. Customer domain is concerned with breaking down
+customer-visible features in order to communicate customer-value to team,
+requiring support for writing meaningful user stories and for bridging the gap
+between plan-driven and agile development. Integration and testing domain is
+struggling to create and maintain traces and with the fact that user stories and
+tests are not sufficient to build and maintain sufficient system understanding.
+
+References
+[BE15]
+
+Berger, Christian; Eklund, Ulrik: Expectations and Challenges from Scaling Agile in
+Mechatronics-Driven Companies – A Comparative Case Study. In: XP ’15. 2015.
+
+[BWR11] Bjarnason, E.; Wnuk, K.; Regnell, B.: A case study on benefits and side-effects of agile
+practices in large-scale requirements engineering. In: 1st Agile Reqts. Eng. WS. 2011.
+[DPL16] Dikert, Kim; Paasivaara, Maria; Lassenius, Casper: Challenges and Success Factors for
+Large-Scale Agile Transformations: A Systematic Literature Review. JSS, 2016.
+[He17]
+
+Heikkilä, Ville T; Paasivaara, Maria; Lasssenius, Casper; Damian, Daniela; Engblom,
+Christian: Managing the requirements flow from strategy to release in large-scale agile
+development: a case study at Ericsson. Empirical Software Engineering, pp. 1–45, 2017.
+
+[In15]
+
+Inayat, Irum; Salim, Siti Salwah; Marczak, Sabrina; Daneva, Maya; Shamshirband,
+Shahaboddin: A systematic literature review on agile requirements engineering practices
+and challenges. Computers in human behavior, 51:915–929, 2015.
+
+[Ka17]
+
+Kasauli, Rashidah; Liebel, Grischa; Knauss, Eric; Gopakumar, Swathi; Kanagwa, Benjamin:
+Requirements Engineering Challenges in Large-Scale Agile System Development. In: RE
+’17. Lisbon, Portugal, 2017.
+
+[Me14]
+
+Meyer, Bertrand: Agile! The Good, the Hype and the Ugly. Springer, 2014.
+
+[PMG12] Pernstål, J.; Magazinius, A.; Gorschek, T.: A study investigating challenges in the interface
+between product development and manufacturing in the development of software-intensive
+automotive systems. SEKE, 22(07):965–1004, 2012.
+[SKV10] Savolainen, J.; Kuusela, J.; Vilavaara, A.: Transition to agile development: rediscovery of
+important requirements engineering practices. In: RE ’10. pp. 289–294, 2010.
+
+
